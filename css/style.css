@@ -39,7 +39,15 @@
   transform: scale(1.05);
 }
 .input_finding{
-  width: 55%;
+  width: 45%;
+}
+@media (min-width: 991px) {
+  .navbar-nav {
+    --bs-scroll-height: 100px;
+    margin-left: auto;
+    margin-right: 0 !important;
+    flex-direction: row-reverse;
+  }
 }
 @media (max-width: 1000px) {
   .logo_a{
@@ -64,8 +72,6 @@
   .input_finding{
     width: 40%;
   }
-}
-@media (max-width: 545px) {
   .switch{
     display: none;
   }
