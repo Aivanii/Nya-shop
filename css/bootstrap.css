@@ -2144,7 +2144,7 @@ progress {
   color: var(--bs-body-color);
   background-color: var(--bs-body-bg);
   outline: 0;
-  box-shadow: 0 0 0 0.25rem #7e42ff;
+
 }
 .form-control::-webkit-date-and-time-value {
   min-width: 85px;
@@ -4057,7 +4057,6 @@ textarea.form-control-lg {
 .navbar-toggler:focus {
   text-decoration: none;
   outline: 0;
-  box-shadow: 0 0 0 var(--bs-navbar-toggler-focus-width);
 }
 
 .navbar-toggler-icon {
@@ -12051,3 +12050,9 @@ textarea.form-control-lg {
 }
 
 /*# sourceMappingURL=bootstrap.css.map */
+input[type=text]::-ms-clear {  display: none; width : 0; height: 0; }
+input[type=text]::-ms-reveal {  display: none; width : 0; height: 0; }
+input::-webkit-search-decoration,
+input::-webkit-search-cancel-button,
+input::-webkit-search-results-button,
+input::-webkit-search-results-decoration { display: none; }
