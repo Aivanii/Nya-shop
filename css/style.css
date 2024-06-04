@@ -5,13 +5,20 @@
 }
 
 :root{
-  --dark-background-color: #17191e;
-  --light-background-color: #7e42ff;
+
   --dark-theme-switcher-color: #17191e;
   --light-theme-switcher-color: #7e42ff;
+
   --dark-navbar-color: #7e42ff;
   --light-navbar-color: #fff;
 
+  --dark-theme-color: #17191e;
+  --light-theme-color: #7e42ff;
+
+  --dark-logo-img: "img/nya_logo-dark.svg";
+  --light-logo-img: "img/nya_logo.svg";
+
+  --actual-theme: "light";
 }
 
 @font-face {
@@ -20,20 +27,22 @@
 }
 /** logo button **/
 .logo_a{
-  border: 0.3rem solid transparent;
+  border: 0.2rem solid var(--light-theme-color);
   border-radius: 1rem;
   padding-right: 1rem;
   padding-left: 0.5rem;
+  /*
   background:
           linear-gradient(to right, #a0b9ff8a, #efc5ff94) padding-box,
           linear-gradient(to left bottom, #c822ff, #2269ff) border-box;
+
+   */
   color: black;
   font-weight: 500;
-  transition:
-          transform .2s,
-          background 7.4s,
-          linear-gradient .4s;
+  transition: .4s;
   font-family: Cannonade, sans-serif;
+  min-width: 52px;
+  min-height: 52px;
 }
 .logo_a:hover{
   transform: scale(1.05);
@@ -48,8 +57,11 @@
     margin-right: 0 !important;
     flex-direction: row-reverse;
   }
+  .switch{
+    margin-left: 10px;
+  }
 }
-@media (max-width: 1000px) {
+@media (max-width: 990px) {
   .logo_a{
     padding: 0rem;
   }
@@ -59,6 +71,9 @@
   }
   .input_finding{
     width: 40%;
+  }
+  .switch{
+    margin-left: 0px;
   }
 }
 @media (max-width: 770px) {
@@ -72,8 +87,28 @@
   .input_finding{
     width: 40%;
   }
-  .switch{
-    display: none;
+}
+
+@media (max-width: 470px) {
+  .input_finding{
+    margin-top: 10px;
+    width: 100%;
+    order: 7;
+  }
+  .drop-menu{
+    order: 6;
+  }
+  .menu-button{
+    order: 5;
+  }
+}
+@media (max-width: 265px) {
+  .logo_a img{
+    height: 100%;
+    width: 100%;
+  }
+  .logo_a{
+    width: 30%;
   }
 }
 /**theme switcher **/
@@ -119,10 +154,10 @@ input:checked + .slider:before {
 /**theme color changing**/
 body{
   transition: background-color 0.4s;
-  background-color: var(--light-background-color);
+  background-color: var(--light-theme-color);
 }
 body.dark{
-  background-color: var(--dark-background-color);
+  background-color: var(--dark-theme-color);
 }
 
 .navbar{
@@ -130,7 +165,7 @@ body.dark{
   transition: background-color 0.4s;
 }
 .navbar.dark{
-  background-color: var(--dark-navbar-color);
+  background-color: var(--light-theme-color);
 }
 
 .nav-link{
@@ -140,4 +175,6 @@ body.dark{
 .nav-link.dark{
   color: white;
 }
-
+.logo_a.dark{
+  border: 0.2rem solid var(--dark-theme-color);
+}
