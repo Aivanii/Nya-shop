@@ -262,6 +262,16 @@ body.dark{
     font-size: 12px;
   }
 }
+@media (max-wdith: 600px){
+  .main-discounts-week-container {
+    width: 95%;
+  }
+}
+@media (max-wdith: 500px){
+  .main-discounts-week-container {
+    width: 100%;
+  }
+}
 @media (max-width: 400px) {
   .discounts-week-container {
     display: grid;
