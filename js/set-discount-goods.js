@@ -82,7 +82,7 @@ const model = [
         {type: 'price', value: [
                 '9999',
                 '485',
-                '-95%'
+                '+95%'
             ]
         },
         {type: 'title', value: 'Фигурка Re:Zero, Rem, Рем'},
