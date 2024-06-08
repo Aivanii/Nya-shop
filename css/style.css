@@ -261,8 +261,6 @@ body.dark{
   .actual-price{
     font-size: 12px;
   }
-}
-@media (max-wdith: 600px){
   .main-discounts-week-container {
     width: 95%;
   }
