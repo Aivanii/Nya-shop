@@ -280,12 +280,6 @@ body.dark{
     width: 100%;
   }
 }
-@media (max-width: 400px) {
-  .discounts-week-container {
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-}
 @media (max-width: 200px) {
   .discount-price{
     font-size: 8px;
