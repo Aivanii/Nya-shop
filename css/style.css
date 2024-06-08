@@ -235,13 +235,7 @@ body.dark{
   display: grid;
   grid-template-columns: repeat(auto-fill,minmax(13rem, 1fr));
 }
-.main-discounts-week-container{
-  width: 80%;
-  max-width: 1440px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 2rem;
-}
+
 @media (max-width: 700px) {
   .discount-price{
     font-size: 10px;
@@ -253,7 +247,7 @@ body.dark{
     font-size: 14px;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 475px) {
   .discounts-week-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -267,17 +261,21 @@ body.dark{
   .actual-price{
     font-size: 12px;
   }
+}
+@media (max-wdith: 600px){
   .main-discounts-week-container {
     width: 95%;
   }
 }
-@media (min-width: 601px){
-  .main-discounts-week-container{
-  width: 80%;
-}
 @media (max-wdith: 500px){
   .main-discounts-week-container {
     width: 100%;
+  }
+}
+@media (max-width: 400px) {
+  .discounts-week-container {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 }
 @media (max-width: 200px) {
@@ -297,4 +295,10 @@ body.dark{
     max-width: none;
   }
 }
-
+.main-discounts-week-container{
+  width: 80%;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2rem;
+}
