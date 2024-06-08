@@ -247,7 +247,7 @@ body.dark{
     font-size: 14px;
   }
 }
-@media (max-width: 475px) {
+@media (max-width: 600px) {
   .discounts-week-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
