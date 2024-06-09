@@ -28,7 +28,7 @@
 }
 
 body{
-  background: #262641;
+  background: linear-gradient(135deg, #262641, #372641);
 }
 @font-face {
   font-family: 'Cannonade';
