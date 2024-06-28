@@ -1,0 +1,95 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=300, initial-scale=1">
+    <title>Страница пользователя {username}</title>
+    <link rel="shortcut icon" href="img/nya_logo_small.svg" />
+    <link href= "css/bootstrap.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet" >
+</head>
+
+<body>
+
+<div class = "user-title">
+    <h1>Корзина</h1>
+</div>
+<div class = "user-data-container">
+    <div class = "profile-menu-widget" id = "profile-menu-widget">
+        
+    </div>
+
+    <div class = "user-settings-container" style = "display: block;">
+        <div class = "favorite_goods_container">
+            <!--goods-->
+            <a href = "#">
+                <div class = "favorite_good">
+                    <img src = "img/goods/Izumi-t-shirt.png" loading="lazy" alt = "{alt_good}"/>
+                    <div class = "favorite_good_text_container">
+                        <div class="card-container-price card-title" style = "height: 20%;">
+                            <p class="actual-price">990 ₽</p>
+                            <p class="crossed-price">1043 ₽</p>
+                            <form style = "margin-left: auto;">
+                                <input class = "button_toggle button_minus disabled_button_toggle" type="button" value="-">
+                                <span class = "buttons_span">1</span>
+                                <input class = "button_toggle transform_scaler button_plus" type="button" value="+">
+                            </form>
+                        </div>
+                        <p style = "margin-top: 0.5rem;"">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis
+                            odit et ullam voluptas laudantium, fugit provident nesciunt repellat,
+                            maiores tempore facere asperiores, beatae corporis. Voluptatem ratione
+                            dolores omnis accusantium ipsam?
+                        </p> 
+                        <form>
+                            <button type = "submit" class = "favorite_button transform_scaler">Убрать из корзины </button>
+                        </form>
+                    </div>
+                </div>
+            </a>
+            <!-- ctrl+c - ctrl+v -->
+            <a href = "#">
+                <div class = "favorite_good">
+                    <img src = "img/goods/Izumi-t-shirt.png" loading="lazy" alt = "{alt_good}"/>
+                    <div class = "favorite_good_text_container">
+                        <div class="card-container-price card-title" style = "height: 20%;">
+                            <p class="actual-price">990 ₽</p>
+                            <p class="crossed-price">1043 ₽</p>
+                            <form style = "margin-left: auto;">
+                                <input class = "button_toggle button_minus disabled_button_toggle" type="button" value="-">
+                                <span class = "buttons_span">1</span>
+                                <input class = "button_toggle transform_scaler button_plus" type="button" value="+">
+                            </form>
+                        </div>
+                        <p style = "margin-top: 0.5rem;"">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis
+                            odit et ullam voluptas laudantium, fugit provident nesciunt repellat,
+                            maiores tempore facere asperiores, beatae corporis. Voluptatem ratione
+                            dolores omnis accusantium ipsam?
+                        </p> 
+                        <form>
+                            <button type = "submit" class = "favorite_button transform_scaler">Убрать из корзины </button>
+                        </form>
+                    </div>
+                </div>
+            </a>
+            <!--хх-->
+        </div>
+
+        <div>
+            <form>
+                <button type = "submit" id = "text_area" class = "buy_button transform_scaler">Перейти к оплате заказа на сумму ${total_price} рублей</button>
+            </form>
+        </div>
+    </div>
+</div>
+<p id = "total_price_show">--</p>
+<script src="js/set_navbar.js"></script>
+<script src = "js/set_profile_ul.js"></script>
+<script src="js/bootstrap.bundle.js"></script>
+<script src="js/logo_changer.js"></script>
+
+<script src = "js/count_goods.js"></script>
+</body>
+</html>
