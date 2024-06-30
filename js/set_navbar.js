@@ -5,7 +5,10 @@ html = `
 <nav class="navbar navbar-expand-lg" id = "navbar">
     <div class="container">
     <a class="navbar-brand logo_a transform_scaler" id = "logo" href="index.html">
-      <img id = "logo_img" style = "transition: .4s;">
+    <picture>
+      <source srcset="img/nya_logo_small.svg" media="(max-width: 267px)">
+      <img src = "img/nya_logo.svg" id = "logo_img" alt = "logo-button" style = "transition: .4s;">
+    </picture>
     </a>
     <form class="d-flex input_finding" role="search">
       <input class="form-control me-2" placeholder="Поиск по сайту" type="search" aria-label="Поиск по сайту">

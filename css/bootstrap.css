@@ -5968,6 +5968,8 @@ textarea.form-control-lg {
 
 .carousel {
   position: relative;
+  width: 30vw;
+  max-width: 25rem;
 }
 
 .carousel.pointer-event {
@@ -5976,7 +5978,8 @@ textarea.form-control-lg {
 
 .carousel-inner {
   position: relative;
-  width: 100%;
+  width: 30vw;
+  max-width: 25rem;
   overflow: hidden;
 }
 .carousel-inner::after {
