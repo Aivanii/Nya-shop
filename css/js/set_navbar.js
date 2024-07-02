@@ -66,10 +66,10 @@ after.insertAdjacentHTML('afterend',html);
       </div>
       <div class="modal-body">
         <p>Введите вашу почту: </p>
-        <input type="email" class="form-control" placeholder="Введите вашу почту" aria-label="Введите вашу почту" aria-describedby="basic-addon2" name = "email">
+        <input type="email" class="form-control" required placeholder="Введите вашу почту" aria-label="Введите вашу почту" aria-describedby="basic-addon2" name = "email">
         <br>
         <p>Введите ваш пароль: </p>
-        <input type="password" class="form-control" placeholder="Введите ваш пароль" aria-label="Введите ваш пароль" aria-describedby="basic-addon2" name = "password">
+        <input type="password" class="form-control" required placeholder="Введите ваш пароль" aria-label="Введите ваш пароль" aria-describedby="basic-addon2" name = "password">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary transform_scaler" data-bs-dismiss="modal">Закрыть</button>
