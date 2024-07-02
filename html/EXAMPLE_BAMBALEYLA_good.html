@@ -6,13 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Nya~ shop</title>
   <link rel="shortcut icon" href="img/nya_logo_small.svg" />
-  <link href= "css/bootstrap.css" rel="stylesheet">
-  <link href="css/style.css" rel="stylesheet" >
+  <link href= "bootstrap.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet" >
 </head>
-
+<li class="nav-item" id = 'begin'>
+  {% if username %}
+    <a href = "/Basa">
+      {{username}}
+    </a>
+  {% else %}
+    <button type="button" class="user-profile-login" data-bs-toggle="modal" data-bs-target="#logining_window"/>
+      Войти
+    </button>
+  {% endif %}
+</li>
 <body>
 <main class = "good_info">
-    <div class = "horizontal_container">
+    <!-- <div class = "horizontal_container">
         <ol class = "category_ol">
             <li>Каталог</li>
             <li>Аниме</li>
@@ -20,12 +30,12 @@
             <li>Футболки</li>
             <li>Футболка Изуми</li>
         </ol>
-    </div>
+    </div> -->
     <div class = "flex_container"  style = "display: flex;">
         <h2>
-            Футболка Изуми
+            {{name}}
         </h2>
-        <span class = "code_good_span">0000000</span>  
+        <span class = "code_good_span">{{id}}</span>  
     </div>
 
     <div class = "good_info_container">
@@ -34,13 +44,13 @@
             <div id="carouselAutoplaying" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="img/goods/Izumi-t-shirt.png" class="d-block good_imgs" alt="...">
+                    <img src= {{img}} class="d-block good_imgs" alt="...">
                 </div>
                 <div class="carousel-item">
-                    <img src="img/goods/Izumi-t-shirt.png" class="d-block good_imgs" alt="...">
+                    <img src={{img}} class="d-block good_imgs" alt="...">
                 </div>
                 <div class="carousel-item">
-                    <img src="img/goods/Izumi-t-shirt.png" class="d-block good_imgs" alt="...">
+                    <img src={{img}} class="d-block good_imgs" alt="...">
                 </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselAutoplaying" data-bs-slide="prev">
@@ -57,7 +67,7 @@
         <div class = "grid_container">
             <!--good-name-->
             <div class = "good_name">
-                <span>Футболка Изуми из аниме Хоримия хлопок 100% супер качественная</span>
+                <span>{{name}}</span>
             </div>
             <!---->
 
@@ -68,8 +78,8 @@
 
             <!--price-->
             <div class = "price_good_container">
-                <p class="actual-price">1043 ₽</p>
-                <p class="crossed-price">990 ₽</p>
+                <p class="actual-price">{{price}} ₽</p>
+                <p class="crossed-price">{{sell}} ₽</p>
             </div>
             <!---->
 
@@ -84,17 +94,17 @@
             <!---->
 
             <!--to-shop-kit-->
-            <div class="to-shop-kit transform_scaler">
+            <form class="to-shop-kit transform_scaler" action = '/Goods' method = 'POST'>
                 <button type = "submit">
                     Добавить в корзину
                 </button>
-            </div>
+            </form>
             <!---->
         </div>
         
     </div>
     <div class = "description_container" style = "background: brown;">
-        сюда просто описание товара, б
+        {{value}}
     </div>
 </main>
 

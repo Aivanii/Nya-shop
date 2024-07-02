@@ -4,12 +4,22 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Страница пользователя {username}</title>
+    <title>Страница пользователя</title>
     <link rel="shortcut icon" href="img/nya_logo_small.svg" />
-    <link href= "css/bootstrap.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet" >
+    <link href= "bootstrap.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" >
 </head>
-
+<li class="nav-item" id = 'begin'>
+  {% if username %}
+    <a href = "/Basa">
+      {{username}}
+    </a>
+  {% else %}
+    <button type="button" class="user-profile-login" data-bs-toggle="modal" data-bs-target="#logining_window"/>
+      Войти
+    </button>
+  {% endif %}
+</li>
 <body>
 
 <div class = "user-title">
@@ -24,15 +34,15 @@
         <div class = "user-settings-content">
             <form class = "inputs-user-settings">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="NicknameInput" placeholder="Никнейм">
+                    <input type="text" class="form-control" id="NicknameInput" placeholder="Никнейм" value = {{username}}>
                     <label for="NicknameInput">Никнейм</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="NameInput" placeholder="Имя">
+                    <input type="text" class="form-control" id="NameInput" placeholder="Имя" value = {{name}}>
                     <label for="NameInput">Имя</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="SurnameInput" placeholder="Фамилия">
+                    <input type="text" class="form-control" id="SurnameInput" placeholder="Фамилия" value = {{surname}}>
                     <label for="SurnameInput">Фамилия</label>
                 </div>
                 <div class="form-floating mb-3">
@@ -40,7 +50,7 @@
                     <label for="NameInput">Телефон</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" value = {{mail}}>
                     <label for="floatingInput">Электронная почта</label>
                 </div>
                 <div class="form-floating mb-3">
@@ -51,7 +61,7 @@
             <form>
                 <img src="img/goods/Nahida-doll.png" class="settings-user-img">
             </form>
-        </div
+        </div>
     </div>
 </div>
 
