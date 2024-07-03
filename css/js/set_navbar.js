@@ -84,33 +84,33 @@ after.insertAdjacentHTML('afterend',html);
     document.body.insertAdjacentHTML('afterend', html);
 
 
-// let button = document.querySelector('#error');
-// button.addEventListener('click', function(event) {
-//   let mail = document.getElementById('email').value;
-//   let pass = document.getElementById('password').value;
-//   let promise = fetch('/Log',{
-//     method: 'post',
-//     body: `email=${mail}&password=${pass}`,
-//     headers: {
-//       'Content-Type': 'application/x-www-form-urlencoded',
-//     },
-//   }).then(
-//     response => {
-//       return response.text();
-//     }
-//   ).then((data) => {
-//       if(data === 'false'){ 
-//         document.getElementById('modal-error-text').textContent = "неверные данные";
+let button = document.querySelector('#error');
+button.addEventListener('click', function(event) {
+  let mail = document.getElementById('email').value;
+  let pass = document.getElementById('password').value;
+  let promise = fetch('/Log',{
+    method: 'post',
+    body: `email=${mail}&password=${pass}`,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  }).then(
+    response => {
+      return response.text();
+    }
+  ).then((data) => {
+      if(data === 'false'){ 
+        document.getElementById('modal-error-text').textContent = "неверные данные";
            
-//       }else{  
-//         document.getElementById('modal-error-text').textContent = 'успешно';
-//         window.location = 'http://localhost:3000/Basa'
-//       }
+      }else{  
+        document.getElementById('modal-error-text').textContent = 'успешно';
+        window.location = 'http://localhost:3000/Basa'
+      }
 
       
       
     
-//   });
-//   event.preventDefault()
+  });
+  event.preventDefault()
   
-// });
+});

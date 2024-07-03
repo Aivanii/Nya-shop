@@ -11,7 +11,7 @@
 </head>
 <li class="nav-item" id = 'begin'>
   {% if username %}
-    <a href = "/Basa">
+    <a class="nav-link" href = "/Basa">
       {{username}}
     </a>
   {% else %}
@@ -33,7 +33,7 @@
     <div class = "user-settings-container" style = "display: block;">
         <div class = "favorite_goods_container">
             <!--goods-->
-            {% for item in row %}
+            {% for item in items %}
                 <!-- <a href = {{item.url}}> -->
                     <div class = "favorite_good">
                         <img src = {{item.img}} loading="lazy" alt = "{alt_good}"/>
@@ -51,7 +51,7 @@
                                 {{item.value}}
                             </p> 
                             <form action="/Basket" method = "POST" >
-                                <button onclick='delet(this)' type = "submit" class = "favorite_button transform_scaler" id = {{item.id}}>Убрать из корзины </button>
+                                <button type = "submit" class = "favorite_button transform_scaler" value = {{item.id}} name = 'id'>Убрать из корзины </button>
                             </form>
                         </div>
                     </div>
