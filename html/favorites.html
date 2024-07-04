@@ -11,7 +11,7 @@
 </head>
 <li class="nav-item" id = 'begin'>
   {% if username %}
-    <a class="nav-item" href = "/Basa">
+    <a class="nav-link" href = "/Basa">
       {{username}}
     </a>
   {% else %}
@@ -33,29 +33,29 @@
     <div class = "user-settings-container">
         <div class = "favorite_goods_container">
             <!--favorite goods-->
-            <a href = "/favorite">
-                <div class = "favorite_good">
-                    <img src = "img/goods/Izumi-t-shirt.png" loading="lazy" alt = "{alt_good}"/>
-                    <div class = "favorite_good_text_container">
-                        <div class="card-container-price card-title" style = "height: 20%;">
-                            <p class="actual-price">1043 ₽</p>
-                            <p class="crossed-price">990 ₽</p>
-                            <form style = "margin-left: auto;">
-                                <button type="button" class="btn-close btn-close-white transform_scaler" aria-label="Close"></button>
+            {% for items in item %}
+                <!-- <a href = {{items.url}}> -->
+                    <div class = "favorite_good">
+                        <img src = {{items.img}} loading="lazy" alt = "{alt_good}"/>
+                        <div class = "favorite_good_text_container">
+                            <div class="card-container-price card-title" style = "height: 20%;">
+                                <p class="actual-price">{{items.sell}} ₽</p>
+                                <p class="crossed-price">{{items.price}} ₽</p>
+                                <form style = "margin-left: auto;" action="/Favorite" method = "POST" >
+                                    <button class="btn-close btn-close-white transform_scaler" aria-label="Close" id = {{items.id}} onclick = 'favorite(this)'></button>
+                                </form>
+                            </div>
+                            <p>
+                                {{items.value}}
+                            </p> 
+                            <form action="/Favor_basket" method = "POST" >
+                                <button type = "submit" class = "favorite_button transform_scaler"  name = 'id' value = {{items.id}}> В корзину </button>
                             </form>
+
                         </div>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis
-                            odit et ullam voluptas laudantium, fugit provident nesciunt repellat,
-                            maiores tempore facere asperiores, beatae corporis. Voluptatem ratione
-                            dolores omnis accusantium ipsam?
-                        </p> 
-                        <form>
-                            <button type = "submit" class = "favorite_button transform_scaler"> В корзину </button>
-                        </form>
                     </div>
-                </div>
-            </a>
+                <!-- </a> -->
+            {% endfor %}
             <!-- ctrl+c - ctrl+v -->
            
             <!--хх-->
@@ -64,6 +64,7 @@
 </div>
 <script src="js/set_navbar.js"></script>
 <script src = "js/set_profile_ul.js"></script>
+<script src = "js/set_favorite.js"></script>
 <script src="js/bootstrap.bundle.js"></script>
 </body>
 </html>
