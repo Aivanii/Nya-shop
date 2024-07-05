@@ -59,17 +59,17 @@ after.insertAdjacentHTML('afterend',html);
     html = `
     <!-- Modal Window -->
 <div class="modal fade " id="logining_window" tabindex="-1" aria-labelledby="logining_window_Label" aria-hidden="true">
-  <form class="modal-dialog">
+  <form class="modal-dialog" onsubmit="sub(event)">
     <div class="modal-content">
       <div class="modal-header" style = "display: block;">
         <h1 class="modal-title fs-5" id="logining_window_Label">Введите данные пользователя</h1>
       </div>
       <div class="modal-body">
         <p>Введите вашу почту: </p>
-        <input type="email" class="form-control" placeholder="Введите вашу почту" aria-label="Введите вашу почту" aria-describedby="basic-addon2" id = "email">
+        <input type="email" class="form-control" placeholder="Введите вашу почту" aria-label="Введите вашу почту" aria-describedby="basic-addon2" id = "email" required>
         <br>
         <p>Введите ваш пароль: </p>
-        <input type="password" class="form-control" placeholder="Введите ваш пароль" aria-label="Введите ваш пароль" aria-describedby="basic-addon2" id = "password">
+        <input type="password" class="form-control" placeholder="Введите ваш пароль" aria-label="Введите ваш пароль" aria-describedby="basic-addon2" id = "password" required>
         <p id = "modal-error-text" style = "margin-top: 1rem;" ></p>
       </div>
       
@@ -85,32 +85,34 @@ after.insertAdjacentHTML('afterend',html);
 
 
 let button = document.querySelector('#error');
-button.addEventListener('click', function(event) {
+function sub(event) {
+  
   let mail = document.getElementById('email').value;
   let pass = document.getElementById('password').value;
-  let promise = fetch('/Log',{
-    method: 'post',
-    body: `email=${mail}&password=${pass}`,
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-  }).then(
-    response => {
-      return response.text();
-    }
-  ).then((data) => {
-      if(data === 'false'){ 
-        document.getElementById('modal-error-text').textContent = "неверные данные";
-           
-      }else{  
-        document.getElementById('modal-error-text').textContent = 'успешно';
-        window.location = 'http://localhost:3000/Basa'
+  if (event.target.checkValidity()) {
+    fetch('/Log',{
+      method: 'post',
+      body: `email=${mail}&password=${pass}`,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    }).then(
+      response => {
+        return response.text();
       }
+    ).then((data) => {
+        if(data === 'false'){ 
+          document.getElementById('modal-error-text').textContent = "неверные данные";
+             
+        }else{  
+          document.getElementById('modal-error-text').textContent = 'успешно';
+          window.location = 'http://localhost:3000/Basa'
+        }
 
+        
+        
       
-      
-    
-  });
-  event.preventDefault()
-  
-});
+    });
+  }
+  event.preventDefault()  
+};

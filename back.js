@@ -88,8 +88,13 @@ app.post('/Log', function(req,res,next){
             let y = rod[0];
             y = y['COUNT(*)']
             y += 1
+            let ids = []
+            let now = []
+            ids = JSON.stringify(ids);
+            now = JSON.stringify(now);
+            console.log(ids, now)
             username = 'user' + y
-            let save = db.prepare('INSERT INTO user(id, username, mail, password) VALUES (?, ?, ?, ?)', [y, username, req.body.email, req.body.password]);
+            let save = db.prepare('INSERT INTO user(id, username, mail, password, id_favorite, id_basket) VALUES (?, ?, ?, ?, ?, ?)', [y, username, req.body.email, req.body.password, ids, now]);
             save.run();
             save.finalize();
             res.redirect('/Basa')
@@ -135,23 +140,25 @@ app.get('/Basket', function(req,res){
       let id = JSON.parse(row.id_basket)
       let items;
       let text = 'SELECT * FROM goods WHERE id = ';
-      for(let i = 0 ; i < id.length; i++){
-        
-          if(i == id.length -1){
-            if(text == undefined){
-              text = `'${id[i]}'`
-            }else{
-              text += `'${id[i]}'`
-            }
-            
-          }else{
-            if(text == undefined){
-              text = `'${id[i]}'` + ' OR id = '
-            }else{
-              text += `'${id[i]}'` + ' OR id = ' 
-            }
+      if(id.length){
+        for(let i = 0 ; i < id.length; i++){
           
-         }
+            if(i == id.length -1){
+              if(text == undefined){
+                text = `'${id[i]}'`
+              }else{
+                text += `'${id[i]}'`
+              }
+              
+            }else{
+              if(text == undefined){
+                text = `'${id[i]}'` + ' OR id = '
+              }else{
+                text += `'${id[i]}'` + ' OR id = ' 
+              }
+            
+           }
+        }
       }
       console.log(text)
       db.all(text, function(err,rod){
@@ -166,14 +173,13 @@ app.get('/Basket', function(req,res){
 });
 
 app.get('/Favorite', function(req,res){
-  
   db.serialize(function(){
-
     db.get('SELECT id_favorite FROM user WHERE username = ?', [username], function(err,row){
       let id = JSON.parse(row.id_favorite)
       let item;
       let text = 'SELECT * FROM goods WHERE id = ';
-      for(let i = 0 ; i < id.length; i++){
+      if(id.length){
+        for(let i = 0 ; i < id.length; i++){
         
           if(i == id.length -1){
             if(text == undefined){
@@ -189,8 +195,10 @@ app.get('/Favorite', function(req,res){
               text += `'${id[i]}'` + ' OR id = ' 
             }
           
-         }
+          }
+        }
       }
+      
       db.all(text, function(err,rod){
         item = rod
         res.render('favorites.html',{
@@ -206,20 +214,18 @@ app.get('/Goods',function(req,res){
   if(username){
     db.serialize(function(){
       db.get('SELECT * FROM goods WHERE id = ?', [req.query.id], function(err,row){
-        db.get('SELECT id_favorite FROM user', function(err,rod){
+        db.get('SELECT id_favorite FROM user WHERE username = ?', [username], function(err,rod){
           let ids = JSON.parse(rod.id_favorite);
-          for(let i = 0; i <= ids.length - 1; i++){
-            if(id != null){
+
+          if(ids.length){
+            for(let i = 0; i <= ids.length - 1; i++){
               if(ids[i] == req.query.id){
                 row['action'] = "action"
                 console.log(row)
                 break
                 
               }
-            }else
-              if(id == null){
-                id = []
-              }
+            }
           }
           row['username'] = username
           id = req.query.id
@@ -241,27 +247,48 @@ app.get('/Goods',function(req,res){
   
 });
 app.post('/Goods', function(req,res){
-  db.serialize(function(){
-    db.get('SELECT id_basket FROM user WHERE username = ?', [username], function(err, row){
-      let now = JSON.parse(row.id_basket)
-      if(now == null){
-        now = []
-      }
-      now.push(id) 
-      now = JSON.stringify(now)
-      let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,username]);
-      save.run();
-      save.finalize()
+  if(username){
+    db.serialize(function(){
+      db.get('SELECT id_basket FROM user WHERE username = ?', [username], function(err, row){
+        let now = JSON.parse(row.id_basket)
+        if(!now.length){
+          now = []
+          now.push(id)
+          now = JSON.stringify(now)
+          let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,username]);
+          save.run();
+          save.finalize()
+          res.redirect('/Basket')
+        }else{
+          let x = true
+          for(let i = 0; i < now.length; i++){
+            if(now[i] == id)
+              x = false
+              break
+          }
+          if(x){
+              console.log(id)
+              now.push(id)
+              now = JSON.stringify(now)
+              let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,username]);
+              save.run();
+              save.finalize()
+            }
+          res.redirect('/Basket') 
+        }
+        
+        
+      });
     });
-  });
-  
-  res.redirect('/Basket')
+  }else{
+    res.send('false')
+  }
 });
 app.post('/Favor',function(req,res){
   let favorite = req.body.id;
   let x = true
   db.serialize(function(){
-    db.get('SELECT id_favorite FROM user', function(err,row){
+    db.get('SELECT id_favorite FROM user WHERE username = ?', [username], function(err,row){
       let id = JSON.parse(row.id_favorite);
       if(id != null){
         for(let i = 0; i <= id.length - 1; i++){
@@ -291,9 +318,9 @@ app.post('/Favorite',function(req,res){
   let favorite = req.body.id;
   let x = true
   db.serialize(function(){
-    db.get('SELECT id_favorite FROM user', function(err,row){
+    db.get('SELECT id_favorite FROM user WHERE username = ?', [username], function(err,row){
       let id = JSON.parse(row.id_favorite);
-      if(id != null){
+      if(id.length){
         for(let i = 0; i <= id.length - 1; i++){
           if(id[i] == favorite){
               id.splice(i,1)
