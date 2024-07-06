@@ -40,7 +40,7 @@
 
     <div class = "good_info_container">
         <!--imgs-->
-        <div style = "width: 30vw; max-width: 25rem;">
+        <div style = "width: 30vw; max-width: 25rem; margin-left: auto; margin-right: auto;">
             <div id="carouselAutoplaying" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                 <div class="carousel-item active">
@@ -67,7 +67,7 @@
         <div class = "grid_container">
             <!--good-name-->
             <div class = "good_name">
-                <span>{{name}}</span>
+                <span>{{value}}</span>
             </div>
             <!---->
 
@@ -85,7 +85,9 @@
 
             <!--share-button-->
             <div class = "share_button">
-                <img src = "img/share-svgrepo-com.svg">
+                <a href = "#">
+                    <img src = "img/share-svgrepo-com.svg">
+                </a>
             </div>
             <!---->
 
@@ -113,15 +115,218 @@
         </div>
         
     </div>
-    <div class = "description_container" style = "background: brown;">
-        {{value}}
+    <div class = "description_container">
+        <table class = "description_table">
+            <tr>
+                <th><h4>Характеристики {{name}}</h4></th>
+            </tr>
+
+            <tr>
+                <th><h6>Заводские данные:</h6></th>
+            </tr>
+
+            <tr>
+                <td>Гарантия продавца</td>
+                <td>12 месяцев</td>
+            </tr>
+            
+            <tr>
+                <th><h6>Основные характеристики:</h6></th>
+            </tr>
+
+            <tr>
+                <td>Артикул</td>
+                <td>{{id}}</td>
+            </tr>
+
+            <tr>
+                <td>Тип</td>
+                <td>Фигурка</td>
+            </tr>
+
+            <tr>
+                <td>Цвет</td>
+                <td>Нахида</td>
+            </tr>
+
+            <tr>
+                <td>Высота, см</td>
+                <td>18</td>
+            </tr>
+
+            <tr>
+                <td>Материал</td>
+                <td>Акрил, Пластик</td>
+            </tr>
+
+            <tr>
+                <td>Тематика фигурки</td>
+                <td>Аниме, Персонажи</td>
+            </tr>
+
+            <tr>
+                <td>Страна-изготовитель</td>
+                <td>Китай</td>
+            </tr>
+
+            <tr>
+                <td>Максимальный возраст ребёнка</td>
+                <td>До 18 лет</td>
+            </tr>
+
+            <tr>
+                <td>Пол ребёнка</td>
+                <td>Унисекс</td>
+            </tr>
+
+            <tr>
+                <td>Минимальный возраст ребёнка</td>
+                <td>От 6 лет</td>
+            </tr>
+
+            <tr>
+                <th><h6>Дополнительно:</h6></th>
+            </tr>
+
+            <tr>
+                <td>Комплектация</td>
+                <td>Фигурка, коробка, инструкция</td>
+            </tr>
+
+        </table>
+    </div>
+    <div class = "description_container">
+        <h4>Описание товара: </h4>
+        <article>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            Et quibusdam eligendi nemo nisi, explicabo tempore earum
+            nobis! Illum tempore aliquid enim veniam eum provident id.
+            Aspernatur doloribus tempora ducimus explicabo.
+        </article>
+    </div>
+    <div class = "description_container">
+        <h4>Отзывы: </h4>
+        <div class = "comment">
+            <div class = "comment_container" style = "display: flex; justify-content: space-between;">
+                <div style = "display: flex;">
+                    <img src = "img/goods/Natsuki-poster.png">
+                    <h4 style = "align-self: center; padding-left: clamp(2px, 2vw, 8px);">User#0001</h4>
+                </div>
+                <div style = "display: flex;">
+                    <span style = "align-self: center;">06.07.2024</span>
+                    
+                    <div style = "align-self: center;" class = "rating" data-rating = "1">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class = "comment_container">
+                <article>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Et quibusdam eligendi nemo nisi, explicabo tempore earum
+                    nobis! Illum tempore aliquid enim veniam eum provident id.
+                    Aspernatur doloribus tempora ducimus explicabo.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    Illo nesciunt sit commodi quo rem voluptas neque quaerat, 
+                    itaque dolor, nemo accusamus sequi? Voluptate nihil eveniet
+                    harum laudantium, assumenda labore saepe!
+                </article>
+            </div>
+        </div>
+
+        <!--ctrl+c-ctrl+v-->
+        <div class = "comment">
+            <div class = "comment_container" style = "display: flex; justify-content: space-between;">
+                <div style = "display: flex;">
+                    <img src = "img/goods/Natsuki-poster.png">
+                    <h4 style = "align-self: center; padding-left: clamp(2px, 2vw, 8px);">User#0001</h4>
+                </div>
+                <div style = "display: flex;">
+                    <span style = "align-self: center;">06.07.2024</span>
+                    
+                    <div style = "align-self: center;" class = "rating" data-rating = "2">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class = "comment_container">
+                <article>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Et quibusdam eligendi nemo nisi, explicabo tempore earum
+                    nobis! Illum tempore aliquid enim veniam eum provident id.
+                    Aspernatur doloribus tempora ducimus explicabo.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    Illo nesciunt sit commodi quo rem voluptas neque quaerat, 
+                    itaque dolor, nemo accusamus sequi? Voluptate nihil eveniet
+                    harum laudantium, assumenda labore saepe!
+                </article>
+            </div>
+        </div><div class = "comment">
+            <div class = "comment_container" style = "display: flex; justify-content: space-between;">
+                <div style = "display: flex;">
+                    <img src = "img/goods/Natsuki-poster.png">
+                    <h4 style = "align-self: center; padding-left: clamp(2px, 2vw, 8px);">User#0001</h4>
+                </div>
+                <div style = "display: flex;">
+                    <span style = "align-self: center;">06.07.2024</span>
+                    
+                    <div style = "align-self: center;" class = "rating" data-rating = "5">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class = "comment_container">
+                <article>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Et quibusdam eligendi nemo nisi, explicabo tempore earum
+                    nobis! Illum tempore aliquid enim veniam eum provident id.
+                    Aspernatur doloribus tempora ducimus explicabo.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    Illo nesciunt sit commodi quo rem voluptas neque quaerat, 
+                    itaque dolor, nemo accusamus sequi? Voluptate nihil eveniet
+                    harum laudantium, assumenda labore saepe!
+                </article>
+            </div>
+        </div><div class = "comment">
+            <div class = "comment_container" style = "display: flex; justify-content: space-between;">
+                <div style = "display: flex;">
+                    <img src = "img/goods/Natsuki-poster.png">
+                    <h4 style = "align-self: center; padding-left: clamp(2px, 2vw, 8px);">User#0001</h4>
+                </div>
+                <div style = "display: flex;">
+                    <span style = "align-self: center;">06.07.2024</span>
+                    
+                    <div style = "align-self: center;" class = "rating" data-rating = "25">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class = "comment_container">
+                <article>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam in aperiam rem reprehenderit corporis! Tenetur magni accusamus vitae consequuntur corporis ipsam ratione doloribus nisi aut! Quia officia ipsa earum commodi?
+                    Et quibusdam eligendi nemo nisi, explicabo tempore earum Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, quis? Non enim dicta consectetur! Aliquam, officiis? Expedita iure minima itaque, rerum, beatae deserunt, consequuntur eaque eius nostrum commodi cum vel.
+                    nobis! Illum tempore aliquid enim veniam eum provident id. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi ducimus, quod quaerat perferendis veritatis eveniet expedita id. Nulla debitis, maxime, sit accusantium culpa inventore veritatis, molestiae excepturi vitae at blanditiis!
+                    Aspernatur doloribus tempora ducimus explicabo. Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam omnis ullam nisi qui veritatis? Perferendis ullam porro veritatis laudantium minima eius, corrupti architecto quibusdam repellendus velit rerum. Beatae, fugiat nam.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa, eum architecto voluptate error sapiente consequatur veritatis, facilis distinctio facere animi obcaecati, voluptas eaque officiis iste! Eius magni doloribus nesciunt repellendus?
+                    Illo nesciunt sit commodi quo rem voluptas neque quaerat, Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur sint tempore maxime odit vero laboriosam ad at explicabo quo, fugit rem perspiciatis mollitia minima nesciunt architecto nulla impedit consectetur. Cumque.
+                    itaque dolor, nemo accusamus sequi? Voluptate nihil eveniet Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam facilis cumque id quia rerum inventore, aspernatur nam, ex doloremque deserunt porro asperiores aut sunt aliquid eveniet deleniti perferendis fuga ad?
+                    harum laudantium, assumenda labore saepe!
+                </article>
+            </div>
+        </div>
+        <!---->
+    </div>
+    <div class = "description_container">
+        <span><b>Нашли ошибку?</b> <a href = "#" color = "blue"
+            style = "border-bottom: 1px dotted blue;">Сообщить об ошибке</a>
+        </span>
     </div>
 </main>
 
 
 
 
-<div class = "footer" style = "background: black; color: white; margin-top: 1000px">
+<div class = "footer">
   Здесь будет подвал
 </div>
 <script src="js/set_navbar.js"></script>
