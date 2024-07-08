@@ -12,11 +12,10 @@ nunjucks.configure('html', {
   autoescape:  true,
   express:  app
 })
-let username = null;
+let username = 'user1';
 let age;
-let items
-let id;
-
+let id = null;
+let log = `data-bs-toggle=modal data-bs-target=#logining_window`;
 let secret = 'qwerty';
 app.use(expressSession({
   secret: secret,
@@ -25,11 +24,16 @@ app.use(express.static('css'));
 var db = new sqlite3.Database('anime.db');
 let error;
 app.get('/', function(req,res){
+  let items;
   if(username){
     db.serialize(function() {
       db.all('SELECT * FROM goods WHERE discount IS NOT NULL', function(err, row) {
-          db.get('SELECT age, id_favorite FROM user WHERE username = ?', [username], function(err,rod){
-            age = rod.age
+          db.get('SELECT age, id_favorite, id_basket FROM user WHERE username = ?', [username], function(err,rod){
+            let favorite = JSON.parse(rod.id_favorite).length;
+            let basket = JSON.parse(rod.id_basket).length;
+            let now = new Date();
+            let past = new Date(rod.age);
+            age = (now-past)/31536000000
             for(let i = 0; i <= row.length-1; i++){
               let id = JSON.parse(rod.id_favorite)
               for(let j = 0; j <= id.length -1;j++){                
@@ -38,11 +42,18 @@ app.get('/', function(req,res){
                 }
               }
             }
+            for(let i = 0; i <= row.length-1; i++){
+              let item = JSON.parse(row[i]['img'])
+              row[i]['img'] = item[0]
+            }
             items = row
+            console.log(items)
             res.render('index.html',{
               items,
               age,
-              username
+              username,
+              basket,
+              favorite
             }); 
           })         
       });
@@ -50,11 +61,17 @@ app.get('/', function(req,res){
   }else{
     db.serialize(function() {
       db.all('SELECT * FROM goods WHERE discount IS NOT NULL', function(err, row) {
+        console.log()
+        for(let i = 0; i <= row.length-1; i++){
+          let item = JSON.parse(row[i]['img'])
+          row[i]['img'] = item[0]
+        }
         items = row
         res.render('index.html',{
           items,
           age,
-          username
+          username,
+          log
         }); 
       });
     });
@@ -63,11 +80,18 @@ app.get('/', function(req,res){
 app.get('/Basa', function(req,res){
   
   db.serialize(function(){
-    db.get('SELECT username, mail, name, surname FROM user WHERE username = ?', [username], function(err,row){
+    db.get('SELECT username, mail, name, surname, phone, age, id_favorite, id_basket FROM user WHERE username = ?', [username], function(err,row){
+      let favorite = JSON.parse(row.id_favorite).length;
+      let basket = JSON.parse(row.id_basket).length;
+      let now = new Date();
+      let past = new Date(row.age);
+      row['favorite'] = favorite
+      row['basket'] = basket
+      age = (now-past)/31536000000
       res.render('user_page.html', row);
     });
   });
-  });
+});
 app.post('/Log', function(req,res,next){
   console.log(req.body)
   db.serialize(function() {
@@ -115,18 +139,16 @@ app.get('/Age', function(req,res){
 app.post('/Age', function(req,res){
   let now = new Date();
   let DOB = new Date(req.body.DOB);
-  
-  let x = (now - DOB)/31536000000
-  console.log(x)
   if(username){
     db.serialize(function(){
-      let save = db.prepare('INSERT INTO user(age) VALUES (?) WHERE username = ?', [x, username]);
+      let save = db.prepare('INSERT INTO user(age) VALUES (?) WHERE username = ?', [req.body.DOB, username]);
+      let now = new Date();
+      let past = new Date(req.body.DOB);
+      age = (now-past)/31536000000
       save.run();
       save.finalize();
     });
-  }else{
-    age = x
-  }
+  }  
   if(age >= 18){
     res.redirect('/')
   }else{
@@ -136,8 +158,10 @@ app.post('/Age', function(req,res){
 });
 app.get('/Basket', function(req,res){
   db.serialize(function(){
-    db.get('SELECT id_basket FROM user WHERE username = ?', [username], function(err,row){
+    db.get('SELECT id_favorite, id_basket FROM user WHERE username = ?', [username], function(err,row){
       let id = JSON.parse(row.id_basket)
+      let favorite = JSON.parse(row.id_favorite).length;
+      let basket = id.length
       let items;
       let text = 'SELECT * FROM goods WHERE id = ';
       if(id.length){
@@ -159,23 +183,35 @@ app.get('/Basket', function(req,res){
             
            }
         }
-      }
-      console.log(text)
-      db.all(text, function(err,rod){
-        items = rod
+        db.all(text, function(err,rod){
+          for(let i = 0; i <= rod.length-1; i++){
+                let items = JSON.parse(rod[i]['img'])
+                rod[i]['img'] = items[0]
+              }
+          items = rod
+          res.render('shop_kit.html',{
+            username,
+            items,
+            basket,
+            favorite,
+          });
+        });
+      }else{
         res.render('shop_kit.html',{
           username,
-          items,
+          favorite,
         });
-      });
+      }
     });
   });
 });
 
 app.get('/Favorite', function(req,res){
   db.serialize(function(){
-    db.get('SELECT id_favorite FROM user WHERE username = ?', [username], function(err,row){
-      let id = JSON.parse(row.id_favorite)
+    db.get('SELECT id_favorite, id_basket FROM user WHERE username = ?', [username], function(err,row){
+      let id = JSON.parse(row.id_favorite);
+      let favorite = id.length;
+      let basket = JSON.parse(row.id_basket).length;
       let item;
       let text = 'SELECT * FROM goods WHERE id = ';
       if(id.length){
@@ -197,16 +233,26 @@ app.get('/Favorite', function(req,res){
           
           }
         }
-      }
-      
-      db.all(text, function(err,rod){
-        item = rod
+        db.all(text, function(err,rod){
+          for(let i = 0; i <= rod.length-1; i++){
+                let items = JSON.parse(rod[i]['img'])
+                rod[i]['img'] = items[0]
+              }
+          item = rod
+          res.render('favorites.html',{
+            username,
+            item,
+            favorite,
+            basket,
+          });
+        });
+      }else{
+   
         res.render('favorites.html',{
           username,
-          item,
+          basket,
         });
-
-      });
+      }
     });
   });
 });
@@ -214,9 +260,12 @@ app.get('/Goods',function(req,res){
   if(username){
     db.serialize(function(){
       db.get('SELECT * FROM goods WHERE id = ?', [req.query.id], function(err,row){
-        db.get('SELECT id_favorite FROM user WHERE username = ?', [username], function(err,rod){
+        db.get('SELECT id_favorite, id_basket FROM user WHERE username = ?', [username], function(err,rod){
           let ids = JSON.parse(rod.id_favorite);
-
+          let favorite = ids.length
+          let basket = JSON.parse(rod.id_basket).length;
+          row['favorite'] = favorite
+          row['basket'] = basket
           if(ids.length){
             for(let i = 0; i <= ids.length - 1; i++){
               if(ids[i] == req.query.id){
@@ -227,8 +276,11 @@ app.get('/Goods',function(req,res){
               }
             }
           }
-          row['username'] = username
-          id = req.query.id
+          let items = JSON.parse(row.characteristics)
+          row['characteristics'] = items
+          items = JSON.parse(row.img)
+          row['img'] = items
+          row['username'] = username  
           res.render('EXAMPLE_BAMBALEYLA_good.html',row);
         });
       });
@@ -236,9 +288,11 @@ app.get('/Goods',function(req,res){
   }else{
     db.serialize(function(){
       db.get('SELECT * FROM goods WHERE id = ?', [req.query.id], function(err,row){
-        console.log(row)
-        
-        id = req.query.id
+        let items = JSON.parse(row.characteristics)
+        row['characteristics'] = items
+        items = JSON.parse(row.img)
+        row['img'] = items
+        row['log'] = log
         res.render('EXAMPLE_BAMBALEYLA_good.html',row);
       });
     });
@@ -253,7 +307,7 @@ app.post('/Goods', function(req,res){
         let now = JSON.parse(row.id_basket)
         if(!now.length){
           now = []
-          now.push(id)
+          now.push(req.body.id)
           now = JSON.stringify(now)
           let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,username]);
           save.run();
@@ -267,21 +321,17 @@ app.post('/Goods', function(req,res){
               break
           }
           if(x){
-              console.log(id)
-              now.push(id)
+              console.log(req.body.id)
+              now.push(req.body.id)
               now = JSON.stringify(now)
               let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,username]);
               save.run();
               save.finalize()
             }
           res.redirect('/Basket') 
-        }
-        
-        
+        }      
       });
     });
-  }else{
-    res.send('false')
   }
 });
 app.post('/Favor',function(req,res){
@@ -374,6 +424,37 @@ app.post('/Favor_basket', function(req,res){
     });
   });
   res.redirect('/Basket')
+});
+app.post('/Basa_update', function(req,res){
+  let text = 'UPDATE user SET ';
+  let update;
+  if(req.body.nick){
+    text += 'username = ';
+    update = req.body.nick
+  }else if(req.body.name){
+    text += 'name = ';
+    update = req.body.name
+  }else if(req.body.surname){
+    text += 'surname = ';
+    update = req.body.surname
+  }else if(req.body.phone){
+    text += 'phone = ';
+    update = req.body.phone
+  }else if(req.body.email){
+    text += 'mail = ';
+    update = req.body.email
+  }else{
+    text += 'age = ';
+    update = req.body.age
+  }
+  text += '? WHERE username = ?';
+  console.log(text)
+  db.serialize(function(){
+    let save = db.prepare(text, [update,username])
+    save.run()
+    save.finalize()
+  });
+  res.send('true')
 });
 app.use(function(req, res) {
   res.status(404)
