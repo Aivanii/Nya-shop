@@ -21,17 +21,6 @@
     }
     </style>
 </head>
-<li class="nav-item" id = 'begin'>
-  {% if username %}
-    <a class="nav-link"  href = "/Basa">
-      {{username}}
-    </a>
-  {% else %}
-    <button type="button" class="user-profile-login" data-bs-toggle="modal" data-bs-target="#logining_window"/>
-      Войти
-    </button>
-  {% endif %}
-</li>
 <body>
 <div style="padding-top: 5%;">
     <form class = "age_checking_form" method = 'POST' action = '/Age'>

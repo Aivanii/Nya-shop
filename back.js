@@ -14,9 +14,8 @@ nunjucks.configure('html', {
 })
 let username = null;
 let age;
-let items
-let id;
-
+let id = null;
+let log = `data-bs-toggle=modal data-bs-target=#logining_window`;
 let secret = 'qwerty';
 app.use(expressSession({
   secret: secret,
@@ -25,6 +24,7 @@ app.use(express.static('css'));
 var db = new sqlite3.Database('anime.db');
 let error;
 app.get('/', function(req,res){
+  let items;
   if(username){
     db.serialize(function() {
       db.all('SELECT * FROM goods WHERE discount IS NOT NULL', function(err, row) {
@@ -38,6 +38,10 @@ app.get('/', function(req,res){
                 }
               }
             }
+            for(let i = 0; i <= row.length-1; i++){
+              let item = JSON.parse(row[i]['img'])
+              row[i]['img'] = item[0]
+            }
             items = row
             res.render('index.html',{
               items,
@@ -50,11 +54,17 @@ app.get('/', function(req,res){
   }else{
     db.serialize(function() {
       db.all('SELECT * FROM goods WHERE discount IS NOT NULL', function(err, row) {
+        console.log()
+        for(let i = 0; i <= row.length-1; i++){
+          let item = JSON.parse(row[i]['img'])
+          row[i]['img'] = item[0]
+        }
         items = row
         res.render('index.html',{
           items,
           age,
-          username
+          username,
+          log
         }); 
       });
     });
@@ -160,8 +170,11 @@ app.get('/Basket', function(req,res){
            }
         }
       }
-      console.log(text)
       db.all(text, function(err,rod){
+        for(let i = 0; i <= rod.length-1; i++){
+              let items = JSON.parse(rod[i]['img'])
+              rod[i]['img'] = items[0]
+            }
         items = rod
         res.render('shop_kit.html',{
           username,
@@ -200,6 +213,10 @@ app.get('/Favorite', function(req,res){
       }
       
       db.all(text, function(err,rod){
+        for(let i = 0; i <= rod.length-1; i++){
+              let items = JSON.parse(rod[i]['img'])
+              rod[i]['img'] = items[0]
+            }
         item = rod
         res.render('favorites.html',{
           username,
@@ -227,8 +244,11 @@ app.get('/Goods',function(req,res){
               }
             }
           }
-          row['username'] = username
-          id = req.query.id
+          let items = JSON.parse(row.characteristics)
+          row['characteristics'] = items
+          items = JSON.parse(row.img)
+          row['img'] = items
+          row['username'] = username  
           res.render('EXAMPLE_BAMBALEYLA_good.html',row);
         });
       });
@@ -236,9 +256,11 @@ app.get('/Goods',function(req,res){
   }else{
     db.serialize(function(){
       db.get('SELECT * FROM goods WHERE id = ?', [req.query.id], function(err,row){
-        console.log(row)
-        
-        id = req.query.id
+        let items = JSON.parse(row.characteristics)
+        row['characteristics'] = items
+        items = JSON.parse(row.img)
+        row['img'] = items
+        row['log'] = log
         res.render('EXAMPLE_BAMBALEYLA_good.html',row);
       });
     });
@@ -253,7 +275,7 @@ app.post('/Goods', function(req,res){
         let now = JSON.parse(row.id_basket)
         if(!now.length){
           now = []
-          now.push(id)
+          now.push(req.body.id)
           now = JSON.stringify(now)
           let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,username]);
           save.run();
@@ -267,21 +289,17 @@ app.post('/Goods', function(req,res){
               break
           }
           if(x){
-              console.log(id)
-              now.push(id)
+              console.log(req.body.id)
+              now.push(req.body.id)
               now = JSON.stringify(now)
               let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,username]);
               save.run();
               save.finalize()
             }
           res.redirect('/Basket') 
-        }
-        
-        
+        }      
       });
     });
-  }else{
-    res.send('false')
   }
 });
 app.post('/Favor',function(req,res){
