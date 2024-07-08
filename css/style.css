@@ -168,6 +168,15 @@ body{
   color: #ffffff8c;
   transition: color 0.4s;
 }
+.nav-item{
+  display: flex;
+  height: 1.6rem;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.nav-item a, .nav-item button{
+  margin-top: -8px;
+}
 .nav-link:hover{
   color: white;
 }
@@ -412,7 +421,7 @@ p{
   margin-left: 1rem;
   padding-bottom: 1rem;
 }
-.profile_ul{
+.profile_ulб ul, ol, ul{
   list-style-type: none;
   padding: 0;
 }
@@ -842,10 +851,42 @@ p{
   margin-bottom: 1rem;
   padding-bottom: 1rem;
 }
-.footer{
+footer{
   width: 100%;
-  color: #cecece;
-  background: #231a2b;
+  background: linear-gradient(360deg, #150f20, #1a1320);
   margin-top: 1rem;
-  padding: clamp(8px, 3vw, 16px);
+  padding: clamp(8px, 3vw, 16px); 
+}
+.footer_container{
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+}
+.contacts_container > *{
+  width: 100%;
+}
+.footer_container > div {
+  padding: clamp(8px, 3vw, 16px);;
+  color: #cecece90;
+}
+.footer_container > div > h5{
+  border-bottom: 1px solid #cecece75;
+  padding-bottom: 0.5rem;
+}
+.footer_container > div > ol > li > a {
+  color: #cecece90 !important;
+}
+.user-settings-input-icon{
+  position: relative;
+  top: -45px;
+  left: 300px;
+  visibility: hidden;
+}
+.count_circle{
+  background: linear-gradient(360deg, #322745, #a88fbe);
+  border-radius: 1rem;
+  margin-top: 3px;
+  padding: 0 0.4rem 0 0.4rem;
 }

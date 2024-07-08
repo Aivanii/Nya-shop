@@ -42,10 +42,10 @@ ul.appendChild(after);
 
 html =  `
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="/">Корзина</a>
+          <a class="nav-link" aria-current="page" href="/">Корзина</a> <span class = "count_circle">2</span>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="/">Избранное</a>
+          <a class="nav-link" aria-current="page" href="/">Избранное</a> <span class = "count_circle">2</span>
         </li>
       </ul>
     </div>
