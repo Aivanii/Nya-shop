@@ -9,18 +9,8 @@
   <link href= "bootstrap.css" rel="stylesheet">
   <link href="style.css" rel="stylesheet" >
 </head>
-<li class="nav-item" id = 'begin'>
-  {% if username %}
-    <a class="nav-link"  href = "/Basa">
-      {{username}}
-    </a>
-  {% else %}
-    <button type="button" class="user-profile-login" data-bs-toggle="modal" data-bs-target="#logining_window"/>
-      Войти
-    </button>
-  {% endif %}
-</li>
 <body>
+{% include "set_navbar.html" %}
 <div class = "main-discounts-week-container">
   <div class = "window-discounts-week-container">
     <p class = "goods-container-title">Скидки недели:</p>

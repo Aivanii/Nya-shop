@@ -9,17 +9,7 @@
   <link href= "bootstrap.css" rel="stylesheet">
   <link href="style.css" rel="stylesheet" >
 </head>
-<li class="nav-item" id = 'begin'>
-  {% if username %}
-    <a class="nav-link"  href = "/Basa">
-      {{username}}
-    </a>
-  {% else %}
-    <button type="button" class="user-profile-login" data-bs-toggle="modal" data-bs-target="#logining_window"/>
-      Войти
-    </button>
-  {% endif %}
-</li>
+{% include "set_navbar.html" %}
 <body>
 <main class = "good_info">
     <!-- <div class = "horizontal_container">
@@ -69,7 +59,7 @@
         <div class = "grid_container">
             <!--good-name-->
             <div class = "good_name">
-                <span>{{value}}</span>
+                <span>{{name}}</span>
             </div>
             <!---->
 
@@ -141,10 +131,7 @@
     <div class = "description_container">
         <h4>Описание товара: </h4>
         <article>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-            Et quibusdam eligendi nemo nisi, explicabo tempore earum
-            nobis! Illum tempore aliquid enim veniam eum provident id.
-            Aspernatur doloribus tempora ducimus explicabo.
+            {{value}}
         </article>
     </div>
     <div class = "description_container">
@@ -276,5 +263,6 @@
 <script src = "js/set_favorite.js"></script>
 <script src="js/bootstrap.bundle.js"></script>
 <script src="js/set_footer.js"></script>
+<script src="js/set_rating.js"></script>
 </body>
 </html>
