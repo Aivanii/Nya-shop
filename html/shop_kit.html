@@ -9,25 +9,15 @@
     <link href= "bootstrap.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet" >
 </head>
-<li class="nav-item" id = 'begin'>
-  {% if username %}
-    <a class="nav-link" href = "/Basa">
-      {{username}}
-    </a>
-  {% else %}
-    <button type="button" class="user-profile-login" data-bs-toggle="modal" data-bs-target="#logining_window"/>
-      Войти
-    </button>
-  {% endif %}
-</li>
-<body>
 
+<body>
+{% include "set_navbar.html" %}
 <div class = "user-title">
     <h1>Корзина</h1>
 </div>
 <div class = "user-data-container">
     <div class = "profile-menu-widget" id = "profile-menu-widget">
-        
+        {% include "profile_ul.html" %}
     </div>
 
     <div class = "user-settings-container" style = "display: block;">
@@ -68,10 +58,12 @@
     </div>
 </div>
 <p id = "total_price_show">--</p>
+<footer id = "footer">
+</footer>
 <script src="js/set_navbar.js"></script>
-<script src = "js/set_profile_ul.js"></script>
 <script src="js/bootstrap.bundle.js"></script>
 <script src="js/del_basket.js"></script>
 <script src = "js/count_goods.js"></script>
+<script src="js/set_footer.js"></script>
 </body>
 </html>
