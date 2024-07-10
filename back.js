@@ -12,7 +12,6 @@ nunjucks.configure('html', {
   autoescape:  true,
   express:  app
 })
-let username = null;
 let age;
 let id = null;
 let log = `data-bs-toggle=modal data-bs-target=#logining_window`;
@@ -25,10 +24,10 @@ var db = new sqlite3.Database('anime.db');
 let error;
 app.get('/', function(req,res){
   let items;
-  if(username){
+  if(req.session.username){
     db.serialize(function() {
       db.all('SELECT * FROM goods WHERE discount IS NOT NULL ORDER BY discount DESC LIMIT 10;', function(err, row) {
-          db.get('SELECT age, id_favorite, id_basket FROM user WHERE username = ?', [username], function(err,rod){
+          db.get('SELECT age, id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,rod){
             console.log(row)
             let favorite = JSON.parse(rod.id_favorite).length;
             let basket = JSON.parse(rod.id_basket).length;
@@ -53,7 +52,7 @@ app.get('/', function(req,res){
             res.render('index.html',{
               items,
               age,
-              username,
+              username: req.session.username,
               basket,
               favorite
             }); 
@@ -63,7 +62,6 @@ app.get('/', function(req,res){
   }else{
     db.serialize(function() {
       db.all('SELECT * FROM goods WHERE discount IS NOT NULL ORDER BY discount DESC LIMIT 10', function(err, row) {
-        console.log(row)
         for(let i = 0; i <= row.length-1; i++){
           let item = JSON.parse(row[i]['img'])
           row[i]['img'] = item[0]
@@ -75,7 +73,6 @@ app.get('/', function(req,res){
         res.render('index.html',{
           items,
           age,
-          username,
           log
         }); 
       });
@@ -83,9 +80,8 @@ app.get('/', function(req,res){
   }        
 });
 app.get('/Basa', function(req,res){
-  
   db.serialize(function(){
-    db.get('SELECT username, mail, name, surname, phone, age, id_favorite, id_basket FROM user WHERE username = ?', [username], function(err,row){
+    db.get('SELECT username, mail, name, surname, phone, age, id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,row){
       let favorite = JSON.parse(row.id_favorite).length;
       let basket = JSON.parse(row.id_basket).length;
       let now = new Date();
@@ -98,14 +94,14 @@ app.get('/Basa', function(req,res){
   });
 });
 app.post('/Log', function(req,res,next){
-  console.log(req.body)
+
   db.serialize(function() {
     db.get('SELECT username, mail, password, age FROM user WHERE mail = ?', [req.body.email], function(err,row){
       
       if(row != undefined){
         console.log(row)
         if(req.body.password == row.password){
-          username = row.username
+          req.session.username = row.username
           age = row.age
           res.redirect('/Basa')
         }else{
@@ -117,12 +113,12 @@ app.post('/Log', function(req,res,next){
             let y = rod[0];
             y = y['COUNT(*)']
             y += 1
-            let ids = []
             let now = []
+            let ids = []
             ids = JSON.stringify(ids);
             now = JSON.stringify(now);
             console.log(ids, now)
-            username = 'user' + y
+            let username = 'user' + y
             let save = db.prepare('INSERT INTO user(id, username, mail, password, id_favorite, id_basket) VALUES (?, ?, ?, ?, ?, ?)', [y, username, req.body.email, req.body.password, ids, now]);
             save.run();
             save.finalize();
@@ -138,7 +134,7 @@ app.post('/Log', function(req,res,next){
 });
 app.get('/Age', function(req,res){
   res.render('age_checking.html',{
-    username
+    username: req.session.username
   });
 });
 app.post('/Age', function(req,res){
@@ -146,9 +142,9 @@ app.post('/Age', function(req,res){
   let now = new Date();
   let past = new Date(req.body.DOB);
   age = (now-past)/31536000000
-  if(username){
+  if(req.session.username){
     db.serialize(function(){
-      let save = db.prepare('INSERT INTO user(age) VALUES (?) WHERE username = ?', [req.body.DOB, username]);
+      let save = db.prepare('INSERT INTO user(age) VALUES (?) WHERE username = ?', [req.body.DOB, req.session.username]);
       save.run();
       save.finalize();
     });
@@ -161,8 +157,9 @@ app.post('/Age', function(req,res){
   
 });
 app.get('/Basket', function(req,res){
+  let username = req.session.username
   db.serialize(function(){
-    db.get('SELECT id_favorite, id_basket FROM user WHERE username = ?', [username], function(err,row){
+    db.get('SELECT id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,row){
       let id = JSON.parse(row.id_basket)
       let favorite = JSON.parse(row.id_favorite).length;
       let basket = id.length
@@ -197,7 +194,7 @@ app.get('/Basket', function(req,res){
           }
           items = rod
           res.render('shop_kit.html',{
-            username,
+            username: req.session.username,
             items,
             basket,
             favorite,
@@ -205,7 +202,7 @@ app.get('/Basket', function(req,res){
         });
       }else{
         res.render('shop_kit.html',{
-          username,
+          username: req.session.username,
           favorite,
         });
       }
@@ -215,7 +212,7 @@ app.get('/Basket', function(req,res){
 
 app.get('/Favorite', function(req,res){
   db.serialize(function(){
-    db.get('SELECT id_favorite, id_basket FROM user WHERE username = ?', [username], function(err,row){
+    db.get('SELECT id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,row){
       let id = JSON.parse(row.id_favorite);
       let favorite = id.length;
       let basket = JSON.parse(row.id_basket).length;
@@ -250,7 +247,7 @@ app.get('/Favorite', function(req,res){
           }
           item = rod
           res.render('favorites.html',{
-            username,
+            username: req.session.username,
             item,
             basket,
             favorite,
@@ -259,7 +256,7 @@ app.get('/Favorite', function(req,res){
       }else{
    
         res.render('favorites.html',{
-          username,
+          username: req.session.username,
           basket,
         });
       }
@@ -267,10 +264,10 @@ app.get('/Favorite', function(req,res){
   });
 });
 app.get('/Goods',function(req,res){
-  if(username){
+  if(req.session.username){
     db.serialize(function(){
       db.get('SELECT * FROM goods WHERE id = ?', [req.query.id], function(err,row){
-        db.get('SELECT id_favorite, id_basket FROM user WHERE username = ?', [username], function(err,rod){
+        db.get('SELECT id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,rod){
           let ids = JSON.parse(rod.id_favorite);
           let favorite = ids.length
           let basket = JSON.parse(rod.id_basket).length;
@@ -292,7 +289,7 @@ app.get('/Goods',function(req,res){
           row['characteristics'] = items
           items = JSON.parse(row.img)
           row['img'] = items
-          row['username'] = username  
+          row['username'] = req.session.username  
           res.render('EXAMPLE_BAMBALEYLA_good.html',row);
         });
       });
@@ -305,7 +302,6 @@ app.get('/Goods',function(req,res){
         items = JSON.parse(row.img)
         row['img'] = items
         row['log'] = log
-
         let sell = row['price'] - (row['price'] / 100 * row['discount'])
         row['sell'] = Math.round(sell)
         res.render('EXAMPLE_BAMBALEYLA_good.html',row);
@@ -316,15 +312,15 @@ app.get('/Goods',function(req,res){
   
 });
 app.post('/Goods', function(req,res){
-  if(username){
+  if(req.session.username){
     db.serialize(function(){
-      db.get('SELECT id_basket FROM user WHERE username = ?', [username], function(err, row){
+      db.get('SELECT id_basket FROM user WHERE username = ?', [req.session.username], function(err, row){
         let now = JSON.parse(row.id_basket)
         if(!now.length){
           now = []
           now.push(req.body.id)
           now = JSON.stringify(now)
-          let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,username]);
+          let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,req.session.username]);
           save.run();
           save.finalize()
           res.redirect('/Basket')
@@ -339,7 +335,7 @@ app.post('/Goods', function(req,res){
               console.log(req.body.id)
               now.push(req.body.id)
               now = JSON.stringify(now)
-              let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,username]);
+              let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,req.session.username]);
               save.run();
               save.finalize()
             }
@@ -353,7 +349,7 @@ app.post('/Favor',function(req,res){
   let favorite = req.body.id;
   let x = true
   db.serialize(function(){
-    db.get('SELECT id_favorite FROM user WHERE username = ?', [username], function(err,row){
+    db.get('SELECT id_favorite FROM user WHERE username = ?', [req.session.username], function(err,row){
       let id = JSON.parse(row.id_favorite);
       let after = id;
       if(id != null){
@@ -372,7 +368,7 @@ app.post('/Favor',function(req,res){
     
         }
       id = JSON.stringify(id)
-      let save = db.prepare('UPDATE user SET id_favorite = ? WHERE username = ? ', [id,username]);
+      let save = db.prepare('UPDATE user SET id_favorite = ? WHERE username = ? ', [id,req.session.username]);
       save.run();
       save.finalize()
       res.send({ some: after.length });
@@ -386,7 +382,7 @@ app.post('/Favor',function(req,res){
 app.post('/Favorite',function(req,res){
   let favorite = req.body.id;
   db.serialize(function(){
-    db.get('SELECT id_favorite FROM user WHERE username = ?', [username], function(err,row){
+    db.get('SELECT id_favorite FROM user WHERE username = ?', [req.session.username], function(err,row){
       let id = JSON.parse(row.id_favorite);
       if(id.length){
         for(let i = 0; i <= id.length - 1; i++){
@@ -396,7 +392,7 @@ app.post('/Favorite',function(req,res){
         }
       }
       id = JSON.stringify(id)
-      let save = db.prepare('UPDATE user SET id_favorite = ? WHERE username = ? ', [id,username]);
+      let save = db.prepare('UPDATE user SET id_favorite = ? WHERE username = ? ', [id,req.session.username]);
       save.run();
       save.finalize();
       res.redirect('/Favorite');
@@ -405,7 +401,7 @@ app.post('/Favorite',function(req,res){
 });
 app.post('/Basket',function(req,res){
   db.serialize(function(){
-    db.get('SELECT id_basket FROM user WHERE username = ?', [username], function(err, row){
+    db.get('SELECT id_basket FROM user WHERE username = ?', [req.session.username], function(err, row){
       let now = JSON.parse(row.id_basket) 
       for(let i = 0; i < now.length; i++){
         if(now[i] == req.body.id){
@@ -413,7 +409,7 @@ app.post('/Basket',function(req,res){
         }
       } 
       now = JSON.stringify(now)
-      let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,username]);
+      let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,req.session.username]);
       save.run();
       save.finalize()
     });
@@ -422,14 +418,14 @@ app.post('/Basket',function(req,res){
 });
 app.post('/Favor_basket', function(req,res){
   db.serialize(function(){
-    db.get('SELECT id_basket FROM user WHERE username = ?', [username], function(err, row){
+    db.get('SELECT id_basket FROM user WHERE username = ?', [req.session.username], function(err, row){
       let now = JSON.parse(row.id_basket)
       if(now == null){
         now = []
       }
       now.push(req.body.id) 
       now = JSON.stringify(now)
-      let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,username]);
+      let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,req.session.username]);
       save.run();
       save.finalize()
     });
@@ -439,9 +435,12 @@ app.post('/Favor_basket', function(req,res){
 app.post('/Basa_update', function(req,res){
   let text = 'UPDATE user SET ';
   let update;
+  let username;
   if(req.body.nick){
     text += 'username = ';
     update = req.body.nick
+    username = req.session.username
+    req.session.username = req.body.nick
   }else if(req.body.name){
     text += 'name = ';
     update = req.body.name
@@ -457,6 +456,10 @@ app.post('/Basa_update', function(req,res){
   }else{
     text += 'age = ';
     update = req.body.age
+    
+  }
+  if(req.session.username != req.body.nick){
+    username = req.session.username
   }
   text += '? WHERE username = ?';
   console.log(text)
