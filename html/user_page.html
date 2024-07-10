@@ -9,64 +9,71 @@
     <link href= "bootstrap.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet" >
 </head>
-<li class="nav-item" id = 'begin'>
-  {% if username %}
-    <a href = "/Basa">
-      {{username}}
-    </a>
-  {% else %}
-    <button type="button" class="user-profile-login" data-bs-toggle="modal" data-bs-target="#logining_window"/>
-      Войти
-    </button>
-  {% endif %}
-</li>
+    
 <body>
-
+{% include "set_navbar.html" %}
 <div class = "user-title">
     <h1>Данные профиля</h1>
 </div>
 <div class = "user-data-container">
     <div class = "profile-menu-widget">
-        
+        {% include "profile_ul.html" %}
     </div>
 
     <div class = "user-settings-container">
         <div class = "user-settings-content">
             <form class = "inputs-user-settings">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="NicknameInput" placeholder="Никнейм" value = {{username}}>
+                    <input type="text" class="form-control" id="NicknameInput" placeholder="Никнейм" onblur="update(this)" value = {{username}}>
                     <label for="NicknameInput">Никнейм</label>
+                    <div class="user-settings-input-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 48 48" width="24px" height="24px"><path fill="#43A047" d="M40.6 12.1L17 35.7 7.4 26.1 4.6 29 17 41.3 43.4 14.9z"/></svg>
+                    </div>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="NameInput" placeholder="Имя" value = {{name}}>
+                    <input type="text" class="form-control" id="NameInput" placeholder="Имя" onblur="update(this)" value = {{name}}>
                     <label for="NameInput">Имя</label>
+                    <div class="user-settings-input-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 48 48" width="24px" height="24px"><path fill="#43A047" d="M40.6 12.1L17 35.7 7.4 26.1 4.6 29 17 41.3 43.4 14.9z"/></svg>
+                    </div>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="SurnameInput" placeholder="Фамилия" value = {{surname}}>
+                    <input type="text" class="form-control" id="SurnameInput" placeholder="Фамилия" onblur="update(this)" value = {{surname}}>
                     <label for="SurnameInput">Фамилия</label>
+                    <div class="user-settings-input-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 48 48" width="24px" height="24px"><path fill="#43A047" d="M40.6 12.1L17 35.7 7.4 26.1 4.6 29 17 41.3 43.4 14.9z"/></svg>
+                    </div>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="tel" class="form-control" id="PhoneInput" placeholder="Телефон">
+                    <input type="tel" class="form-control" id="PhoneInput" placeholder="Телефон" onblur="update(this)" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" value = {{phone}} >
                     <label for="NameInput">Телефон</label>
+                    <div class="user-settings-input-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 48 48" width="24px" height="24px"><path fill="#43A047" d="M40.6 12.1L17 35.7 7.4 26.1 4.6 29 17 41.3 43.4 14.9z"/></svg>
+                    </div>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" value = {{mail}}>
+                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" onblur="update(this)" value = {{mail}}>
                     <label for="floatingInput">Электронная почта</label>
+                    <div class="user-settings-input-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 48 48" width="24px" height="24px"><path fill="#43A047" d="M40.6 12.1L17 35.7 7.4 26.1 4.6 29 17 41.3 43.4 14.9z"/></svg>
+                    </div>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="date" class="form-control" id="AgeInput" placeholder="Дата рождения">
+                    <input type="date" class="form-control" id="AgeInput" placeholder="Дата рождения" onblur="update(this)" value = {{age}}>
                     <label for="AgeInput">Дата рождения</label>
                 </div>
             </form>
             <form>
-                <img src="img/goods/Nahida-doll.png" class="settings-user-img">
+                <img src="img/goods/Nahida-doll/Nahida-doll1.png" class="settings-user-img">
             </form>
         </div>
     </div>
 </div>
-
+<footer id = "footer">
+</footer>
 <script src="js/set_navbar.js"></script>
-<script src = "js/set_profile_ul.js"></script>
+<script src="js/update_user.js"></script>
 <script src="js/bootstrap.bundle.js"></script>
+<script src="js/set_footer.js"></script>
 </body>
 </html>

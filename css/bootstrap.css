@@ -350,7 +350,7 @@ sup {
 }
 
 a {
-  color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
+  color: #cecece;
   text-decoration: underline;
 }
 
@@ -5968,7 +5968,7 @@ textarea.form-control-lg {
 
 .carousel {
   position: relative;
-  width: 30vw;
+  width: 22vw;
   max-width: 25rem;
 }
 
@@ -5978,7 +5978,7 @@ textarea.form-control-lg {
 
 .carousel-inner {
   position: relative;
-  width: 30vw;
+  width: 22vw;
   max-width: 25rem;
   overflow: hidden;
 }
