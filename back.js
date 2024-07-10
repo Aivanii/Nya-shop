@@ -27,8 +27,9 @@ app.get('/', function(req,res){
   let items;
   if(username){
     db.serialize(function() {
-      db.all('SELECT * FROM goods WHERE discount IS NOT NULL', function(err, row) {
+      db.all('SELECT * FROM goods WHERE discount IS NOT NULL ORDER BY discount DESC LIMIT 10;', function(err, row) {
           db.get('SELECT age, id_favorite, id_basket FROM user WHERE username = ?', [username], function(err,rod){
+            console.log(row)
             let favorite = JSON.parse(rod.id_favorite).length;
             let basket = JSON.parse(rod.id_basket).length;
             let now = new Date();
@@ -40,11 +41,7 @@ app.get('/', function(req,res){
               let item = JSON.parse(row[i]['img'])
               row[i]['img'] = item[0]
 
-              let discount = row[i]['discount']
-              discount = discount.slice(1, -1)
-              discount = Number(discount)
-              let sell = row[i]['price']
-              sell = sell - (sell / 100 * discount)
+              let sell = row[i]['price'] - (row[i]['price'] / 100 * row[i]['discount'])
               row[i]['sell'] = Math.round(sell) 
               for(let j = 0; j <= id.length -1;j++){                
                 if(row[i]['id'] == id[j]){
@@ -65,16 +62,13 @@ app.get('/', function(req,res){
     });
   }else{
     db.serialize(function() {
-      db.all('SELECT * FROM goods WHERE discount IS NOT NULL', function(err, row) {
+      db.all('SELECT * FROM goods WHERE discount IS NOT NULL ORDER BY discount DESC LIMIT 10', function(err, row) {
+        console.log(row)
         for(let i = 0; i <= row.length-1; i++){
           let item = JSON.parse(row[i]['img'])
           row[i]['img'] = item[0]
 
-          let discount = row[i]['discount']
-          discount = discount.slice(1, -1)
-          discount = Number(discount)
-          let sell = row[i]['price']
-          sell = sell - (sell / 100 * discount)
+          let sell = row[i]['price'] - (row[i]['price'] / 100 * row[i]['discount'])
           row[i]['sell'] = Math.round(sell) 
         }
         items = row
@@ -195,16 +189,12 @@ app.get('/Basket', function(req,res){
         }
         db.all(text, function(err,rod){
           for(let i = 0; i <= rod.length-1; i++){
-                let items = JSON.parse(rod[i]['img'])
-                rod[i]['img'] = items[0]
+            let items = JSON.parse(rod[i]['img'])
+            rod[i]['img'] = items[0]
 
-                let discount = rod[i]['discount']
-                discount = discount.slice(1, -1)
-                discount = Number(discount)
-                let sell = rod[i]['price']
-                sell = sell - (sell / 100 * discount)
-                rod[i]['sell'] = Math.round(sell) 
-              }
+            let sell = rod[i]['price'] - (rod[i]['price'] / 100 * rod[i]['discount'])
+            rod[i]['sell'] = Math.round(sell) 
+          }
           items = rod
           res.render('shop_kit.html',{
             username,
@@ -252,16 +242,12 @@ app.get('/Favorite', function(req,res){
         }
         db.all(text, function(err,rod){
           for(let i = 0; i <= rod.length-1; i++){
-                let items = JSON.parse(rod[i]['img'])
-                rod[i]['img'] = items[0]
+            let items = JSON.parse(rod[i]['img'])
+            rod[i]['img'] = items[0]
 
-                let discount = rod[i]['discount']
-                discount = discount.slice(1, -1)
-                discount = Number(discount)
-                let sell = rod[i]['price']
-                sell = sell - (sell / 100 * discount)
-                rod[i]['sell'] = Math.round(sell) 
-              }
+            let sell = rod[i]['price'] - (rod[i]['price'] / 100 * rod[i]['discount'])
+            rod[i]['sell'] = Math.round(sell) 
+          }
           item = rod
           res.render('favorites.html',{
             username,
@@ -300,11 +286,7 @@ app.get('/Goods',function(req,res){
               }
             }
           }
-          let discount = row['discount']
-          discount = discount.slice(1, -1)
-          discount = Number(discount)
-          let sell = row['price']
-          sell = sell - (sell / 100 * discount)
+          let sell = row['price'] - (row['price'] / 100 * row['discount'])
           row['sell'] = Math.round(sell) 
           let items = JSON.parse(row.characteristics)
           row['characteristics'] = items
@@ -324,12 +306,8 @@ app.get('/Goods',function(req,res){
         row['img'] = items
         row['log'] = log
 
-        let discount = row['discount']
-        discount = discount.slice(1, -1)
-        discount = Number(discount)
-        let sell = row['price']
-        sell = sell - (sell / 100 * discount)
-        row['sell'] = Math.round(sell) 
+        let sell = row['price'] - (row['price'] / 100 * row['discount'])
+        row['sell'] = Math.round(sell)
         res.render('EXAMPLE_BAMBALEYLA_good.html',row);
       });
     });
