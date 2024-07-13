@@ -12,13 +12,33 @@ function favorite(elt){
 		    return response.text();
 		})
 		.then((data) => {
-		    console.log(data);
-		});
-		
-		elt.lastElementChild.lastElementChild.classList.toggle('active')
-	}
-		
+		    data = JSON.parse(data)
+		    let div = document.getElementById('a_favorite')
+		    let span = document.getElementById('favorite')
+		    if(!span){
+		    	span = document.createElement('span');
+			    span.classList.add('count_circle');
+			    span.id = 'favorite';
+			    if(data['some'] > 0){
+			    	console.log(data['some'])
+		    		span.textContent = data['some'];
+		    		div.insertAdjacentElement('beforeend', span);
 
+				}else{
+					span.remove();	
+				}		    
+				
+			}else{
+				if(data['some'] > 0){
+					span.innerHTML = data['some'];
+				}else{
+					span.remove();	
+				}	
+			}
+		    
+		    elt.lastElementChild.lastElementChild.classList.toggle('active')
+		});	
+	}
 }
 function basket(elt){
 	let id = elt.id

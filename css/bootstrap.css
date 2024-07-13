@@ -3223,6 +3223,8 @@ textarea.form-control-lg {
 
 .btn-outline-success {
   --bs-btn-hover-bg: #181826;
+  position: relative;
+  margin-left: -37px;
 }
 
 .btn-outline-info {

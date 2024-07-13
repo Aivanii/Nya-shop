@@ -1,7 +1,7 @@
 *{
   margin: 0;
   padding: 0;
-  color: #cecece;
+  color: #ffffff8c;
 }
 a{
   text-decoration: none;
@@ -30,6 +30,9 @@ p, a, button{
   --light-logo-img: "img/nya_logo.svg";
 
   --actual-theme: "light";
+
+  --actual-history-container-size: 0px;
+  --actual-history-container-left-position: 0px;
 }
 
 body{
@@ -889,4 +892,46 @@ footer{
   border-radius: 1rem;
   margin-top: 3px;
   padding: 0 0.4rem 0 0.4rem;
+}
+.histrory_container{
+  position: absolute;
+  top: calc(100% - 15px);
+  width: var(--actual-history-container-size);
+  color: #ffffff8c;
+}
+.histrory_container > ol{
+  width: 100%;
+  background: linear-gradient(135deg, #262641, #231a2b);
+  border-radius: 1rem;
+}
+.histrory_container > ol > li{
+  padding: clamp(1px, 1vw, 8px);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  color: #ffffff8c;
+  border-radius: 1rem;
+}
+.histrory_container > ol > li > span:last-child{
+  margin-left: 20px;
+  cursor: pointer;
+}
+.histrory_container > ol > li > span:hover
+{
+  color: white;
+}
+.histrory_container > ol > li:hover {
+  color: white;
+  background: linear-gradient(135deg, #231a2b, #262641);
+}
+
+.histrory_container > ol > li:hover > span:first-child {
+  color: white;
+}
+.histrory_container > ol > li > span:first-child{
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
 }
