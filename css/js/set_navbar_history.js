@@ -9,8 +9,6 @@ get_info_from_cookie();
 
 function get_info_from_cookie(){
     let requests_str = "";
-    console.log(`cookie: ${document.cookie}`)
-    console.log(`requests: ${requests}`)
     requests = [];
     if(document.cookie.includes("  ") != false ){
     
@@ -27,7 +25,7 @@ function get_info_from_cookie(){
 }
 
 function delete_history(index, delete_all){
-    if(delete_all == false){
+    if(delete_all == false && requests.length > 1){
         let requests_str = "";
         for(let i = 0; i < requests.length; i++){
             if(i != index){
@@ -42,6 +40,8 @@ function delete_history(index, delete_all){
     get_info_from_cookie();
     document.querySelector("#histrory_container").remove(); 
     make_history()
+    console.log(`cookie: ${document.cookie}`)
+    console.log(`requests: ${requests}`)
 }
 
 function make_history(){
@@ -69,11 +69,13 @@ function make_new_request(){
     let input_value = $input_obj.value.trim();
     $input_obj.value = "";
     if(!requests.includes(input_value) && requests.length < 5){
-        requests.unshift(input_value);
-        document.cookie = `researchs=[${requests.join("  ")}  ]`;
-        document.querySelector("#histrory_container").remove(); 
-        get_info_from_cookie();
-        make_history()
+        if(input_value != ""){
+            requests.unshift(input_value);
+            document.cookie = `researchs=[${requests.join("  ")}  ]`;
+            document.querySelector("#histrory_container").remove(); 
+            get_info_from_cookie();
+            make_history()
+        }
     }
 }
 
@@ -82,8 +84,11 @@ $search_button.addEventListener("click", (event) => {
 });
 window.addEventListener("click", (event) => {
     if(!event.target.classList.contains("his-item")){
+        let input_value = $input_obj.value;
+        $input_obj.value = "";
         if(document.querySelector("#histrory_container")){
             document.querySelector("#histrory_container").remove(); 
+            $input_obj.value = input_value
         }
     }
 });

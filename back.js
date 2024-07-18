@@ -26,7 +26,7 @@ app.get('/', function(req,res){
   let items;
   if(req.session.username){
     db.serialize(function() {
-      db.all('SELECT * FROM goods WHERE discount IS NOT NULL ORDER BY discount DESC LIMIT 10;', function(err, row) {
+      db.all('SELECT * FROM goods WHERE discount IS NOT NULL ORDER BY discount DESC LIMIT 12;', function(err, row) {
           db.get('SELECT age, id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,rod){
             console.log(row)
             let favorite = JSON.parse(rod.id_favorite).length;
