@@ -70,8 +70,12 @@
 
             <!--price-->
             <div class = "price_good_container">
-                <p class="actual-price">{{sell}} ₽</p>
-                <p class="crossed-price">{{price}} ₽</p>
+                {% if sell != price %}
+                    <p class="actual-price">{{sell | round}} ₽</p>
+                    <p class="crossed-price">{{price}} ₽</p>
+                {% else %}
+                    <p class="actual-price">{{price}} ₽</p>
+                {% endif %}
             </div>
             <!---->
 

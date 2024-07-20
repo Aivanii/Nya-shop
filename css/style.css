@@ -80,7 +80,7 @@ body{
     margin-left: 10px;
   }
 }
-@media (max-width: 990px) {
+@media (max-width: 991px) {
   .input_finding{
     width: 75%;
   }
@@ -955,14 +955,15 @@ footer{
 }
 @media (min-width: 992px){
   .filter-container{
-    display: none !important;
+    margin-right: auto;
+    max-width: 20rem;
   }
 }
 #filter_main_button{
   cursor: pointer;
 }
 .filter-container{
-  width: 100%;
+  width: 50%;
   height: 100%;
   position: fixed;
   top: 0;
@@ -998,4 +999,21 @@ footer{
 }
 .filter-container > ol > li:hover span {
   color: white;
+}
+#pc-filter-button{
+  border-radius: 1rem;
+  border: 0.2rem solid #262641;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+@media (max-width: 991px){
+  #pc-filter-button{
+    display: none;
+  }
+}
+.visible{
+  display: block !important;
+}
+.child-filter-container{
+  transform: translate(100%, 0);
 }

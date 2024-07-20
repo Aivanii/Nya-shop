@@ -23,12 +23,12 @@ app.use(express.static('css'));
 var db = new sqlite3.Database('anime.db');
 let error;
 app.get('/', function(req,res){
+  let discount;
   let items;
   if(req.session.username){
     db.serialize(function() {
       db.all('SELECT * FROM goods WHERE discount IS NOT NULL ORDER BY discount DESC LIMIT 12;', function(err, row) {
           db.get('SELECT age, id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,rod){
-            console.log(row)
             let favorite = JSON.parse(rod.id_favorite).length;
             let basket = JSON.parse(rod.id_basket).length;
             let now = new Date();
@@ -40,41 +40,65 @@ app.get('/', function(req,res){
               let item = JSON.parse(row[i]['img'])
               row[i]['img'] = item[0]
 
-              let sell = row[i]['price'] - (row[i]['price'] / 100 * row[i]['discount'])
-              row[i]['sell'] = Math.round(sell) 
+              row[i]['sell'] = row[i]['price'] - (row[i]['price'] / 100 * row[i]['discount'])
               for(let j = 0; j <= id.length -1;j++){                
                 if(row[i]['id'] == id[j]){
                   row[i]['action'] = "action"
                 }
               }
             }
-            items = row
-            res.render('index.html',{
-              items,
-              age,
-              username: req.session.username,
-              basket,
-              favorite
-            }); 
+            discount = row
+            db.all('SELECT * FROM goods WHERE discount IS NULL', function(err, ros) {
+              let id = JSON.parse(rod.id_favorite)
+              for(let i = 0; i <= ros.length-1; i++){
+                let item = JSON.parse(ros[i]['img'])
+                ros[i]['img'] = item[0]
+
+                for(let j = 0; j <= id.length -1;j++){
+                  console.log(ros[i], id[j])                
+                  if(ros[i]['id'] == id[j]){
+                    ros[i]['action'] = "action"
+
+                  }
+                }
+              }
+              
+              items = ros
+              res.render('index.html',{
+                discount,
+                items,
+                age,
+                username: req.session.username,
+                basket,
+                favorite
+              }); 
+            });
           })         
       });
     });
   }else{
     db.serialize(function() {
-      db.all('SELECT * FROM goods WHERE discount IS NOT NULL ORDER BY discount DESC LIMIT 10', function(err, row) {
+      db.all('SELECT * FROM goods WHERE discount IS NOT NULL ORDER BY discount DESC LIMIT 12', function(err, row) {
         for(let i = 0; i <= row.length-1; i++){
           let item = JSON.parse(row[i]['img'])
           row[i]['img'] = item[0]
 
-          let sell = row[i]['price'] - (row[i]['price'] / 100 * row[i]['discount'])
-          row[i]['sell'] = Math.round(sell) 
+          row[i]['sell'] = row[i]['price'] - (row[i]['price'] / 100 * row[i]['discount'])
         }
-        items = row
-        res.render('index.html',{
-          items,
-          age,
-          log
-        }); 
+        discount = row
+        db.all('SELECT * FROM goods WHERE discount IS NULL', function(err, rod) {
+          for(let i = 0; i <= rod.length-1; i++){
+            let item = JSON.parse(rod[i]['img'])
+            rod[i]['img'] = item[0]
+          }
+          items = rod
+          res.render('index.html',{
+            discount,
+            items,
+            age,
+            log
+          }); 
+        });        
       });
     });
   }        
@@ -83,11 +107,11 @@ app.get('/Basa', function(req,res){
   db.serialize(function(){
     db.get('SELECT username, mail, name, surname, phone, age, id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,row){
       let favorite = JSON.parse(row.id_favorite).length;
+      row['favorite'] = favorite
       let basket = JSON.parse(row.id_basket).length;
+      row['basket'] = basket
       let now = new Date();
       let past = new Date(row.age);
-      row['favorite'] = favorite
-      row['basket'] = basket
       age = (now-past)/31536000000
       res.render('user_page.html', row);
     });
@@ -117,9 +141,8 @@ app.post('/Log', function(req,res,next){
             let ids = []
             ids = JSON.stringify(ids);
             now = JSON.stringify(now);
-            console.log(ids, now)
-            let username = 'user' + y
-            let save = db.prepare('INSERT INTO user(id, username, mail, password, id_favorite, id_basket) VALUES (?, ?, ?, ?, ?, ?)', [y, username, req.body.email, req.body.password, ids, now]);
+            req.session.username = 'user' + y
+            let save = db.prepare('INSERT INTO user(id, username, mail, password, id_favorite, id_basket) VALUES (?, ?, ?, ?, ?, ?)', [y, req.session.username, req.body.email, req.body.password, ids, now]);
             save.run();
             save.finalize();
             res.redirect('/Basa')
@@ -189,8 +212,8 @@ app.get('/Basket', function(req,res){
             let items = JSON.parse(rod[i]['img'])
             rod[i]['img'] = items[0]
 
-            let sell = rod[i]['price'] - (rod[i]['price'] / 100 * rod[i]['discount'])
-            rod[i]['sell'] = Math.round(sell) 
+            rod[i]['sell'] = rod[i]['price'] - (rod[i]['price'] / 100 * rod[i]['discount'])
+             
           }
           items = rod
           res.render('shop_kit.html',{
@@ -242,10 +265,10 @@ app.get('/Favorite', function(req,res){
             let items = JSON.parse(rod[i]['img'])
             rod[i]['img'] = items[0]
 
-            let sell = rod[i]['price'] - (rod[i]['price'] / 100 * rod[i]['discount'])
-            rod[i]['sell'] = Math.round(sell) 
+            rod[i]['sell'] = rod[i]['price'] - (rod[i]['price'] / 100 * rod[i]['discount']) 
           }
           item = rod
+          console.log(rod)
           res.render('favorites.html',{
             username: req.session.username,
             item,
@@ -283,8 +306,7 @@ app.get('/Goods',function(req,res){
               }
             }
           }
-          let sell = row['price'] - (row['price'] / 100 * row['discount'])
-          row['sell'] = Math.round(sell) 
+          row['sell'] = row['price'] - (row['price'] / 100 * row['discount'])
           let items = JSON.parse(row.characteristics)
           row['characteristics'] = items
           items = JSON.parse(row.img)
@@ -302,8 +324,7 @@ app.get('/Goods',function(req,res){
         items = JSON.parse(row.img)
         row['img'] = items
         row['log'] = log
-        let sell = row['price'] - (row['price'] / 100 * row['discount'])
-        row['sell'] = Math.round(sell)
+        row['sell'] = row['price'] - (row['price'] / 100 * row['discount'])
         res.render('EXAMPLE_BAMBALEYLA_good.html',row);
       });
     });
