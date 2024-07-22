@@ -7,14 +7,14 @@ html = `
 
 let categories = {
     "Одежда": ["Сумки", "Купальники"],
-    "Товары_для_взрослых": ["Секс кукла"],
+    "Товары_для_взрослых": ["Секс_куклы"],
     "Канцтовары": ["Тетради", "Блокноты"],
     "Аксессуары": ["Фигурки", "Коврики", "Кружки",
     "Накладные ушки", "Ночники", "Зажигалки"],
     "Книги": ["Поваренные"],
     "Бижутерия": ["Подвески", "Кольца"],
-    "Аниме_боксы": ["Genshin Impact"],
-    "Мягкие_игрушки": ["Чехлы для салфеток"]
+    "Аниме_боксы": ["Genshin_Impact"],
+    "Мягкие_игрушки": ["Чехлы_для_салфеток"]
 }
 let index = 0;
 for(let key in categories){
@@ -73,6 +73,11 @@ for (let key in categories){
     });
 }
 
+html = `
+    <div class = "black_window">
+    </div>
+`
+document.body.insertAdjacentHTML('afterend', html);
 let currently_visible = "";
 
 document.querySelector("#filter_button").addEventListener("click", (event) => {
@@ -81,6 +86,7 @@ document.querySelector("#filter_button").addEventListener("click", (event) => {
         currently_visible = "";
     }
     document.querySelector("#filter-container").style.display = "none";
+    document.querySelector(".black_window").style.display = "none";
 });
 
 document.querySelector("#filter_main_button").addEventListener("click", (event) => {
@@ -89,6 +95,8 @@ document.querySelector("#filter_main_button").addEventListener("click", (event) 
         currently_visible = "";
     }
     document.querySelector("#filter-container").style.display = "block";
+    document.querySelector(".black_window").style.display = "block";
+    
 });
 
 document.querySelector("#main-pc-filter-button").addEventListener("click", (event) => {
@@ -97,8 +105,18 @@ document.querySelector("#main-pc-filter-button").addEventListener("click", (even
         currently_visible = "";
     }
     document.querySelector("#filter-container").style.display = "none";
+    document.querySelector(".black_window").style.display = "none";
 });
 
 document.querySelector("#main-pc-filter-button").addEventListener("click", (event) => {
     document.querySelector("#filter-container").style.display = "block";
+    document.querySelector(".black_window").style.display = "block";
+});
+document.querySelector(".black_window").addEventListener("click", (event) => {
+    if(currently_visible){
+        currently_visible.classList.toggle('visible');
+        currently_visible = "";
+    }
+    document.querySelector("#filter-container").style.display = "none";
+    document.querySelector(".black_window").style.display = "none";
 });
