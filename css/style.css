@@ -1029,3 +1029,23 @@ footer{
   height: 100%;
   display: none;
 }
+.catalog-main-container{
+  display: block;
+  width: 100%;
+  max-width: 1440px;
+}
+.catalog-container-bar > div{
+  border-radius: 1rem;
+  padding: 0.5rem;
+  background: linear-gradient(135deg, #262641, #231a2b);
+}
+option{
+  background-color: #262641 !important;
+}
+.ss, .ss1{
+  color: #cecece;
+  background: linear-gradient(135deg, #262641, #231a2b);
+  border: none;
+  border-radius: 1rem;
+  padding: 0.5rem;
+}
