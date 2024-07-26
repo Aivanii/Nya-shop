@@ -16,6 +16,17 @@ let age;
 let id = null;
 let log = `data-bs-toggle=modal data-bs-target=#logining_window`;
 let secret = 'qwerty';
+// let category = {
+//     "Одежда": ["Сумки", "Купальники"],
+//     "Товары_для_взрослых": ["Секс кукла"],
+//     "Канцтовары": ["Тетради", "Блокноты"],
+//     "Аксессуары": ["Фигурки", "Коврики", "Кружки",
+//     "Накладные ушки", "Ночники", "Зажигалки"],
+//     "Книги": ["Поваренные"],
+//     "Бижутерия": ["Подвески", "Кольца"],
+//     "Аниме_боксы": ["Genshin Impact"],
+//     "Мягкие_игрушки": ["Чехлы для салфеток"]
+// }
 app.use(expressSession({
   secret: secret,
 }));
@@ -54,8 +65,7 @@ app.get('/', function(req,res){
                 let item = JSON.parse(ros[i]['img'])
                 ros[i]['img'] = item[0]
 
-                for(let j = 0; j <= id.length -1;j++){
-                  console.log(ros[i], id[j])                
+                for(let j = 0; j <= id.length -1;j++){              
                   if(ros[i]['id'] == id[j]){
                     ros[i]['action'] = "action"
 
@@ -212,8 +222,7 @@ app.get('/Basket', function(req,res){
             let items = JSON.parse(rod[i]['img'])
             rod[i]['img'] = items[0]
 
-            rod[i]['sell'] = rod[i]['price'] - (rod[i]['price'] / 100 * rod[i]['discount'])
-             
+            rod[i]['sell'] = rod[i]['price'] - (rod[i]['price'] / 100 * rod[i]['discount']) 
           }
           items = rod
           res.render('shop_kit.html',{
@@ -490,6 +499,132 @@ app.post('/Basa_update', function(req,res){
     save.finalize()
   });
   res.send('true')
+});
+app.get('/Catalog', function(req,res){
+  if(req.session.username){
+    db.serialize(function(){
+      if(req.session.key){
+        db.all('SELECT * FROM goods WHERE category = ?', [req.session.value], function (err,row) {
+          db.get('SELECT age, id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,rod){
+            let id = JSON.parse(rod.id_favorite)
+            for(let i = 0; i <= row.length-1; i++){
+              let item = JSON.parse(row[i]['img'])
+              row[i]['img'] = item[0]
+              row[i]['sell'] = row[i]['price'] - (row[i]['price'] / 100 * row[i]['discount'])
+              for(let j = 0; j <= id.length -1;j++){              
+                if(row[i]['id'] == id[j]){
+                  row[i]['action'] = "action"
+
+                }
+              }
+            }
+            let favorite = JSON.parse(rod.id_favorite).length
+            let basket = JSON.parse(rod.id_basket).length;
+            let now = new Date();
+            let past = new Date(rod.age);
+            console.log(favorite)
+            age = (now-past)/31536000000
+            res.render('Catalog.html',{
+              username: req.session.username,
+              items: row,
+              key: req.session.key,
+              value: req.session.value,
+              basket,
+              favorite,
+              age,
+
+            });
+          });
+          
+        });
+      }else{
+        db.all('SELECT * FROM goods WHERE SUBSTRING(name,1,?) = ?', [req.session.value.length,req.session.value], function (err,row) {
+          db.get('SELECT age, id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,rod){
+            console.log(row)
+            let id = JSON.parse(rod.id_favorite)
+            for(let i = 0; i <= row.length-1; i++){
+              let item = JSON.parse(row[i]['img'])
+              row[i]['img'] = item[0]
+              row[i]['sell'] = row[i]['price'] - (row[i]['price'] / 100 * row[i]['discount'])
+              for(let j = 0; j <= id.length -1;j++){              
+                if(row[i]['id'] == id[j]){
+                  row[i]['action'] = "action"
+
+                }
+              }
+            }
+            let favorite = JSON.parse(rod.id_favorite).length
+            let basket = JSON.parse(rod.id_basket).length;
+            let now = new Date();
+            let past = new Date(rod.age);
+            age = (now-past)/31536000000
+            res.render('Catalog.html',{
+              username: req.session.username,
+              items: row,
+              key: req.session.key,
+              value: req.session.value,
+              basket,
+              favorite,
+              age,
+
+            });
+          });
+          
+        });
+      }    
+    })
+
+  }else{
+    db.serialize(function(){
+      if(req.session.key){    
+        db.all('SELECT * FROM goods WHERE category = ?', [req.session.value], function (err,row) {
+          for(let i = 0; i <= row.length-1; i++){
+            let item = JSON.parse(row[i]['img'])
+            row[i]['img'] = item[0]
+            row[i]['sell'] = row[i]['price'] - (row[i]['price'] / 100 * row[i]['discount'])
+          }
+          res.render('Catalog.html',{
+              items: row,
+              key: req.session.key,
+              value: req.session.value,
+              log,
+              age,
+          });
+        });
+      }else{
+        
+        db.all('SELECT * FROM goods WHERE SUBSTRING(name,1,?) = ?', [req.session.value.length,req.session.value], function (err,row) {
+          db.get('SELECT age, id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,rod){
+            for(let i = 0; i <= row.length-1; i++){
+            let item = JSON.parse(row[i]['img'])
+            row[i]['img'] = item[0]
+            row[i]['sell'] = row[i]['price'] - (row[i]['price'] / 100 * row[i]['discount'])
+          }
+          res.render('Catalog.html',{
+              items: row,
+              key: req.session.key,
+              value: req.session.value,
+              log,
+              age,
+          });
+
+          });
+          
+        });
+      }    
+    });
+  }
+})
+app.post('/Go_to_catalog', function(req,res){
+  console.log(req.body.divValue, req.body.liValue)
+  req.session.key = req.body.divValue;
+  req.session.value = req.body.liValue
+  res.redirect('/Catalog');
+});
+app.post('/Search', function(req,res){
+  req.session.value = req.body.input_obj
+  req.session.value = req.session.value.charAt(0).toUpperCase() + req.session.value.slice(1)
+  res.redirect('/Catalog')
 });
 app.use(function(req, res) {
   res.status(404)

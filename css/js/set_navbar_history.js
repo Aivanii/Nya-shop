@@ -48,12 +48,12 @@ function make_history(){
     let $nav_block = `<div class = "histrory_container his-item" id = "histrory_container"> <ol>`;
     $nav_block += `<li class = "his-item transform_scaler">
                     <span class = "his-item" style = "color: white">История поиска</span>  
-                    <span class = "his-item" id = "history_span" 
+                    <span class = "his-item" id = "history_span"
                     onclick = "delete_history(0, true)">Удалить историю</span>
                 </li>`  
     for(let i = 0; i < requests.length; i++){
         $nav_block += `
-        <li class = "his-item transform_scaler">
+        <li class = "his-item transform_scaler" onclick = "inputForm('${requests[i]}')">
             <span class = "his-item">${requests[i]}</span>  
             <span  class = "his-item" onclick = "delete_history(${i}, false)">×</span>
         </li>
@@ -67,7 +67,6 @@ function make_history(){
 
 function make_new_request(){
     let input_value = $input_obj.value.trim();
-    $input_obj.value = "";
     if(!requests.includes(input_value) && requests.length < 5){
         if(input_value != ""){
             requests.unshift(input_value);
@@ -98,3 +97,17 @@ $input_obj.addEventListener("focus", () => {
 window.addEventListener('resize', () => {
     document.documentElement.style.setProperty('--actual-history-container-size', `${$input_obj.offsetWidth}px`);
 });
+function inputForm(elt) {
+ 
+  const form = document.getElementById('inputForm');
+  if(elt){
+
+    form.elements.input_obj.value = elt;
+  }else{
+    var val = document.getElementById('input_obj').value;
+    form.elements.input_obj.value = val
+  }
+  
+
+  form.submit();
+}
