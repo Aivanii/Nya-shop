@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nya~ shop</title>
+    <link rel="shortcut icon" href="img/nya_logo_small.svg" />
+    <link href="bootstrap.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <form class="review-container">
+        <div class="flex-container">
+          <img src="img/anonym.jpg" alt="Изображение товара: {название товара}">
+          <span>{Название товара}</span>
+        </div>
+        <div>
+          <div class="flex-container spans-holder">
+            <script src="js/make_star_rating.js"></script>
+            Оцените покупку
+          </div>
+          <div class="textareas-container">
+            <span>Достоинства</span>
+            <textarea maxlength="3000">
+            </textarea>
+            <span>Недостатки</span>
+            <textarea maxlength="3000">
+            </textarea>
+            <span>Комментарий к отзыву</span>
+            <textarea maxlength="3000">
+            </textarea>
+          </div>
+          <button class = "btn" type = "submit">Оставить отзыв</button>
+        </div>
+      </form>
+
+    <footer id="footer">
+    </footer>
+
+    <script src="js/set_navbar.js"></script>
+    <script src="js/set_favorite.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/set_footer.js"></script>
+    <script src="js/set_navbar_history.js"></script>
+    <script src="js/set_filter.js"></script>
+    <script src="js/set_navbar_bottom.js"></script>
+</body>
+
+</html>

@@ -9,12 +9,12 @@
     <span id = "main-pc-filter-button">
       <img src = "img/toggler-icon-bg.svg" alt = "filter-button" id = "pc-filter-button">
     </span>
-    <form class="d-flex input_finding" role="search">
+    <form class="d-flex input_finding" role="search" action="/Search" method = "POST" id = "inputForm">
       <div style = "width: 100%;
-      height: 100%; display: flex;" id = "input_container">
+        height: 100%; display: flex;" id = "input_container">
         <input class="form-control me-2 his-item" placeholder="Поиск по сайту" type="search" aria-label="Поиск по сайту" style = "width: 100%;
-        height: 100%;" id = "input_obj">
-        <button class="btn btn-outline-success" id = "search_button" type="button" style = "
+          height: 100%;" id = "input_obj" name = "input_obj">
+        <button class="btn btn-outline-success" id = "search_button" type = "submit" style = "
           height: 36px;
           width: 36px;
           margin-top: auto;

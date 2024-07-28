@@ -35,5 +35,6 @@ html += `<div class = "footer_container">
 </div>
 <br>
 <p style = "margin-top: 1rem; text-align: center; width: 100%;
-border-top: 1px solid #cecece75; padding-top: 1rem;">©2024 Компания Drunk Wizard Studio. Все права (не)защищены.</p>`;
+border-top: 1px solid #cecece75; padding-top: 1rem;">©2024 Компания Drunk Wizard Studio. Все права (не)защищены.</p>
+`;
 $footer.insertAdjacentHTML('afterbegin', html);

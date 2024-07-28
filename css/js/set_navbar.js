@@ -1,4 +1,4 @@
-let html;
+html = "";
 
 html = `
     <!-- Modal Window -->

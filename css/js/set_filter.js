@@ -3,57 +3,74 @@ html = `
 <div class = "filter-container" id = "filter-container">
     <span class = "filter-button transform_scaler" id = "filter_button">Отмена</span>
     <ol>
+     
+
 `
 
 let categories = {
     "Одежда": ["Сумки", "Купальники"],
-    "Товары_для_взрослых": ["Секс_куклы"],
+    "Товары_для_взрослых": ["Секс куклы"],
     "Канцтовары": ["Тетради", "Блокноты"],
     "Аксессуары": ["Фигурки", "Коврики", "Кружки",
     "Накладные ушки", "Ночники", "Зажигалки"],
     "Книги": ["Поваренные"],
     "Бижутерия": ["Подвески", "Кольца"],
-    "Аниме_боксы": ["Genshin_Impact"],
-    "Мягкие_игрушки": ["Чехлы_для_салфеток"]
+    "Аниме_боксы": ["Genshin Impact"],
+    "Мягкие_игрушки": ["Чехлы для салфеток"]
 }
 let index = 0;
+let div = `
+    <form id = 'myForm' action = '/Go_to_catalog' method = 'POST'>
+    <input type="hidden" name="divValue" id="divValue" value="">
+    <input type="hidden" name="liValue" id="liValue" value="">
+`
 for(let key in categories){
     html += `
     <li class = "transform_scaler" id = "${key}_category">
         <span>${key.replace(/_/g, " ")}</span>
     </li>
     `
-    let div = `
-    <div class = "filter-container child-filter-container" id = "${key}_category_menu">
-    <span class = "filter-button transform_scaler">${key.replace(/_/g, " ")}</span>
+    div += `
+    <div class = "filter-container child-filter-container" id = "${key}_category_menu" value = >
+    <span class = "filter-button transform_scaler" name = 'category_menu'>${key.replace(/_/g, " ")}</span>
     <ol>
+    
     `
     categories[key].forEach(function(value) {
         div += `
-        <li class = "transform_scaler">
+        <li class = "transform_scaler" onclick = "submitForm('${value}','${key.replace(/_/g, " ")}')">
             <span>${value}</span>
         </li>
     `
     });
     div += `
+
         </ol>
+        
         </div>
     `
-    document.body.insertAdjacentHTML('afterend', div);
     
-    console.group(key)
-    categories[key].forEach(function(value) {
-        console.log(value);
-    });
-    console.groupEnd()
+    
+    // console.group(key)
+    // categories[key].forEach(function(value) {
+    //     console.log(value);
+    // });
+    // console.groupEnd()
     //html += `
     //<li class = "transform_scaler">
     //    <span>${category}</span>
     //</li>
     //`
 }
-html += `    </ol>
-</div>`;
+div +=`
+</form>
+`
+document.body.insertAdjacentHTML('afterend', div);
+html += ` 
+
+</ol>
+</div>
+`;
 document.body.insertAdjacentHTML('afterend', html);
 
 for (let key in categories){
@@ -73,11 +90,6 @@ for (let key in categories){
     });
 }
 
-html = `
-    <div class = "black_window">
-    </div>
-`
-document.body.insertAdjacentHTML('afterend', html);
 let currently_visible = "";
 
 document.querySelector("#filter_button").addEventListener("click", (event) => {
@@ -86,7 +98,6 @@ document.querySelector("#filter_button").addEventListener("click", (event) => {
         currently_visible = "";
     }
     document.querySelector("#filter-container").style.display = "none";
-    document.querySelector(".black_window").style.display = "none";
 });
 
 document.querySelector("#filter_main_button").addEventListener("click", (event) => {
@@ -95,8 +106,6 @@ document.querySelector("#filter_main_button").addEventListener("click", (event) 
         currently_visible = "";
     }
     document.querySelector("#filter-container").style.display = "block";
-    document.querySelector(".black_window").style.display = "block";
-    
 });
 
 document.querySelector("#main-pc-filter-button").addEventListener("click", (event) => {
@@ -105,18 +114,14 @@ document.querySelector("#main-pc-filter-button").addEventListener("click", (even
         currently_visible = "";
     }
     document.querySelector("#filter-container").style.display = "none";
-    document.querySelector(".black_window").style.display = "none";
 });
 
 document.querySelector("#main-pc-filter-button").addEventListener("click", (event) => {
     document.querySelector("#filter-container").style.display = "block";
-    document.querySelector(".black_window").style.display = "block";
 });
-document.querySelector(".black_window").addEventListener("click", (event) => {
-    if(currently_visible){
-        currently_visible.classList.toggle('visible');
-        currently_visible = "";
-    }
-    document.querySelector("#filter-container").style.display = "none";
-    document.querySelector(".black_window").style.display = "none";
-});
+function submitForm(liValue, divValue) {
+  const form = document.getElementById('myForm');
+  form.elements.divValue.value = divValue;
+  form.elements.liValue.value = liValue;
+  form.submit();
+}

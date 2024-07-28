@@ -10,22 +10,34 @@
   <link href="style.css" rel="stylesheet" >
 </head>
 <body>
-
-  <div class = "horizontal_container">
-    <ol class = "category_ol">
-      <li>Главная</li>
-      <li>Одежда</li>
-      <li>Купальники</li>
-    </ol>
-  </div>
+{% include "set_navbar.html" %}
+  
   <div class = "catalog-main-container">
+    
     <div class="flex_container">
-      <h2>Купальники</h2>
-      <span>1 товар</span>
+      <h2 style = "margin-left: 0;">{{value}}</h2>
+      <span>{{items.length}} {% if items.length == 1 %}
+              товар
+            {% elif items.length == 2 or items.length == 3 or items.length == 4 %}
+              товара
+            {% else %}
+              товаров
+            {% endif %}</span>
     </div>
-    <div class = "catalog-container-bar flex_container">
+    <div class = "horizontal_container">
+      <ol class = "category_ol">
+        <li>Главная</li>
+        {% if key %}
+          <li>{{key}}</li>
+        {% endif%}
+        <li>{{value}}</li>
+      </ol>
+    </div>
+    <div class = "catalog-container-bar flex_container" style = "    margin-bottom: 1rem;
+">
       <div style = "display: flex;
-      align-items: center;">
+      align-items: center;
+      margin-left: 0;">
         <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g clip-path="url(#clip0_53_2)">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9999 0.500023C12.4059 0.500023 12.7349 0.832023 12.7349 1.24002V10.972L14.7449 8.94502C14.8129 8.87609 14.8938 8.82135 14.9831 8.78398C15.0723 8.74661 15.1682 8.72737 15.2649 8.72737C15.3617 8.72737 15.4575 8.74661 15.5468 8.78398C15.6361 8.82135 15.717 8.87609 15.7849 8.94502C15.9226 9.08446 15.9999 9.27255 15.9999 9.46853C15.9999 9.6645 15.9226 9.85259 15.7849 9.99202L12.5199 13.283C12.4526 13.3514 12.3724 13.4058 12.2841 13.4431C12.1957 13.4805 12.1008 13.5 12.0049 13.5007C11.9089 13.5013 11.8138 13.483 11.7249 13.4469C11.6361 13.4108 11.5552 13.3574 11.4869 13.29L11.4799 13.283L8.21493 9.99202C8.07722 9.85259 8 9.6645 8 9.46853C8 9.27255 8.07722 9.08446 8.21493 8.94502C8.28285 8.87609 8.3638 8.82135 8.45307 8.78398C8.54235 8.74661 8.63816 8.72737 8.73493 8.72737C8.83171 8.72737 8.92752 8.74661 9.01679 8.78398C9.10606 8.82135 9.18701 8.87609 9.25493 8.94502L11.2649 10.972V1.24002C11.2649 0.830023 11.5949 0.500023 11.9999 0.500023ZM3.99993 13.5C4.19549 13.4992 4.38273 13.4209 4.52055 13.2821C4.65836 13.1434 4.73546 12.9556 4.73493 12.76V3.02702L6.74493 5.05402C6.81285 5.12296 6.8938 5.1777 6.98307 5.21507C7.07235 5.25243 7.16816 5.27168 7.26493 5.27168C7.36171 5.27168 7.45752 5.25243 7.54679 5.21507C7.63606 5.1777 7.71701 5.12296 7.78493 5.05402C7.92264 4.91459 7.99986 4.7265 7.99986 4.53052C7.99986 4.33455 7.92264 4.14646 7.78493 4.00702L4.51993 0.717023C4.45201 0.648087 4.37106 0.593344 4.28179 0.555979C4.19252 0.518613 4.09671 0.499371 3.99993 0.499371C3.90316 0.499371 3.80735 0.518613 3.71807 0.555979C3.6288 0.593344 3.54785 0.648087 3.47993 0.717023L0.214931 4.00802C0.0772212 4.14746 0 4.33555 0 4.53152C0 4.7275 0.0772212 4.91559 0.214931 5.05502C0.282853 5.12396 0.363804 5.1787 0.453075 5.21607C0.542346 5.25343 0.638156 5.27268 0.734931 5.27268C0.831707 5.27268 0.927517 5.25343 1.01679 5.21607C1.10606 5.1787 1.18701 5.12396 1.25493 5.05502L3.26493 3.02802V12.759C3.26493 13.169 3.59493 13.5 3.99993 13.5Z" fill="#CECECE"/>
@@ -45,7 +57,7 @@
       </div>
       <div>
         </span>
-        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
+        <button class="btn" style = "    color: #cecece;" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M6.5 4.00001C6.5 4.39783 6.34196 4.77936 6.06066 5.06067C5.77936 5.34197 5.39782 5.50001 5 5.50001C4.60218 5.50001 4.22064 5.34197 3.93934 5.06067C3.65804 4.77936 3.5 4.39783 3.5 4.00001C3.5 3.60218 3.65804 3.22065 3.93934 2.93935C4.22064 2.65804 4.60218 2.50001 5 2.50001C5.39782 2.50001 5.77936 2.65804 6.06066 2.93935C6.34196 3.22065 6.5 3.60218 6.5 4.00001ZM7.959 4.50001C7.84203 5.20026 7.4805 5.83634 6.9387 6.29514C6.39691 6.75394 5.70996 7.00572 5 7.00572C4.29004 7.00572 3.60309 6.75394 3.0613 6.29514C2.5195 5.83634 2.15797 5.20026 2.041 4.50001H0.75C0.551088 4.50001 0.360322 4.42099 0.21967 4.28034C0.0790176 4.13969 0 3.94892 0 3.75001C0 3.5511 0.0790176 3.36033 0.21967 3.21968C0.360322 3.07903 0.551088 3.00001 0.75 3.00001H2.17C2.3766 2.41448 2.75974 1.90744 3.2666 1.5488C3.77346 1.19015 4.37909 0.997559 5 0.997559C5.62091 0.997559 6.22654 1.19015 6.7334 1.5488C7.24026 1.90744 7.6234 2.41448 7.83 3.00001H15.25C15.4489 3.00001 15.6397 3.07903 15.7803 3.21968C15.921 3.36033 16 3.5511 16 3.75001C16 3.94892 15.921 4.13969 15.7803 4.28034C15.6397 4.42099 15.4489 4.50001 15.25 4.50001H7.959ZM13.829 10H15.25C15.4489 10 15.6397 10.079 15.7803 10.2197C15.921 10.3603 16 10.5511 16 10.75C16 10.9489 15.921 11.1397 15.7803 11.2803C15.6397 11.421 15.4489 11.5 15.25 11.5H13.959C13.842 12.2003 13.4805 12.8363 12.9387 13.2951C12.3969 13.7539 11.71 14.0057 11 14.0057C10.29 14.0057 9.60309 13.7539 9.0613 13.2951C8.5195 12.8363 8.15797 12.2003 8.041 11.5H0.75C0.551088 11.5 0.360322 11.421 0.21967 11.2803C0.0790176 11.1397 0 10.9489 0 10.75C0 10.5511 0.0790176 10.3603 0.21967 10.2197C0.360322 10.079 0.551088 10 0.75 10H8.17C8.3766 9.41448 8.75974 8.90744 9.2666 8.5488C9.77346 8.19015 10.3791 7.99756 11 7.99756C11.6209 7.99756 12.2265 8.19015 12.7334 8.5488C13.2403 8.90744 13.6224 9.41448 13.829 10ZM12.5 11C12.5 11.197 12.4612 11.392 12.3858 11.574C12.3104 11.756 12.1999 11.9214 12.0607 12.0607C11.9214 12.2 11.756 12.3104 11.574 12.3858C11.392 12.4612 11.197 12.5 11 12.5C10.803 12.5 10.608 12.4612 10.426 12.3858C10.244 12.3104 10.0786 12.2 9.93934 12.0607C9.80005 11.9214 9.68956 11.756 9.61418 11.574C9.5388 11.392 9.5 11.197 9.5 11C9.5 10.6022 9.65804 10.2207 9.93934 9.93935C10.2206 9.65804 10.6022 9.50001 11 9.50001C11.3978 9.50001 11.7794 9.65804 12.0607 9.93935C12.342 10.2207 12.5 10.6022 12.5 11Z" fill="#CECECE"/>
           </svg>        
@@ -88,8 +100,9 @@
               </div>
               <div style = "display: flex;">
                 <div class="form-check form-switch">
-                  <label class="form-check-label" for="flexSwitchCheckChecked">Рейтинг от 4 <font color = "gold">★</font></label>
-                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                  <label class="form-check-label" for="flexSwitchCheckChecked">Рейтинг от 4★</label>
+                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked
+                  style = "    float: left;">
                 </div>
               </div>
               <h3>Скидка</h3>
@@ -134,16 +147,87 @@
         </div>
       </div>
     </div>
-    <!--сюда товары вставляешь, б-->
-    товары
-    <!---->
+    <div class="window-discounts-week-container">
+      <div class="discounts-week-container">
+    {% for item in items %}
+        {% if age >= 18 or item.age_limit == 'FALSE' %}
+          <div class="card goods-card transform_scaler">
+            <button class = "add-to-favorite" onclick = "favorite(this)" id = {{item.id}} {{log}}>
+              <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#181826" fill-rule="evenodd" d="M12 22c-.316-.02-.56-.147-.848-.278a23.5 23.5 0 0 1-4.781-2.942C3.777 16.705 1 13.449 1 9a6 6 0 0 1 6-6 6.18 6.18 0 0 1 5 2.568A6.18 6.18 0 0 1 17 3a6 6 0 0 1 6 6c0 4.448-2.78 7.705-5.375 9.78a23.6 23.6 0 0 1-4.78 2.942c-.543.249-.732.278-.845.278M7 5a4 4 0 0 0-4 4c0 3.552 2.218 6.296 4.621 8.22A21.5 21.5 0 0 0 12 19.91a21.6 21.6 0 0 0 4.377-2.69C18.78 15.294 21 12.551 21 9a4 4 0 0 0-4-4c-1.957 0-3.652 1.396-4.02 3.2a1 1 0 0 1-1.96 0C10.652 6.396 8.957 5 7 5" clip-rule="evenodd"></path>
+                <path fill="white" fill-rule="evenodd" d="M12 22c-.285-.018-.512-.123-.764-.24l-.084-.038a23.5 23.5 0 0 1-4.781-2.942C3.777 16.705 1 13.449 1 9a6 6 0 0 1 6-6 6.18 6.18 0 0 1 5 2.568q.3-.418.666-.78A6.18 6.18 0 0 1 17 3a6 6 0 0 1 6 6c0 4.448-2.78 7.705-5.375 9.78a23.6 23.6 0 0 1-4.78 2.942c-.543.249-.732.278-.845.278m0-17.959A7.18 7.18 0 0 1 17 2a7 7 0 0 1 7 7c0 4.897-3.061 8.41-5.75 10.562a24.6 24.6 0 0 1-4.989 3.07c-.566.258-.92.368-1.261.368h-.032l-.033-.002c-.484-.032-.881-.218-1.12-.33l-.077-.036a24.5 24.5 0 0 1-4.991-3.07C3.056 17.408 0 13.895 0 9a7 7 0 0 1 7-7c1.918 0 3.701.776 5 2.041M3 9a4 4 0 0 1 4-4c1.957 0 3.652 1.396 4.02 3.2a1 1 0 0 0 1.96 0C13.348 6.396 15.043 5 17 5a4 4 0 0 1 4 4c0 3.552-2.22 6.295-4.625 8.22A21.6 21.6 0 0 1 12 19.91a21.5 21.5 0 0 1-4.377-2.69C5.217 15.295 3 12.551 3 9" clip-rule="evenodd"></path>
+                {% if item.action %}
+                  <path class = "red-heart-icon active"  fill="#F8104B" fill-rule="evenodd" d="M12 22c-.316-.02-.56-.147-.848-.278a23.5 23.5 0 0 1-4.781-2.942C3.777 16.705 1 13.449 1 9a6 6 0 0 1 6-6 6.18 6.18 0 0 1 5 2.568A6.18 6.18 0 0 1 17 3a6 6 0 0 1 6 6c0 4.448-2.78 7.705-5.375 9.78a23.6 23.6 0 0 1-4.78 2.942c-.543.249-.732.278-.845.278" clip-rule="evenodd"></path>    
+                {% else %}
+                  <path class = "red-heart-icon"  fill="#F8104B" fill-rule="evenodd" d="M12 22c-.316-.02-.56-.147-.848-.278a23.5 23.5 0 0 1-4.781-2.942C3.777 16.705 1 13.449 1 9a6 6 0 0 1 6-6 6.18 6.18 0 0 1 5 2.568A6.18 6.18 0 0 1 17 3a6 6 0 0 1 6 6c0 4.448-2.78 7.705-5.375 9.78a23.6 23.6 0 0 1-4.78 2.942c-.543.249-.732.278-.845.278" clip-rule="evenodd"></path>
+                {% endif %}
+              </svg>
+            </button>
+            <a href = {{item.url}}>
+                <img src= {{item.img}} class= "card-img-top">
+            </a>
+            <a href = {{item.hreff}} style="text-decoration: none;"></a>
+
+            <a style="text-decoration: none;" href = {{item.url}}>
+                <div class="card-body">
+                  <div class="card-container-price card-title">
+                    {% if item.discount %}
+                      <p class="actual-price">{{item.sell | round}} ₽</p>
+                      <p class="crossed-price">{{item.price}} ₽</p>
+                      <p class="discount-price">-{{item.discount}}% </p> 
+                    {% else %}
+                      <p class="actual-price">{{item.price}} ₽</p>
+                    {% endif %}
+                  </div>
+                  <p class="good-title">
+                    {{item.value}}
+                  </p>
+                </div>
+            </a>
+          </div>
+        {% else %}
+          <div class="card goods-card transform_scaler">
+            <a href = "/Age">
+              <img src= "img/goods/blur.jpg" class= "card-img-top" alt= ${model[i][3].value}>
+              <div class = "adult_container">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path fill="#1d1d1d" d="M3.707 2.293a1 1 0 1 0-1.414 1.414L3.805 5.22c-1.065.748-1.956 1.847-2.7 3.334a1 1 0 1 0 1.79.894c.69-1.38 1.454-2.22 2.26-2.724l.096-.058.94.941a3 3 0 1 0 4.202 4.202l1.9 1.9a1 1 0 0 0 1.414-1.415zm3.942 6.77 1.288 1.288a1 1 0 1 1-1.288-1.288m.596-5.06 3.008 3.008c.656.517 1.28 1.29 1.852 2.436a1 1 0 0 0 1.79-.894c-.81-1.62-1.796-2.78-2.99-3.526-1.126-.704-2.362-.992-3.66-1.024"></path>
+                  </svg>
+                  <p class = "adult_text">Товар для взрослых!</p>
+              </div>
+            </a>
+            <a href = "/Age" style="text-decoration: none;"></a>
+            <a style="text-decoration: none;" href = {{item.url}}>
+              <div class="card-body">
+                <div class="card-container-price card-title">
+                  {% if item.discount %}
+                    <p class="actual-price">{{item.sell | round}} ₽</p>
+                    <p class="crossed-price">{{item.price}} ₽</p>
+                    <p class="discount-price">-{{item.discount}}% </p> 
+                  {% else %}
+                    <p class="actual-price">{{item.price}} ₽</p>
+                  {% endif %}
+                </div>
+                <p class="good-title">
+                  {{item.value}}
+                </p>
+              </div>
+            </a>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div></div>
   </div>
   <br><br><br><br><br>
+
+  <footer id = "footer">
+  </footer>
+
 <script src="js/set_navbar.js"></script>
 <script src = "js/set_favorite.js"></script>
 <script src="js/bootstrap.bundle.js"></script>
 <script src="js/set_footer.js"></script>
 <script src="js/set_navbar_history.js"></script>
 <script src="js/set_filter.js"></script>
+<script src="js/set_navbar_bottom.js"></script>
 </body>
 </html>
