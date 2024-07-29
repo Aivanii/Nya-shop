@@ -24,12 +24,12 @@
         <div class = "favorite_goods_container">
             <!--goods-->
             {% for item in items %}
-                <!-- <a href = {{item.url}}> -->
+                <!-- <a href = "/Goods?id={{item.id}}"> -->
                     <div class = "favorite_good">
                         <img src = {{item.img}} loading="lazy" alt = "{alt_good}"/>
                         <div class = "favorite_good_text_container">
                             <div class="card-container-price card-title" style = "height: 20%;">
-                                {% if item.sell != item.price %}
+                                {% if item.sell %}
                                     <p class="actual-price">{{item.sell | round}} ₽</p>
                                     <p class="crossed-price">{{item.price}} ₽</p>
                                 {% else %}
@@ -37,7 +37,7 @@
                                 {% endif %}
                                 <div style = "margin-left: auto;">
                                     <input class = "button_toggle button_minus disabled_button_toggle" type="button" value="-">
-                                    <span class = "buttons_span">1</span>
+                                    <span class = "buttons_span">{{item.amount}}</span>
                                     <input class = "button_toggle transform_scaler button_plus" type="button" value="+">
                                 </div>
                             </div>
