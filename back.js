@@ -121,18 +121,23 @@ app.get('/', function(req,res){
   }        
 });
 app.get('/Basa', function(req,res){
-  db.serialize(function(){
-    db.get('SELECT username, mail, name, surname, phone, age, id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,row){
-      let favorite = JSON.parse(row.id_favorite).length;
-      row['favorite'] = favorite   
-      let basket = JSON.parse(row.id_basket).length;
-      row['basket'] = basket
-      let now = new Date();
-      let past = new Date(row.age);
-      age = (now-past)/31536000000
-      res.render('user_page.html', row);
+  if(req.session.username){
+    db.serialize(function(){
+      db.get('SELECT username, mail, name, surname, phone, age, id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,row){
+        let favorite = JSON.parse(row.id_favorite).length;
+        row['favorite'] = favorite   
+        let basket = JSON.parse(row.id_basket).length;
+        row['basket'] = basket
+        let now = new Date();
+        let past = new Date(row.age);
+        age = (now-past)/31536000000
+        res.render('user_page.html', row);
+      });
     });
-  });
+  }else{
+    res.redirect('/')
+  }
+  
 });
 app.post('/Log', function(req,res,next){
 
@@ -172,6 +177,8 @@ app.post('/Log', function(req,res,next){
   });
 });
 app.get('/Age', function(req,res){
+  id = req.query.id
+  console.log(req.query.id)
   res.render('age_checking.html',{
     username: req.session.username
   });
@@ -189,127 +196,137 @@ app.post('/Age', function(req,res){
     });
   }  
   if(age >= 18){
-    res.redirect('/')
+    let text = '/Goods?id='+id
+    res.redirect(text)
   }else{
     res.redirect('/');
   }
   
 });
 app.get('/Basket', function(req,res){
-  let username = req.session.username
-  db.serialize(function(){
-    db.get('SELECT id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,row){
-      let id = JSON.parse(row.id_basket)
-      let favorite = JSON.parse(row.id_favorite).length;
-      let basket = id.length
-      let items;
-      let bag = []
-      let amount = [] 
-      let text = 'SELECT * FROM goods WHERE id = ';
-      if(id.length){
-        for(let i = 0 ; i < id.length; i++){
+  if(req.session.username){
+    let username = req.session.username
+    db.serialize(function(){
+      db.get('SELECT id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,row){
+        let id = JSON.parse(row.id_basket)
+        let favorite = JSON.parse(row.id_favorite).length;
+        let basket = id.length
+        let items;
+        let bag = []
+        let amount = [] 
+        let text = 'SELECT * FROM goods WHERE id = ';
+        if(id.length){
+          for(let i = 0 ; i < id.length; i++){
+            
+              if(i == id.length -1){
+                if(text == undefined){
+                  text = `'${Object.keys(id[i])}'`
+                }else{
+                  text += `'${Object.keys(id[i])}'`
+                }
+                
+              }else{
+                if(text == undefined){
+                  text = `'${Object.keys(id[i])}'` + ' OR id = '
+                }else{
+                  text += `'${Object.keys(id[i])}'` + ' OR id = ' 
+                }
+              
+             }
+      
+            bag.push(id[i])
+          }
+
+          bag.sort(sortAscending);
+          for (const obj of bag) {
+              amount.push(Object.values(obj)[0]);
+          }
+          db.all(text, function(err,rod){
+            for(let i = 0; i <= rod.length-1; i++){
+              let items = JSON.parse(rod[i]['img'])
+              rod[i]['img'] = items[0]
+
+              rod[i]['sell'] = rod[i]['price'] - (rod[i]['price'] / 100 * rod[i]['discount'])
+              rod[i]['amount'] = amount[i] 
+            }
+            items = rod
+            res.render('shop_kit.html',{
+              username: req.session.username,
+              items,
+              basket,
+              favorite,
+            });
+          });
+        }else{
+          res.render('shop_kit.html',{
+            username: req.session.username,
+            favorite,
+          });
+        }
+      });
+    });
+  }else{
+    res.redirect('/')
+  }
+  
+});
+
+app.get('/Favorite', function(req,res){
+  if(req.session.username){
+    db.serialize(function(){
+      db.get('SELECT id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,row){
+        let id = JSON.parse(row.id_favorite);
+        let favorite = id.length;
+        let basket = JSON.parse(row.id_basket).length;
+        let item;
+        let text = 'SELECT * FROM goods WHERE id = ';
+        if(id.length){
+          for(let i = 0 ; i < id.length; i++){
           
             if(i == id.length -1){
               if(text == undefined){
-                text = `'${Object.keys(id[i])}'`
+                text = `'${id[i]}'`
               }else{
-                text += `'${Object.keys(id[i])}'`
+                text += `'${id[i]}'`
               }
               
             }else{
               if(text == undefined){
-                text = `'${Object.keys(id[i])}'` + ' OR id = '
+                text = `'${id[i]}'` + ' OR id = '
               }else{
-                text += `'${Object.keys(id[i])}'` + ' OR id = ' 
+                text += `'${id[i]}'` + ' OR id = ' 
               }
             
-           }
-    
-          bag.push(id[i])
-        }
-
-        bag.sort(sortAscending);
-        for (const obj of bag) {
-            amount.push(Object.values(obj)[0]);
-        }
-        db.all(text, function(err,rod){
-          for(let i = 0; i <= rod.length-1; i++){
-            let items = JSON.parse(rod[i]['img'])
-            rod[i]['img'] = items[0]
-
-            rod[i]['sell'] = rod[i]['price'] - (rod[i]['price'] / 100 * rod[i]['discount'])
-            rod[i]['amount'] = amount[i] 
+            }
           }
-          items = rod
-          res.render('shop_kit.html',{
-            username: req.session.username,
-            items,
-            basket,
-            favorite,
+          db.all(text, function(err,rod){
+            for(let i = 0; i <= rod.length-1; i++){
+              let items = JSON.parse(rod[i]['img'])
+              rod[i]['img'] = items[0]
+
+              rod[i]['sell'] = rod[i]['price'] - (rod[i]['price'] / 100 * rod[i]['discount']) 
+            }
+            item = rod
+            console.log(rod)
+            res.render('favorites.html',{
+              username: req.session.username,
+              item,
+              basket,
+              favorite,
+            });
           });
-        });
-      }else{
-        res.render('shop_kit.html',{
-          username: req.session.username,
-          favorite,
-        });
-      }
-    });
-  });
-});
-
-app.get('/Favorite', function(req,res){
-  db.serialize(function(){
-    db.get('SELECT id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,row){
-      let id = JSON.parse(row.id_favorite);
-      let favorite = id.length;
-      let basket = JSON.parse(row.id_basket).length;
-      let item;
-      let text = 'SELECT * FROM goods WHERE id = ';
-      if(id.length){
-        for(let i = 0 ; i < id.length; i++){
-        
-          if(i == id.length -1){
-            if(text == undefined){
-              text = `'${id[i]}'`
-            }else{
-              text += `'${id[i]}'`
-            }
-            
-          }else{
-            if(text == undefined){
-              text = `'${id[i]}'` + ' OR id = '
-            }else{
-              text += `'${id[i]}'` + ' OR id = ' 
-            }
-          
-          }
-        }
-        db.all(text, function(err,rod){
-          for(let i = 0; i <= rod.length-1; i++){
-            let items = JSON.parse(rod[i]['img'])
-            rod[i]['img'] = items[0]
-
-            rod[i]['sell'] = rod[i]['price'] - (rod[i]['price'] / 100 * rod[i]['discount']) 
-          }
-          item = rod
-          console.log(rod)
+        }else{
+     
           res.render('favorites.html',{
             username: req.session.username,
-            item,
             basket,
-            favorite,
           });
-        });
-      }else{
-   
-        res.render('favorites.html',{
-          username: req.session.username,
-          basket,
-        });
-      }
+        }
+      });
     });
-  });
+  }else{
+    res.redirect('/')
+  }
 });
 app.get('/Goods',function(req,res){
   if(req.session.username){
@@ -364,7 +381,9 @@ app.post('/Goods', function(req,res){
         let now = JSON.parse(row.id_basket)
         if(!now.length){
           now = []
-          now.push(req.body.id)
+          let newObject = {};
+          newObject[req.body.id] = 1;
+          now.push(newObject)
           now = JSON.stringify(now)
           let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,req.session.username]);
           save.run();
@@ -372,19 +391,23 @@ app.post('/Goods', function(req,res){
           res.redirect('/Basket')
         }else{
           let x = true
-          for(let i = 0; i < now.length; i++){
-            if(now[i] == id)
+          for(let i = 0; i <= now.length-1; i++){
+            if(Object.keys(now[i])[0] == req.body.id){    
               x = false
-              break
+              now[i][req.body.id] += 1
+            }
           }
           if(x){
-              console.log(req.body.id)
-              now.push(req.body.id)
-              now = JSON.stringify(now)
-              let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,req.session.username]);
-              save.run();
-              save.finalize()
+              let newObject = {};
+              newObject[req.body.id] = 1;
+              now.push(newObject)
+              
+              
             }
+          now = JSON.stringify(now)
+          let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,req.session.username]);
+          save.run();
+          save.finalize()
           res.redirect('/Basket') 
         }      
       });
@@ -450,10 +473,10 @@ app.post('/Basket',function(req,res){
     db.get('SELECT id_basket FROM user WHERE username = ?', [req.session.username], function(err, row){
       let now = JSON.parse(row.id_basket) 
       for(let i = 0; i < now.length; i++){
-        if(now[i] == req.body.id){
+        if(Object.keys(now[i])[0] == req.body.id){
           now.splice(i,1)
         }
-      } 
+      }
       now = JSON.stringify(now)
       let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,req.session.username]);
       save.run();
@@ -466,17 +489,37 @@ app.post('/Favor_basket', function(req,res){
   db.serialize(function(){
     db.get('SELECT id_basket FROM user WHERE username = ?', [req.session.username], function(err, row){
       let now = JSON.parse(row.id_basket)
-      if(now == null){
+      if(!now.length){
         now = []
-      }
-      now.push(req.body.id) 
-      now = JSON.stringify(now)
-      let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,req.session.username]);
-      save.run();
-      save.finalize()
+        let newObject = {};
+        newObject[req.body.id] = 1;
+        now.push(newObject)
+        now = JSON.stringify(now)
+        let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,req.session.username]);
+        save.run();
+        save.finalize()
+        res.redirect('/Basket')
+      }else{
+        let x = true
+        for(let i = 0; i <= now.length-1; i++){
+          if(Object.keys(now[i])[0] == req.body.id){    
+            x = false
+            now[i][req.body.id] += 1
+          }
+        }
+        if(x){
+          let newObject = {};
+          newObject[req.body.id] = 1;
+          now.push(newObject)     
+        }
+        now = JSON.stringify(now)
+        let save = db.prepare('UPDATE user SET id_basket = ? WHERE username = ? ', [now,req.session.username]);
+        save.run();
+        save.finalize()
+        res.redirect('/Basket') 
+      }      
     });
   });
-  res.redirect('/Basket')
 });
 app.post('/Basa_update', function(req,res){
   let text = 'UPDATE user SET ';
@@ -517,6 +560,8 @@ app.post('/Basa_update', function(req,res){
   res.send('true')
 });
 app.get('/Catalog', function(req,res){
+  let text;
+  let value;
   if(req.session.username){
     db.serialize(function(){
       if(req.session.key){
@@ -554,7 +599,15 @@ app.get('/Catalog', function(req,res){
           
         });
       }else{
-        db.all('SELECT * FROM goods WHERE SUBSTRING(name,1,?) = ?', [req.session.value.length,req.session.value], function (err,row) {
+        if(req.session.value == undefined){
+          text = `SELECT * FROM goods WHERE 1 = ?`
+          let chet = 1
+          value = [chet]
+        }else{
+          text = `SELECT * FROM goods WHERE SUBSTRING(name,1,?) = ?`
+          value = [req.session.value.length,req.session.value]
+        }
+        db.all(text,value, function (err,row) {
           db.get('SELECT age, id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,rod){
             console.log(row)
             let id = JSON.parse(rod.id_favorite)
@@ -608,21 +661,28 @@ app.get('/Catalog', function(req,res){
           });
         });
       }else{
-        
-        db.all('SELECT * FROM goods WHERE SUBSTRING(name,1,?) = ?', [req.session.value.length,req.session.value], function (err,row) {
+        if(req.session.value == undefined){
+          text = `SELECT * FROM goods WHERE 1 = ?`
+          let chet = 1
+          value = [chet]
+        }else{
+          text = `SELECT * FROM goods WHERE SUBSTRING(name,1,?) = ?`
+          value = [req.session.value.length,req.session.value]
+        }
+        db.all(text,value , function (err,row) {
           db.get('SELECT age, id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,rod){
             for(let i = 0; i <= row.length-1; i++){
-            let item = JSON.parse(row[i]['img'])
-            row[i]['img'] = item[0]
-            row[i]['sell'] = row[i]['price'] - (row[i]['price'] / 100 * row[i]['discount'])
-          }
-          res.render('Catalog.html',{
-              items: row,
-              key: req.session.key,
-              value: req.session.value,
-              log,
-              age,
-          });
+              let item = JSON.parse(row[i]['img'])
+              row[i]['img'] = item[0]
+              row[i]['sell'] = row[i]['price'] - (row[i]['price'] / 100 * row[i]['discount'])
+            }
+            res.render('Catalog.html',{
+                items: row,
+                key: req.session.key,
+                value: req.session.value,
+                log,
+                age,
+            });
 
           });
           
@@ -640,6 +700,7 @@ app.post('/Go_to_catalog', function(req,res){
 app.post('/Search', function(req,res){
   req.session.value = req.body.input_obj
   req.session.value = req.session.value.charAt(0).toUpperCase() + req.session.value.slice(1)
+  req.session.key = null
   res.redirect('/Catalog')
 });
 app.post('/Amount', function(req,res){
@@ -650,7 +711,7 @@ app.post('/Amount', function(req,res){
       item[req.body.id]
       for(let i = 0; i <= item.length-1; i++){
         if(Object.keys(item[i]) == req.body.id){
-          item[i][req.body.id] = req.body.amount
+          item[i][req.body.id] = Number(req.body.amount)
           console.log(item[i])
         }
       }

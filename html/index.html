@@ -38,12 +38,12 @@
               {% endif %}
             </svg>
           </button>
-          <a href={{item.url}}>
+          <a href="/Goods?id={{item.id}}">
             <img src={{item.img}} class="card-img-top">
           </a>
-          <a href={{item.hreff}} style="text-decoration: none;"></a>
+          <a href="/Goods?id={{item.id}}" style="text-decoration: none;"></a>
 
-          <a style="text-decoration: none;" href={{item.url}}>
+          <a style="text-decoration: none;" href="/Goods?id={{item.id}}">
             <div class="card-body">
               <div class="card-container-price card-title">
                 <p class="actual-price">{{item.sell | round}} ₽</p>
@@ -58,7 +58,7 @@
         </div>
         {% else %}
         <div class="card goods-card transform_scaler">
-          <a href="/Age">
+          <a href="/Age?id={{item.id}}">
             <img src="img/goods/blur.jpg" class="card-img-top" alt=${model[i][3].value}>
             <div class="adult_container">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">
@@ -69,8 +69,8 @@
               <p class="adult_text">Товар для взрослых!</p>
             </div>
           </a>
-          <a href="/Age" style="text-decoration: none;"></a>
-          <a style="text-decoration: none;" href={{item.url}}>
+          <a href="/Age?id={{item.id}}" style="text-decoration: none;"></a>
+          <a style="text-decoration: none;" href="/Age?id={{item.id}}">
             <div class="card-body">
               <div class="card-container-price card-title">
                 <p class="actual-price">{{item.sell | round}} ₽</p>
@@ -113,12 +113,12 @@
               {% endif %}
             </svg>
           </button>
-          <a href={{item.url}}>
+          <a href="/Goods?id={{item.id}}">
             <img src={{item.img}} class="card-img-top">
           </a>
-          <a href={{item.hreff}} style="text-decoration: none;"></a>
+          <a href="/Goods?id={{item.id}}" style="text-decoration: none;"></a>
 
-          <a style="text-decoration: none;" href={{item.url}}>
+          <a style="text-decoration: none;" href="/Goods?id={{item.id}}">
             <div class="card-body">
               <div class="card-container-price card-title">
                 <p class="actual-price">{{item.price}} ₽</p>
@@ -131,7 +131,7 @@
         </div>
         {% else %}
         <div class="card goods-card transform_scaler">
-          <a href="/Age">
+          <a href="/Age?id={{item.id}}">
             <img src="img/goods/blur.jpg" class="card-img-top" alt=${model[i][3].value}>
             <div class="adult_container">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">
@@ -142,8 +142,8 @@
               <p class="adult_text">Товар для взрослых!</p>
             </div>
           </a>
-          <a href="/Age" style="text-decoration: none;"></a>
-          <a style="text-decoration: none;" href={{item.url}}>
+          <a href="/Age?id={{item.id}}" style="text-decoration: none;"></a>
+          <a style="text-decoration: none;" href="/Age?id={{item.id}}">
             <div class="card-body">
               <div class="card-container-price card-title">
                 <p class="actual-price">{{item.price}} ₽</p>
@@ -236,13 +236,13 @@
   </div>
 
 
-
   <script src="js/set_navbar.js"></script>
   <script src="js/set_favorite.js"></script>
   <script src="js/bootstrap.bundle.js"></script>
   <script src="js/set_footer.js"></script>
   <script src="js/set_navbar_history.js"></script>
   <script src="js/set_filter.js"></script>
+
 </body>
 
 </html>
