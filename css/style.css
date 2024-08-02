@@ -1254,88 +1254,78 @@ option {
   background: linear-gradient(135deg, #262641, #231a2b);
   padding: clamp(4px, 3vw, 16px);
   border-radius: 1rem;
-  margin-bottom: 5rem;
 }
 
-.flex_container>img {
+.flex-container>img {
   border-radius: 1rem;
 }
-
-.textareas-container {
+.spans-holder > span{
+  font-size: 1.5rem;
+}
+.textareas-container{
   display: flex;
   flex-direction: column;
 }
-.textareas-container > span{
-  margin-top: 1rem;
-}
-
-.textareas-container>textarea {
+.textareas-container > textarea{
   width: 100%;
-    border: none;
-    border-radius: 1rem;
-    background: #262641;
-    padding: 0.4rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    resize: none;
-    height: 8rem;
-}
-
-.review-flex-container {
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: row;
-  width: 100%;
-  color: #cecece;
-
-}
-
-.review-image {
-  border-radius: 1rem;
-  width: 10vw;
-  max-width: 10rem;
-  height: 10vw;
   max-height: 10rem;
-  object-fit: cover;
+  border: none;
+  border-radius: 1rem;
+  background: #262641;
+  padding: 0.4rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
-
-.review-name {
-  margin-left: 1rem;
-  width: 100%;
-  font-size: clamp(12px, 3vw, 16px);
-  color: #cecece;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
-  display: -webkit-box;
-  overflow: hidden;
+.card-payment{
+  height: 260px;
+  width: 420px;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(2rem);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 80px rgba(0, 0, 0, 0.25);
+  padding: 30px 30px 30px 30px;
 }
-.center-container{
-  margin-left: auto !important;
-  margin-right: auto !important;
+.card-payment > img{
+  border-radius: 1rem;
+  width: 5rem;
+  margin-left: 1.5rem;
 }
-.review_text{
-  font-size: clamp(8px, 3vw, 16px);
-  color: #cecece;
+.card-payment label{
+  display: block !important;
 }
-#spans-holder>span{
-  font-size: 1.5rem;
-  color: #cecece;
-  cursor: pointer;
-}
-#spans-holder{
-  margin-top: -4px;
-}
-.review_button:hover{
+.main-card-payment-container{
   
-  color: white !important;
-  cursor: pointer;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  display: flex;
+}
+.main-card-payment-container>form{
+  border-radius: 1rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #262641, #231a2b);
+}
+.card-payment input {
+  font-family: 'Space Mono', monospace;
+  border: none;
+  font-size: 16px;
+  height: 26px;
+  color: #cecece;
+  background: none;
+  padding-bottom: 2px;
+  user-select: none;
+}
+input[id="card-number"]{
+  font-size: 30px;
+}
+input:focus{ 
+}
+input:hover{
+  padding-bottom: 0;
+  border-bottom: 2px white solid;
 }
 .review_submit_button{
   color: #cecece;
-  background: linear-gradient(135deg, #262641, #231a2b);
-  margin-top: 1rem;
-  padding: 0.5rem;
-  border: none;
-  border-radius: 1rem;
   float: right;
 }
