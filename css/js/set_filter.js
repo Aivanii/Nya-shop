@@ -12,7 +12,7 @@ let categories = {
     "Товары_для_взрослых": ["Секс куклы"],
     "Канцтовары": ["Тетради", "Блокноты"],
     "Аксессуары": ["Фигурки", "Коврики", "Кружки",
-    "Накладные ушки", "Ночники", "Зажигалки"],
+        "Накладные ушки", "Ночники", "Зажигалки"],
     "Книги": ["Поваренные"],
     "Бижутерия": ["Подвески", "Кольца"],
     "Аниме_боксы": ["Genshin Impact"],
@@ -24,7 +24,7 @@ let div = `
     <input type="hidden" name="divValue" id="divValue" value="">
     <input type="hidden" name="liValue" id="liValue" value="">
 `
-for(let key in categories){
+for (let key in categories) {
     html += `
     <li class = "transform_scaler" id = "${key}_category">
         <span>${key.replace(/_/g, " ")}</span>
@@ -36,7 +36,7 @@ for(let key in categories){
     <ol>
     
     `
-    categories[key].forEach(function(value) {
+    categories[key].forEach(function (value) {
         div += `
         <li class = "transform_scaler" onclick = "submitForm('${value}','${key.replace(/_/g, " ")}')">
             <span>${value}</span>
@@ -49,8 +49,8 @@ for(let key in categories){
         
         </div>
     `
-    
-    
+
+
     // console.group(key)
     // categories[key].forEach(function(value) {
     //     console.log(value);
@@ -62,7 +62,7 @@ for(let key in categories){
     //</li>
     //`
 }
-div +=`
+div += `
 </form>
 `
 document.body.insertAdjacentHTML('afterend', div);
@@ -73,17 +73,17 @@ html += `
 `;
 document.body.insertAdjacentHTML('afterend', html);
 
-for (let key in categories){
+for (let key in categories) {
     document.querySelector(`#${key}_category`).addEventListener("click", (event) => {
-        if(currently_visible == ""){
+        if (currently_visible == "") {
             document.querySelector(`#${key}_category_menu`).classList.toggle('visible');
             currently_visible = document.querySelector(`#${key}_category_menu`);
         }
-        else if(currently_visible != document.querySelector(`#${key}_category_menu`)){
+        else if (currently_visible != document.querySelector(`#${key}_category_menu`)) {
             currently_visible.classList.toggle('visible');
             document.querySelector(`#${key}_category_menu`).classList.toggle('visible');
             currently_visible = document.querySelector(`#${key}_category_menu`);
-        }else{
+        } else {
             currently_visible = "";
             document.querySelector(`#${key}_category_menu`).classList.toggle('visible');
         }
@@ -93,23 +93,23 @@ for (let key in categories){
 let currently_visible = "";
 
 document.querySelector("#filter_button").addEventListener("click", (event) => {
-    if(currently_visible){
+    if (currently_visible) {
         currently_visible.classList.toggle('visible');
         currently_visible = "";
     }
     document.querySelector("#filter-container").style.display = "none";
 });
-
-document.querySelector("#filter_main_button").addEventListener("click", (event) => {
-    if(currently_visible){
-        currently_visible.classList.toggle('visible');
-        currently_visible = "";
-    }
-    document.querySelector("#filter-container").style.display = "block";
-});
-
+if (document.querySelector("#filter_main_button")) {
+    document.querySelector("#filter_main_button").addEventListener("click", (event) => {
+        if (currently_visible) {
+            currently_visible.classList.toggle('visible');
+            currently_visible = "";
+        }
+        document.querySelector("#filter-container").style.display = "block";
+    });
+}
 document.querySelector("#main-pc-filter-button").addEventListener("click", (event) => {
-    if(currently_visible){
+    if (currently_visible) {
         currently_visible.classList.toggle('visible');
         currently_visible = "";
     }
@@ -120,8 +120,8 @@ document.querySelector("#main-pc-filter-button").addEventListener("click", (even
     document.querySelector("#filter-container").style.display = "block";
 });
 function submitForm(liValue, divValue) {
-  const form = document.getElementById('myForm');
-  form.elements.divValue.value = divValue;
-  form.elements.liValue.value = liValue;
-  form.submit();
+    const form = document.getElementById('myForm');
+    form.elements.divValue.value = divValue;
+    form.elements.liValue.value = liValue;
+    form.submit();
 }

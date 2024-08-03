@@ -1226,11 +1226,32 @@ footer {
   padding: 0.5rem;
   background: linear-gradient(135deg, #262641, #231a2b);
 }
-
-option {
-  background-color: #262641 !important;
+.textareas-container {
+  display: flex;
+  flex-direction: column;
+}
+.textareas-container > span{.ss,
+.ss1 {
+  color: #cecece;
+  background: linear-gradient(135deg, #262641, #231a2b);
+  border: none;
+  border-radius: 1rem;
+  padding: 0.5rem;
+}
+  margin-top: 1rem;
 }
 
+.textareas-container>textarea {
+  width: 100%;
+    border: none;
+    border-radius: 1rem;
+    background: #262641;
+    padding: 0.4rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    resize: none;
+    height: 8rem;
+}
 .ss,
 .ss1 {
   color: #cecece;
@@ -1239,42 +1260,67 @@ option {
   border-radius: 1rem;
   padding: 0.5rem;
 }
+.review-flex-container {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  width: 100%;
+  color: #cecece;
 
-.form-check-label {
-  margin-left: 0.5rem;
-  transform: translate(0, 25%);
 }
-
-.review-container {
+.review-container{
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  width: 100%;
-  margin-top: clamp(4px, 3vw, 16px);
-  background: linear-gradient(135deg, #262641, #231a2b);
-  padding: clamp(4px, 3vw, 16px);
+}
+.review-image {
   border-radius: 1rem;
+  width: 10vw;
+  max-width: 10rem;
+  height: 10vw;
+  max-height: 10rem;
+  object-fit: cover;
 }
 
-.flex-container>img {
-  border-radius: 1rem;
-}
-.spans-holder > span{
-  font-size: 1.5rem;
-}
-.textareas-container{
-  display: flex;
-  flex-direction: column;
-}
-.textareas-container > textarea{
+.review-name {
+  margin-left: 1rem;
   width: 100%;
-  max-height: 10rem;
+  font-size: clamp(12px, 3vw, 16px);
+  color: #cecece;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
+}
+.center-container{
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.review_text{
+  font-size: clamp(8px, 3vw, 16px);
+  color: #cecece;
+}
+#spans-holder>span{
+  font-size: 1.5rem;
+  color: #cecece;
+  cursor: pointer;
+}
+#spans-holder{
+  margin-top: -4px;
+}
+.review_button:hover{
+
+  color: white !important;
+  cursor: pointer;
+}
+.review_submit_button{
+  color: #cecece;
+  background: linear-gradient(135deg, #262641, #231a2b);
+  margin-top: 1rem;
+  padding: 0.5rem;
   border: none;
   border-radius: 1rem;
-  background: #262641;
-  padding: 0.4rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  float: right;
 }
 .card-payment{
   height: 260px;
