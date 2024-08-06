@@ -54,10 +54,12 @@ function basket(elt){
 			    return response.text();
 			})
 			.then((data) => {
-			    console.log(data);
-			    window.location = 'http://localhost:3000/Basket'
-
+			    if(data != 'del'){
+			    	window.location = 'http://localhost:3000/Basket';
+			    }else{
+			    	location.reload();
+			    }
 			});
 	}
-	event.preventDefault()  
+	event.preventDefault();  
 }

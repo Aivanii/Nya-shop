@@ -49,18 +49,6 @@ for (let key in categories) {
         
         </div>
     `
-
-
-    // console.group(key)
-    // categories[key].forEach(function(value) {
-    //     console.log(value);
-    // });
-    // console.groupEnd()
-    //html += `
-    //<li class = "transform_scaler">
-    //    <span>${category}</span>
-    //</li>
-    //`
 }
 div += `
 </form>
@@ -91,7 +79,26 @@ for (let key in categories) {
 }
 
 let currently_visible = "";
-
+if(document.getElementById('select-filt_1')){
+    const selectElement = document.getElementById('select-filt_1');
+    selectElement.addEventListener('change', function() {
+        
+    fetch(`/Filtirspisok`,{
+            method: 'post',
+            body: `ids=${selectElement.value}`,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        })
+        .then((response) => {
+            return response.text();
+        })
+        .then((data) => {
+            location.reload()
+        })
+    
+    });
+}
 document.querySelector("#filter_button").addEventListener("click", (event) => {
     if (currently_visible) {
         currently_visible.classList.toggle('visible');

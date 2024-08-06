@@ -1341,9 +1341,9 @@ footer {
   display: block !important;
 }
 .main-card-payment-container{
-  
   margin-left: auto;
   margin-right: auto;
+  margin-top: 30%;
   justify-content: center;
   display: flex;
 }
@@ -1365,13 +1365,36 @@ footer {
 input[id="card-number"]{
   font-size: 30px;
 }
-input:focus{ 
-}
-input:hover{
+.card-payment input:hover{
   padding-bottom: 0;
   border-bottom: 2px white solid;
 }
 .review_submit_button{
   color: #cecece;
   float: right;
+}
+option{
+  background: #262641;
+}
+option:hover{
+  background: #231a2b;
+}
+.radiobutton-container{
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  margin-left: 8px;
+}
+.catalog-submit-button{
+  color: #cecece;
+    background: linear-gradient(135deg, #262641, #231a2b);
+    margin-left: auto;
+    display: block;
+    margin-right: auto;
+    margin-top: 1rem;
+    width: 100%;
+    padding: 0.25rem;
 }
