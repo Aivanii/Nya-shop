@@ -29,7 +29,7 @@
                         <img src = {{item.img}} loading="lazy" alt = "{alt_good}"/>
                         <div class = "favorite_good_text_container">
                             <div class="card-container-price card-title" style = "height: 20%;">
-                                {% if item.sell %}
+                                {% if value.sell != value.price %}
                                     <p class="actual-price">{{item.sell | round}} ₽</p>
                                     <p class="crossed-price">{{item.price}} ₽</p>
                                 {% else %}
@@ -51,14 +51,18 @@
                     </div>
                 <!-- </a> -->
             {% endfor %}
+            
+        </div>
+        <div>
+            <form>
+                <button type = "submit" id = "text_area" class = "buy_button transform_scaler">Перейти к оплате заказа на сумму ${total_price} рублей
+                    (б, вставь ссылку на переход на страницу с оплатой(payment.html))
+                </button>
+            </form>
         </div>
         </div>
 
-        <div>
-            <form>
-                <button type = "submit" id = "text_area" class = "buy_button transform_scaler">Перейти к оплате заказа на сумму ${total_price} рублей</button>
-            </form>
-        </div>
+        
     </div>
 </div>
 <p id = "total_price_show">--</p>

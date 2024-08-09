@@ -41,11 +41,14 @@ function favorite(elt){
 	}
 }
 function basket(elt){
-	let id = elt.id
+	let id = elt.id, value;
+	if(elt.value == 'Добавить в корзину'){
+		value = 'ins';
+	}
 	if(!elt.dataset.bsToggle){
 		fetch(`/Goods`,{
 				method: 'post',
-				body: `id=${id}`,
+				body: `id=${id}&value=${value}`,
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded',
 				},
@@ -54,10 +57,12 @@ function basket(elt){
 			    return response.text();
 			})
 			.then((data) => {
-			    console.log(data);
-			    window.location = 'http://localhost:3000/Basket'
-
+			    if(data != 'del'){
+			    	window.location = 'http://localhost:3000/Basket';
+			    }else{
+			    	location.reload();
+			    }
 			});
 	}
-	event.preventDefault()  
+	event.preventDefault();  
 }
