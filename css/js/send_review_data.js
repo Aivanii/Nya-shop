@@ -11,15 +11,19 @@ $button.onclick = function() {
                 data[coms[i]] = textareas[i].value;
             }
         }
-        fetch('/вставь потом сюда ссылку, б', {
+        data['id'] = this.value
+        console.log(data)
+        fetch('/Reviews', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
         })
-        .then(res => res.json())
+        .then(res => res.json(
+            window.location.href = 'http://localhost:3000/Basa'
+        ))
         .catch(error => console.error('Ошибка:', error));
     }else{
         alert("Выберите оценку перед отправкой формы.");
     }
-    
+    event.preventDefault();  
 };

@@ -20,6 +20,7 @@ app.use(expressSession({
   secret: secret,
 }));
 app.use(express.static('css'));
+app.use(express.json());
 var db = new sqlite3.Database('anime.db');
 let error;
 function sortAscending(a, b) {
@@ -39,7 +40,7 @@ function time(past){
   past = new Date(past);
   return age = (now-past)/31536000000;
 }
-function goods(row,favorite, basket, user, id){
+function goods(row,favorite, basket, user){
   let ids;
   let bask;
   if(user){
@@ -52,14 +53,14 @@ function goods(row,favorite, basket, user, id){
     row['basket'] = basket;
     if(bask.length){
       for(let i = 0; i <= bask.length - 1; i++){
-        if(Object.keys(bask[i]) == id){
+        if(Object.keys(bask[i]) == row.id){
           row['check'] = 'check'
         }
       }
     }
     if(ids.length){
       for(let i = 0; i <= ids.length - 1; i++){
-        if(ids[i] == id){
+        if(ids[i] == row.id){
           row['action'] = "action";
         };
       };
@@ -70,6 +71,7 @@ function goods(row,favorite, basket, user, id){
   if(row['discount']){
     row['sell'] = row['price'] - (row['price'] / 100 * row['discount']);
   };
+  row.Reviews_user = JSON.parse(row.Reviews_user)
   let items = JSON.parse(row.characteristics);
   row['characteristics'] = items;
   items = JSON.parse(row.img);
@@ -181,7 +183,7 @@ app.post('/Log', function(req,res,next){
             let ids = [];
             ids = JSON.stringify(ids);
             req.session.username = 'user' + y
-            let save = db.prepare('INSERT INTO user(id, username, mail, password, id_favorite, id_basket) VALUES (?, ?, ?, ?, ?, ?)', [y, req.session.username, req.body.email, req.body.password, ids, ids]);
+            let save = db.prepare('INSERT INTO user(id, username, mail, password, id_favorite, id_basket, id_orders) VALUES (?, ?, ?, ?, ?, ?)', [y, req.session.username, req.body.email, req.body.password, ids, ids, ids]);
             save.run();
             save.finalize();
             res.redirect('/Basa');
@@ -286,10 +288,10 @@ app.get('/Favorite', function(req,res){
           };
           db.all(text, function(err,item){
             imgsellaction(item, null, null, null);
-            res.render('favorites.html',{username: req.session.username,item,basket,favorite,});
+            res.render('favorites.html',{username: req.session.username,item,basket,favorite});
           });
         }else{
-          res.render('favorites.html',{username: req.session.username,basket,});
+          res.render('favorites.html',{username: req.session.username,basket});
         };
       });
     });
@@ -302,12 +304,14 @@ app.get('/Goods',function(req,res){
     db.get('SELECT * FROM goods WHERE id = ?', [req.query.id], function(err,row){
       if(req.session.username){
         db.get('SELECT id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,rod){
-          goods(row, rod.id_favorite, rod.id_basket, req.session.username, req.query.id);
+          goods(row, rod.id_favorite, rod.id_basket, req.session.username);
 
           res.render('EXAMPLE_BAMBALEYLA_good.html',row);
         });        
       }else{ 
         goods(row,null,null,null, req.query.id);
+        
+        console.log(row)
         res.render('EXAMPLE_BAMBALEYLA_good.html',row);
       };
     });
@@ -317,7 +321,7 @@ app.post('/Goods', function(req,res){
   if(req.session.username){
     db.serialize(function(){
       db.get('SELECT id_basket FROM user WHERE username = ?', [req.session.username], function(err, row){
-
+        console.log(req.body.value)
         let now = JSON.parse(row.id_basket);
         if(req.body.value == 'ins'){
           if(!now.length){
@@ -587,12 +591,72 @@ app.get('/Reviews', function(req,res){
       db.get('SELECT id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,row){
         let favorite = JSON.parse(row.id_favorite).length;
         let basket = JSON.parse(row.id_basket).length;
-        res.render('review_good.html',{username: req.session.username,basket,favorite});
+        db.get('SELECT * FROM goods WHERE id = ?',[req.query.id], function(err,items){
+          goods(items, row.id_favorite, row.id_basket, req.session.username);
+          res.render('review_good.html',items);  
+        });
       });
     });
   }else{
     res.redirect('/');
   };
+});
+app.post('/Reviews', function(req,res) {
+  const currentDate = new Date();
+  let items = req.body;
+  items['Data'] = `${currentDate.getDate().toString().padStart(2, '0')}.${(currentDate.getMonth() + 1).toString().padStart(2, '0')}.${currentDate.getFullYear()}`;
+  items.user =  req.session.username;
+  let ids = items.id;
+  delete items.id;
+  
+  db.serialize(function(){
+    items = JSON.stringify(items);
+    let save = db.prepare('UPDATE goods SET Reviews_user = ? WHERE id = ? ', [items,ids]);
+    save.run();
+    save.finalize();
+  });
+  res.send('true');
+});
+app.get('/Orders', function(req,res){
+  if(req.session.username){
+    db.serialize(function(){
+      db.get('SELECT id_favorite, id_basket, id_orders FROM user WHERE username = ?', [req.session.username], function(err,row){
+        let id = JSON.parse(row.id_orders);
+        let favorite = JSON.parse(row.id_favorite).length;
+        let basket = JSON.parse(row.id_basket).length;
+        let text = 'SELECT * FROM goods WHERE id = ';
+        if(id.length){
+          for(let i = 0 ; i < id.length; i++){      
+            if(i == id.length -1){
+              if(text == undefined){
+                text = `'${id[i]}'`;
+              }else{
+                text += `'${id[i]}'`;
+              };              
+            }else{
+              if(text == undefined){
+                text = `'${id[i]}'` + ' OR id = ';
+              }else{
+                text += `'${id[i]}'` + ' OR id = ';
+              };
+            };
+          };
+          db.all(text, function(err,item){
+            imgsellaction(item, null, null, null);
+            console.log(item)
+            res.render('bought-goods.html',{username: req.session.username,item,basket,favorite});
+          });
+        }else{
+          res.render('bought-goods.html',{username: req.session.username,basket});
+        };
+      });
+    });
+  }else{
+    res.redirect('/');
+  };
+});
+app.post('/Orders', function(req,res){
+  res.redirect('/Reviews?id='+req.query.id)
 });
 app.use(function(req, res){
   res.status(404);

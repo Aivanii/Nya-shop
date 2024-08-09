@@ -103,8 +103,12 @@
 
             <!--to-shop-kit-->
             <form class="to-shop-kit transform_scaler" >
-                <button type = "submit" {{log}} id = {{id}} onclick = "basket(this)">
-                    Добавить в корзину
+                <button type = "submit" {{log}} id = {{id}} onclick = "basket(this)" value = '{% if check %}Удалить из корзины{% else %}Добавить в корзину{% endif %}'>
+                    {% if check %}
+                        Удалить из корзины
+                    {% else %}
+                        Добавить в корзину 
+                    {% endif %}
                 </button>
             </form>
             <!---->
@@ -144,111 +148,37 @@
             <div class = "comment_container" style = "display: flex; justify-content: space-between;">
                 <div style = "display: flex;">
                     <img src = "img/goods/Natsuki-poster/Natsuki-poster.png">
-                    <h4 style = "align-self: center; padding-left: clamp(2px, 2vw, 8px);">User#0001</h4>
+                    <h4 style = "align-self: center; padding-left: clamp(2px, 2vw, 8px);">{{Reviews_user.user}}</h4>
                 </div>
                 <div style = "display: flex;">
-                    <span style = "align-self: center;">06.07.2024</span>
+                    <span style = "align-self: center;">{{Reviews_user.Data}}</span>
                     
-                    <div style = "align-self: center;" class = "rating" data-rating = "1">
+                    <div style = "align-self: center;" class = "rating" data-rating = '{{Reviews_user.rating}}'>
                     </div>
                 </div>
             </div>
             <br>
             <div class = "comment_container">
-                <article>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Et quibusdam eligendi nemo nisi, explicabo tempore earum
-                    nobis! Illum tempore aliquid enim veniam eum provident id.
-                    Aspernatur doloribus tempora ducimus explicabo.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                    Illo nesciunt sit commodi quo rem voluptas neque quaerat, 
-                    itaque dolor, nemo accusamus sequi? Voluptate nihil eveniet
-                    harum laudantium, assumenda labore saepe!
-                </article>
+                {% if Reviews_user.dignities %}
+                    <span>Достоинства</span>
+                    <article>
+                        {{Reviews_user.dignities}}
+                    </article>
+                {% endif %}
+                {% if Reviews_user.disadvantages %}
+                    <span>Недостатки</span>
+                    <article>
+                        {{Reviews_user.disadvantages}}
+                    </article>
+                {% endif %}
+                {% if Reviews_user.comment %}
+                    <span>Комментарий к отзыву</span>
+                    <article>
+                        {{Reviews_user.comment}}
+                    </article>
+                {% endif %}
             </div>
         </div>
-
-        <!--ctrl+c-ctrl+v-->
-        <div class = "comment">
-            <div class = "comment_container" style = "display: flex; justify-content: space-between;">
-                <div style = "display: flex;">
-                    <img src = "img/goods/Natsuki-poster/Natsuki-poster.png">
-                    <h4 style = "align-self: center; padding-left: clamp(2px, 2vw, 8px);">User#0001</h4>
-                </div>
-                <div style = "display: flex;">
-                    <span style = "align-self: center;">06.07.2024</span>
-                    
-                    <div style = "align-self: center;" class = "rating" data-rating = "2">
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class = "comment_container">
-                <article>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Et quibusdam eligendi nemo nisi, explicabo tempore earum
-                    nobis! Illum tempore aliquid enim veniam eum provident id.
-                    Aspernatur doloribus tempora ducimus explicabo.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                    Illo nesciunt sit commodi quo rem voluptas neque quaerat, 
-                    itaque dolor, nemo accusamus sequi? Voluptate nihil eveniet
-                    harum laudantium, assumenda labore saepe!
-                </article>
-            </div>
-        </div><div class = "comment">
-            <div class = "comment_container" style = "display: flex; justify-content: space-between;">
-                <div style = "display: flex;">
-                    <img src = "img/goods/Natsuki-poster/Natsuki-poster.png">
-                    <h4 style = "align-self: center; padding-left: clamp(2px, 2vw, 8px);">User#0001</h4>
-                </div>
-                <div style = "display: flex;">
-                    <span style = "align-self: center;">06.07.2024</span>
-                    
-                    <div style = "align-self: center;" class = "rating" data-rating = "5">
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class = "comment_container">
-                <article>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Et quibusdam eligendi nemo nisi, explicabo tempore earum
-                    nobis! Illum tempore aliquid enim veniam eum provident id.
-                    Aspernatur doloribus tempora ducimus explicabo.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                    Illo nesciunt sit commodi quo rem voluptas neque quaerat, 
-                    itaque dolor, nemo accusamus sequi? Voluptate nihil eveniet
-                    harum laudantium, assumenda labore saepe!
-                </article>
-            </div>
-        </div><div class = "comment">
-            <div class = "comment_container" style = "display: flex; justify-content: space-between;">
-                <div style = "display: flex;">
-                    <img src = "img/goods/Natsuki-poster/Natsuki-poster.png">
-                    <h4 style = "align-self: center; padding-left: clamp(2px, 2vw, 8px);">User#0001</h4>
-                </div>
-                <div style = "display: flex;">
-                    <span style = "align-self: center;">06.07.2024</span>
-                    
-                    <div style = "align-self: center;" class = "rating" data-rating = "25">
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class = "comment_container">
-                <article>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam in aperiam rem reprehenderit corporis! Tenetur magni accusamus vitae consequuntur corporis ipsam ratione doloribus nisi aut! Quia officia ipsa earum commodi?
-                    Et quibusdam eligendi nemo nisi, explicabo tempore earum Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, quis? Non enim dicta consectetur! Aliquam, officiis? Expedita iure minima itaque, rerum, beatae deserunt, consequuntur eaque eius nostrum commodi cum vel.
-                    nobis! Illum tempore aliquid enim veniam eum provident id. Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi ducimus, quod quaerat perferendis veritatis eveniet expedita id. Nulla debitis, maxime, sit accusantium culpa inventore veritatis, molestiae excepturi vitae at blanditiis!
-                    Aspernatur doloribus tempora ducimus explicabo. Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam omnis ullam nisi qui veritatis? Perferendis ullam porro veritatis laudantium minima eius, corrupti architecto quibusdam repellendus velit rerum. Beatae, fugiat nam.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa, eum architecto voluptate error sapiente consequatur veritatis, facilis distinctio facere animi obcaecati, voluptas eaque officiis iste! Eius magni doloribus nesciunt repellendus?
-                    Illo nesciunt sit commodi quo rem voluptas neque quaerat, Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur sint tempore maxime odit vero laboriosam ad at explicabo quo, fugit rem perspiciatis mollitia minima nesciunt architecto nulla impedit consectetur. Cumque.
-                    itaque dolor, nemo accusamus sequi? Voluptate nihil eveniet Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam facilis cumque id quia rerum inventore, aspernatur nam, ex doloremque deserunt porro asperiores aut sunt aliquid eveniet deleniti perferendis fuga ad?
-                    harum laudantium, assumenda labore saepe!
-                </article>
-            </div>
-        </div>
-        <!---->
     </div>
     <div class = "description_container">
         <span><b>Нашли ошибку?</b> <a href = "#" color = "blue"
