@@ -192,7 +192,7 @@ app.post('/Log', function(req,res,next){
             y = y['COUNT(*)'];
             y += 1;
             let ids = [];
-            const folderName = 'C:/Users/bobr8/Desktop/animeshop/css/img/User/' +y;
+            const folderName = '../animeshop/css/img/User/' +y;
             const folderPath = path.join(folderName);
             mkdir(folderPath, { recursive: true });
             ids = JSON.stringify(ids);
@@ -689,7 +689,7 @@ app.post('/Basaimg', function(req,res){
     console.log(req.files);
     if(req.files != null){
         req.files.File.name = "iconka.png"
-        req.files.File.mv('C:/Users/bobr8/Desktop/animeshop/css/img/User/' + row.id + '/' + req.files.File.name);
+        req.files.File.mv('../animeshop/css/img/User/' + row.id + '/' + req.files.File.name);
       }
   });
   res.redirect('/Basa')
