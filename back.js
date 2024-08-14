@@ -4,6 +4,11 @@ import bodyParser from 'body-parser';
 import expressSession from 'express-session';
 import sqlite3 from 'sqlite3';
 import expressfileupload from 'express-fileupload';
+import { mkdir } from 'fs/promises';
+import { constants } from 'fs/promises';
+import fs from 'fs';
+import path from 'path';
+import axios from 'axios';
 let app = express();
 let  router = express.Router();
 app.use(expressfileupload({safeFileNames: true, preserveExtension: true }));
@@ -150,9 +155,14 @@ app.get('/', function(req,res){
 app.get('/Basa', function(req,res){
   if(req.session.username){
     db.serialize(function(){
-      db.get('SELECT username, mail, name, surname, phone, age, id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,row){
+      db.get('SELECT id, username, mail, name, surname, phone, age, id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,row){
         let favorite = JSON.parse(row.id_favorite).length;
         let basket = JSON.parse(row.id_basket).length;
+        if(fs.existsSync('css/img/User/'+row.id + '/'+'iconka.png')){
+          row['img'] = `img/User/`+row.id +`/`+ `iconka.png`;
+        }else{
+          row['img'] = `img/anonym.jpg`;
+        }
         row['favorite'] = favorite;   
         row['basket'] = basket;
         age = time(row.age);
@@ -170,7 +180,8 @@ app.post('/Log', function(req,res,next){
         if(req.body.password == row.password){
           req.session.username = row.username;
           age = row.age;
-          res.redirect('/Basa');
+          req.session.cena = null
+          res.redirect('/Basa')
         }else{
           res.send('false');
         };
@@ -181,11 +192,15 @@ app.post('/Log', function(req,res,next){
             y = y['COUNT(*)'];
             y += 1;
             let ids = [];
+            const folderName = '../animeshop/css/img/User/' +y;
+            const folderPath = path.join(folderName);
+            mkdir(folderPath, { recursive: true });
             ids = JSON.stringify(ids);
             req.session.username = 'user' + y
-            let save = db.prepare('INSERT INTO user(id, username, mail, password, id_favorite, id_basket, id_orders) VALUES (?, ?, ?, ?, ?, ?)', [y, req.session.username, req.body.email, req.body.password, ids, ids, ids]);
+            let save = db.prepare('INSERT INTO user(id, username, mail, password, id_favorite, id_basket, id_orders) VALUES (?, ?, ?, ?, ?, ?,?)', [y, req.session.username, req.body.email, req.body.password, ids, ids, ids]);
             save.run();
             save.finalize();
+            req.session.cena = null
             res.redirect('/Basa');
           });
         }else{
@@ -446,109 +461,96 @@ app.post('/Favor_basket', function(req,res){
     });
   });
 });
-app.post('/Basa_update', function(req,res){
-  let text = 'UPDATE user SET ';
-  let update;
-  let username;
-  if(req.body.nick){
-    text += 'username = ';
-    update = req.body.nick;
-    username = req.session.username;
-    req.session.username = req.body.nick;
-  }else if(req.body.name){
-    text += 'name = ';
-    update = req.body.name;
-  }else if(req.body.surname){
-    text += 'surname = ';
-    update = req.body.surname;
-  }else if(req.body.phone){
-    text += 'phone = ';
-    update = req.body.phone;
-  }else if(req.body.email){
-    text += 'mail = ';
-    update = req.body.email;
-  }else{
-    text += 'age = ';
-    update = req.body.age; 
-  };
-  if(req.session.username != req.body.nick){
-    username = req.session.username;
-  };
-  text += '? WHERE username = ?';
-  db.serialize(function(){
-    let save = db.prepare(text, [update,username]);
-    save.run();
-    save.finalize();
+app.post('/Basa_update', function(req, res) {
+  let now = req.body; 
+  db.serialize(function() {
+    db.get('SELECT id FROM user WHERE username = ?', [req.session.username], function(err, row) { 
+      let save = db.prepare('UPDATE user SET username = ?, name = ?, surname = ?, phone = ?, mail = ?, age = ? WHERE id = ?');
+      save.run(now.nickname, now.name, now.surname, now.phone, now.email, now.age, row.id, function(err) {
+        save.finalize();
+        req.session.username = now.nickname; 
+        res.send('true');
+      });
+    });
   });
-  res.send('true');
 });
 app.get('/Catalog', function(req,res){
   db.serialize(function(){
-    let items
-    let text;
-    let value;
-    let template;
+    let text = `SELECT * FROM goods WHERE`;
+    let template = [];
+    if(req.session.value){
+      if(req.session.key){ 
+        text += ` Category = ?`;
+        template.push(req.session.value);    
+      }else{
+        text += ` SUBSTRING(name,1,?) = ?`;
+        template.push(req.session.value.length,req.session.value);    
+      };
+    };
+    if(req.session.cena){
+      if(req.session.cena['discount'] != 0){
+        if(text == `SELECT * FROM goods WHERE`){
+          text += ` discount >= ?`
+        }else{
+          text += ` AND discount >= ?`
+        }
+        template.push(req.session.cena['discount'])
+      }
+      if(req.session.cena['rating_4_stars']){
+        if(text == `SELECT * FROM goods WHERE`){
+          text += ` Rating >= ?`
+        }else{
+          text += ` AND Rating >= ?`
+        }
+        template.push(4)
+      }
+      if(req.session.cena['price_from']){
+        if(text == `SELECT * FROM goods WHERE`){
+          text += ` price >= ?`
+        }else{
+          text += ` AND price >= ?`
+        }
+        template.push(req.session.cena['price_from'])
+      }
+      if(req.session.cena['price_to'] != 0){
+        if(text == `SELECT * FROM goods WHERE`){
+          text += ` price <= ?`
+        }else{
+          text += ` AND price <= ?`
+        }
+        template.push(req.session.cena['price_to'])
+      }
+    }else if(text == `SELECT * FROM goods WHERE`){
+      text += ` 1 = ?`;
+      template = [1];
+    };
+    if(req.session.sorting == undefined || req.session.sorting == 1){
+      req.session.sorting = 1
+      text += ` ORDER BY (Rating + Reviews) DESC;`
+    }else if(req.session.sorting == 2){
+      text += ` ORDER BY Rating DESC;`
+    }else if(req.session.sorting == 3){
+      text += ` ORDER BY price ASC;`
+    }else{
+      text += ` ORDER BY price DESC;`
+    }
+    let filtir = req.session.cena
     if(req.session.username){
       db.get('SELECT age, id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,rod){
-        if(req.session.value){
-          if(req.session.key){ 
-              text = `SELECT * FROM goods WHERE Category = ?`;
-              template = [req.session.value];    
-          }else{
-            text = `SELECT * FROM goods WHERE SUBSTRING(name,1,?) = ?`;
-            template = [req.session.value.length,req.session.value];    
-          };
-        }else{
-          text = `SELECT * FROM goods WHERE 1 = ?`;
-          template = [1];
-        };
-        if(req.session.sorting == undefined || req.session.sorting == 1){
-          req.session.sorting = 1
-          text += ` ORDER BY (Rating + Reviews) DESC;`
-        }else if(req.session.sorting == 2){
-          text += ` ORDER BY Rating DESC;`
-        }else if(req.session.sorting == 3){
-          text += ` ORDER BY price ASC;`
-        }else{
-          text += ` ORDER BY price DESC;`
-        }
         db.all(text,template, function (err,items){
           items = imgsellaction(items, rod.id_favorite, rod.id_basket, req.session.username);
           let basket = items[2];
           let favorite = items[1];
           items = items[0]; 
           age = time(rod.age);
-
-          res.render('Catalog.html', {username: req.session.username,items,key: req.session.key,value: req.session.value,basket,favorite,age,sorting: req.session.sorting});
+          res.render('Catalog.html', {username: req.session.username,items,key: req.session.key,value: req.session.value,basket,favorite,age,sorting: req.session.sorting,filtir});
         });
       });             
     }else{
-      if(req.session.value){
-        if(req.session.key){
-          text = `SELECT * FROM goods WHERE category = ?`;
-          template = [req.session.value];   
-        }else{
-          text = `SELECT * FROM goods WHERE SUBSTRING(name,1,?) = ?`;
-          template = [req.session.value.length,req.session.value];
-        }
-      }else{
-        text = `SELECT * FROM goods WHERE 1 = ?`;
-        template = [1];        
-      };
-      if(req.session.sorting == undefined || req.session.sorting == 1){
-        req.session.sorting = 1
-        text += ` ORDER BY (Rating + Reviews) DESC;`
-      }else if(req.session.sorting == 2){
-        text += ` ORDER BY Rating DESC;`
-      }else if(req.session.sorting == 3){
-        text += ` ORDER BY price ASC;`
-      }else{
-        text += ` ORDER BY price DESC;`
-      }
       db.all(text,template, function (err,items){
         items = imgsellaction(items, null, null, null);
         items = items[0]
-        res.render('Catalog.html',{items,age,log,key: req.session.key,value: req.session.value,sorting: req.session.sorting});
+        res.render('Catalog.html',{items,age,log,key: req.session.key,value: req.session.value,sorting: req.session.sorting,filtir});
       }); 
     };
   });
@@ -585,6 +587,10 @@ app.post('/Filtirspisok', function(req,res){
   req.session.sorting = req.body.ids
   res.send('true')
 });
+app.post('/Filtirpromax',function(req,res){
+  req.session.cena = req.body
+  res.json({'id': 'хуй'})
+});
 app.get('/Reviews', function(req,res){
   if(req.session.username){
     db.serialize(function(){
@@ -608,12 +614,33 @@ app.post('/Reviews', function(req,res) {
   items.user =  req.session.username;
   let ids = items.id;
   delete items.id;
-  
   db.serialize(function(){
-    items = JSON.stringify(items);
-    let save = db.prepare('UPDATE goods SET Reviews_user = ? WHERE id = ? ', [items,ids]);
-    save.run();
-    save.finalize();
+    db.get('SELECT id FROM user WHERE username = ?', [req.session.username], function(err,row){
+      if(fs.existsSync('css/img/User/'+row.id + '/'+'iconka.png')){
+        items['img'] = `img/User/`+row.id + `/iconka.png`;
+      }else{
+        items['img'] = `img/anonym.jpg`;
+      }
+      db.get('SELECT Reviews_user FROM goods WHERE id = ?',[ids], function(err,item){
+        let now = JSON.parse(item.Reviews_user);
+        let x = true;  
+        for(let i = 0; i <= now.length-1; i++){    
+          if(now[i]['img'] === items['img']){
+            now[i] = items
+            x = false
+          }
+        }
+        if(x){
+          now.unshift(items);
+        }
+
+        
+        now = JSON.stringify(now);
+        let save = db.prepare('UPDATE goods SET Reviews_user = ? WHERE id = ? ', [now,ids]);
+        save.run();
+        save.finalize();
+      });
+    });
   });
   res.send('true');
 });
@@ -643,7 +670,6 @@ app.get('/Orders', function(req,res){
           };
           db.all(text, function(err,item){
             imgsellaction(item, null, null, null);
-            console.log(item)
             res.render('bought-goods.html',{username: req.session.username,item,basket,favorite});
           });
         }else{
@@ -657,6 +683,20 @@ app.get('/Orders', function(req,res){
 });
 app.post('/Orders', function(req,res){
   res.redirect('/Reviews?id='+req.query.id)
+});
+app.post('/Basaimg', function(req,res){
+  db.get('SELECT id, username FROM user WHERE username = ? ', [req.session.username], function(err, row) {
+    console.log(req.files);
+    if(req.files != null){
+        req.files.File.name = "iconka.png"
+        req.files.File.mv('../animeshop/css/img/User/' + row.id + '/' + req.files.File.name);
+      }
+  });
+  res.redirect('/Basa')
+});
+app.post('/Basaleave',function(req,res){
+  req.session.username = null;
+  res.send('true');
 });
 app.use(function(req, res){
   res.status(404);
