@@ -8,7 +8,7 @@ function buttoning() {
         "email": document.querySelector("#floatingInput").value,
         "birth-date": document.querySelector("#AgeInput").value
     }
-    if(document.querySelector("#NameInput").value &&
+    if(document.querySelector("#NicknameInput").value &&
     document.querySelector("#floatingInput").value){
         fetch('/Basa_update', {
            method: 'POST',

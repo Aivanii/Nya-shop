@@ -517,6 +517,7 @@ ul {
 }
 
 .settings-user-img {
+  object-fit: cover;
   position: relative;
   width: 12rem;
   border-radius: 255px;
@@ -1040,9 +1041,6 @@ footer {
   padding-bottom: 0.5rem;
 }
 
-.footer_container>div>ol>li>a {
-  color: #cecece90 !important;
-}
 
 .user-settings-input-icon {
   position: relative;
@@ -1258,6 +1256,7 @@ footer {
   padding-right: 1rem;
   resize: none;
   height: 8rem;
+  overflow: hidden;
 }
 
 .ss,
@@ -1279,7 +1278,7 @@ footer {
 }
 
 .review-container {
-  max-width: 1200px;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -1364,12 +1363,14 @@ footer {
 .main-card-payment-container {
   margin-left: auto;
   margin-right: auto;
-  margin-top: 30%;
+  margin-top: clamp(8px, 8vw, 6rem);
+  margin-bottom: clamp(8px, 5vw, 4.3rem);
   justify-content: center;
   display: flex;
 }
 
 .main-card-payment-container>form {
+  border: 2px solid #4e4959;
   border-radius: 1rem;
   padding: 1rem;
   background: linear-gradient(135deg, #262641, #231a2b);
@@ -1459,4 +1460,14 @@ option:hover {
 }
 .submit-file-button:hover + #preview-img-span{
   opacity: 1;
+}
+.payment_hr{
+  color: #cecece;
+}
+.footer_container a{
+  color:#cecece90;
+  transition: color .4s;
+}
+.footer_container a:hover{
+  color:white;
 }

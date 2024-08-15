@@ -36,12 +36,15 @@
                                 {% else %}
                                     <p class="actual-price">{{items.price}} ₽</p>
                                 {% endif %}
+                                <span>{{items.Rating}}<span style = "color: gold;">★</span></span>
                                 <form style = "margin-left: auto;" action="/Favorite" method = "POST" >
                                     <button class="btn-close btn-close-white transform_scaler" aria-label="Close" id = {{items.id}} onclick = 'favorite(this)'></button>
                                 </form>
                             </div>
-                            <p>
-                                {{items.value}}
+                            <p style="margin-top: 0.5rem;">
+                                <a href = "/Goods?id={{items.id}}">
+                                    {{items.value}}
+                                </a>
                             </p> 
                             <form action="/Favor_basket" method = "POST" >
                                 <button type = "submit" class = "favorite_button transform_scaler"  name = 'id' value = {{items.id}}> В корзину </button>

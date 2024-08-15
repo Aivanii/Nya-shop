@@ -149,6 +149,8 @@
               </div>
               <span class = "btn catalog-submit-button transform_scaler">Принять</span>
               <script src="js/send-catalog-filters.js"></script>
+              <span class = "btn catalog-submit-button transform_scaler" id = "reset_filters_btn">Сбросить фильтры</span>
+              <script src="js/send-remove-filter.js"></script>
             </div>
           </form>
           </div>
@@ -187,6 +189,7 @@
                     {% else %}
                       <p class="actual-price">{{item.price}} ₽</p>
                     {% endif %}
+                    <span>{{item.Rating}}<span style = "color: gold;">★</span></span>
                   </div>
                   <p class="good-title">
                     {{item.value}}
@@ -215,6 +218,7 @@
                   {% else %}
                     <p class="actual-price">{{item.price}} ₽</p>
                   {% endif %}
+                  <span>{{item.Rating}}<span style = "color: gold;">★</span></span>
                 </div>
                 <p class="good-title">
                   {{item.value}}
