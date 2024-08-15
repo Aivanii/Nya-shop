@@ -144,41 +144,43 @@
     </div>
     <div class = "description_container">
         <h4>Отзывы: </h4>
-        <div class = "comment">
-            <div class = "comment_container" style = "display: flex; justify-content: space-between;">
-                <div style = "display: flex;">
-                    <img src = "img/goods/Natsuki-poster/Natsuki-poster.png">
-                    <h4 style = "align-self: center; padding-left: clamp(2px, 2vw, 8px);">{{Reviews_user.user}}</h4>
-                </div>
-                <div style = "display: flex;">
-                    <span style = "align-self: center;">{{Reviews_user.Data}}</span>
-                    
-                    <div style = "align-self: center;" class = "rating" data-rating = '{{Reviews_user.rating}}'>
+        {% for item in Reviews_user %}
+            <div class = "comment">
+                <div class = "comment_container" style = "display: flex; justify-content: space-between;">
+                    <div style = "display: flex;">
+                        <img src = {{item.img}}>
+                        <h4 style = "align-self: center; padding-left: clamp(2px, 2vw, 8px);">{{item.user}}</h4>
+                    </div>
+                    <div style = "display: flex;">
+                        <span style = "align-self: center;">{{item.Data}}</span>
+                        
+                        <div style = "align-self: center;" class = "rating" data-rating = '{{item.rating}}'>
+                        </div>
                     </div>
                 </div>
+                <br>
+                <div class = "comment_container">
+                    {% if item.dignities %}
+                        <span>Достоинства</span>
+                        <article>
+                            {{item.dignities}}
+                        </article>
+                    {% endif %}
+                    {% if item.disadvantages %}
+                        <span>Недостатки</span>
+                        <article>
+                            {{item.disadvantages}}
+                        </article>
+                    {% endif %}
+                    {% if item.comment %}
+                        <span>Комментарий к отзыву</span>
+                        <article>
+                            {{item.comment}}
+                        </article>
+                    {% endif %}
+                </div>
             </div>
-            <br>
-            <div class = "comment_container">
-                {% if Reviews_user.dignities %}
-                    <span>Достоинства</span>
-                    <article>
-                        {{Reviews_user.dignities}}
-                    </article>
-                {% endif %}
-                {% if Reviews_user.disadvantages %}
-                    <span>Недостатки</span>
-                    <article>
-                        {{Reviews_user.disadvantages}}
-                    </article>
-                {% endif %}
-                {% if Reviews_user.comment %}
-                    <span>Комментарий к отзыву</span>
-                    <article>
-                        {{Reviews_user.comment}}
-                    </article>
-                {% endif %}
-            </div>
-        </div>
+        {% endfor %}
     </div>
     <div class = "description_container">
         <span><b>Нашли ошибку?</b> <a href = "#" color = "blue"

@@ -1,5 +1,4 @@
-const $button = document.querySelector("#submit-button");
-$button.onclick = function () {
+function buttoning() {
     const data = {
          
         "nickname": document.querySelector("#NicknameInput").value,
@@ -9,19 +8,18 @@ $button.onclick = function () {
         "email": document.querySelector("#floatingInput").value,
         "birth-date": document.querySelector("#AgeInput").value
     }
-    if(document.querySelector("#NameInput").value &&
+    if(document.querySelector("#NicknameInput").value &&
     document.querySelector("#floatingInput").value){
-    //настрой тут ссылки
-    //fetch('/Reviews', {
-    //    method: 'POST',
-    //    headers: { 'Content-Type': 'application/json' },
-    //    body: JSON.stringify(data),
-    //})
-    //.then(res => res.json(
-    //    window.location.href = 'http://localhost:3000/Basa'
-    //))
-    //.catch(error => console.error('Ошибка:', error));
-    }
+        fetch('/Basa_update', {
+           method: 'POST',
+           headers: { 'Content-Type': 'application/json' },
+           body: JSON.stringify(data),
+        })
+        .then(res => res.json(
+           window.location.href = 'http://localhost:3000/Basa'
+        ))
+        .catch(error => console.error('Ошибка:', error));
+        }
     else{
         alert("Введите верные данные");
     }

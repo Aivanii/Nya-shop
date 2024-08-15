@@ -6,52 +6,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Страница пользователя</title>
     <link rel="shortcut icon" href="img/nya_logo_small.svg" />
-    <link href= "bootstrap.css" rel="stylesheet">
-    <link href="style.css" rel="stylesheet" >
+    <link href="bootstrap.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
 </head>
-    
-<body>
-{% include "set_navbar.html" %}
-<div class = "user-title">
-    <h1>Заказы</h1>
-</div>
-<div class = "user-data-container">
-    <div class = "profile-menu-widget">
-        {% include "profile_ul.html" %}
-    </div>
-    очень скоро здесь будут заказы
 
-<!--шаблон для товаров-->
-    {% for items in item %}
-        <div class = "favorite_good">
-            <img src = "{{items.img}}"
-            loading="lazy" alt = "{alt_good}"/>
-            <div class = "favorite_good_text_container">
-                <div class="card-container-price card-title" style = "height: 20%;">
+<body>
+    {% include "set_navbar.html" %}
+    <div class="user-title">
+        <h1>Заказы</h1>
+    </div>
+    <div class="user-data-container">
+        <div class="profile-menu-widget">
+            {% include "profile_ul.html" %}
+        </div>
+        <div class="user-settings-container" style="display: block;">
+            <div class="favorite_goods_container">
+                <div class="favorite_good">
+                    <img src="data:image/jpeg;base64,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"
+                        loading="lazy" alt="{alt_good}" />
+                    <div class="favorite_good_text_container">
+                        <div class="card-container-price card-title" style="height: 20%;
+                        justify-content: space-between">
+                            <p class="actual-price" style = "margin-bottom: 0;">10 ₽</p>
+                            <span>4<span style = "color: gold;">★</span></span>
+                        </div>
+                        
+                        <p style="margin-top: 0.5rem; margin-bottom: 0;">
+                            Картофелина вкусная очень удивлённая и странная 
+                        </p>
+                        
+                        <form action="/Orders?id=0000001" method="POST">
+                            <button type="submit" class="favorite_button transform_scaler" value='{{items.id}}'
+                                name='id'>Написать Отзыв</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--шаблон для товаров-->
+        {% for items in item %}
+        <div class="favorite_good">
+            <img src="{{items.img}}" loading="lazy" alt="{alt_good}" />
+            <div class="favorite_good_text_container">
+                <div class="card-container-price card-title" style="height: 20%;">
                     {% if item.discount %}
-                        <p class="actual-price">{{items.sell | round}} ₽</p>
-                        <p class="crossed-price">{{items.price}} ₽</p>
-                        <p class="discount-price">-{{items.discount}}% </p> 
+                    <p class="actual-price">{{items.sell | round}} ₽</p>
+                    <p class="crossed-price">{{items.price}} ₽</p>
+                    <p class="discount-price">-{{items.discount}}% </p>
                     {% else %}
-                        <p class="actual-price">{{items.price}} ₽</p>
+                    <p class="actual-price">{{items.price}} ₽</p>
                     {% endif %}
                 </div>
-                <p style = "margin-top: 0.5rem;">
+                <p style="margin-top: 0.5rem;">
                     {{items.name}}
-                </p> 
-                <form action="/Orders?id={{items.id}}" method = "POST" >
-                    <button type = "submit" class = "favorite_button transform_scaler" value = '{{items.id}}' name = 'id'>Написать Отзыв</button>
+                </p>
+                <form action="/Orders?id={{items.id}}" method="POST">
+                    <button type="submit" class="favorite_button transform_scaler" value='{{items.id}}'
+                        name='id'>Написать Отзыв</button>
                 </form>
             </div>
         </div>
-    {% endfor %}
-<!--х-->
+        {% endfor %}
+        <!--х-->
 
-</div>
-<footer id = "footer">
-</footer>
-<script src="js/set_navbar.js"></script>
-<script src="js/bootstrap.bundle.js"></script>
-<script src="js/set_footer.js"></script>
+    </div>
+    <footer id="footer">
+    </footer>
+    <script src="js/set_navbar.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/set_footer.js"></script>
 </body>
+
 </html>

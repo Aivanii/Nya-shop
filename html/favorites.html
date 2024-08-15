@@ -36,6 +36,7 @@
                                 {% else %}
                                     <p class="actual-price">{{items.price}} ₽</p>
                                 {% endif %}
+                                <span>сюда рейтинг, б<span style = "color: gold;">★</span></span>
                                 <form style = "margin-left: auto;" action="/Favorite" method = "POST" >
                                     <button class="btn-close btn-close-white transform_scaler" aria-label="Close" id = {{items.id}} onclick = 'favorite(this)'></button>
                                 </form>

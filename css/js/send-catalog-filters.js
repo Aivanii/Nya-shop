@@ -1,7 +1,7 @@
 $button = document.querySelector(".catalog-submit-button");
 let chosen_discount = 0;
 $button.onclick = function() {
-    data = {}
+    let data = {}
     data["discount"] = chosen_discount;
 
     const rating_button = document.querySelector("#flexSwitchCheckChecked12");
@@ -11,11 +11,11 @@ $button.onclick = function() {
     let price_from = document.querySelector(".ss").value;
     if(!price_from){price_from = 0;}
 
-    data["price_from"] = price_from 
+    data["price_from"] = Number(price_from);
 
     const price_to = document.querySelector(".ss1").value;
 
-    data["price_to"] = price_to;
+    data["price_to"] = Number(price_to);
 
     console.log(data)
 
@@ -24,13 +24,14 @@ $button.onclick = function() {
     }
     else{
         console.log("отправка файла: ", data)
-        //fetch('/вставь потом сюда ссылку, б', {
-        //method: 'POST',
-        //headers: {'Content-Type': 'application/json'},
-        //body: JSON.stringify(data)
-        //})
-        //.then(res => res.json())
-        //.catch(error => console.error('Ошибка:', error));
+        fetch('/Filtirpromax', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .catch(error => console.error('Ошибка:', error));
+        window.location.href = window.location.href
     }
 }
 //rating 4*

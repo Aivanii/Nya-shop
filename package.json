@@ -5,7 +5,10 @@
     "express": "^4.19.2",
     "express-fileupload": "^1.5.0",
     "express-session": "^1.18.0",
+    "fs": "^0.0.1-security",
+    "fs.promises": "^0.1.2",
     "nunjucks": "^3.2.4",
+    "path": "^0.12.7",
     "sqlite3": "^5.1.7"
   }
 }

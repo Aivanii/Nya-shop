@@ -2,64 +2,78 @@
 <html lang="">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Nya~ shop</title>
-    <link rel="shortcut icon" href="img/nya_logo_small.svg" />
-    <link href="bootstrap.css" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nya~ shop</title>
+  <link rel="shortcut icon" href="img/nya_logo_small.svg" />
+  <link href="bootstrap.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
 </head>
 
 <body>
-{% include "set_navbar.html" %}
-<div class = "user-data-container">
-  <div class = "profile-menu-widget">
-    {% include "profile_ul.html" %}
+  {% include "set_navbar.html" %}
+  <div class="user-title">
+    <h1>Отзыв на товар: {{name}}</h1>
   </div>
-  <form class="review-container">
-    <div class="review-flex-container">
-      <img class = "review-image" src="{{img[0]}}" alt="Изображение товара: {{name}}">
-      <h2 class = "review-name">{{name}}
-      </h2>
+  <div class="user-data-container">
+    <div class="profile-menu-widget">
+      {% include "profile_ul.html" %}
     </div>
-    <div class="flex_container center-container" style = "justify-content: center">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="d3012-a3" style="color: rgba(0, 26, 52, 0.6);"><path fill="currentColor" d="M12 21c5.584 0 9-3.416 9-9s-3.416-9-9-9-9 3.416-9 9 3.416 9 9 9m1-13a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-2 4a1 1 0 1 1 2 0v4a1 1 0 1 1-2 0z"></path></svg>
-      <span class = "review_text" style = "margin-left: 0.5rem;">Вы можете оставить отзыв без комментариев, 
-        выбрав только оценку данного товара.
-      </span>
-    </div>
-    <div>
-      <div class="flex_container center-container" style = "justify-content: center">
-        <div id = "spans-holder">
-        </div>
-        <span class = "review_text" style = "margin-left: 0.5rem;" id = "label-span" data-rate = "0">Оцените покупку</span>
-        <span>|</span>
-        <span class = "review_text review_button transform_scaler" >Не оценивать покупку</span>
-        <script src="js/make_star_rating.js"></script>
+    <div class="user-settings-container" style="display: block;">
+      <div>
+        <form class="review-container">
+          <div class="review-flex-container">
+            <img class="review-image" src="{{img[0]}}" alt="Изображение товара: {{name}}">
+            <h2 class="review-name">{{name}}
+            </h2>
+          </div>
+          <div class="flex_container center-container" style="justify-content: center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="d3012-a3"
+              style="color: rgba(0, 26, 52, 0.6);">
+              <path fill="currentColor"
+                d="M12 21c5.584 0 9-3.416 9-9s-3.416-9-9-9-9 3.416-9 9 3.416 9 9 9m1-13a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-2 4a1 1 0 1 1 2 0v4a1 1 0 1 1-2 0z">
+              </path>
+            </svg>
+            <span class="review_text" style="margin-left: 0.5rem;">Вы можете оставить отзыв без комментариев,
+              выбрав только оценку данного товара.
+            </span>
+          </div>
+          <div>
+            <div class="flex_container center-container" style="justify-content: center">
+              <div id="spans-holder">
+              </div>
+              <span class="review_text" style="margin-left: 0.5rem;" id="label-span" data-rate="0">Оцените
+                покупку</span>
+              <span>|</span>
+              <span class="review_text review_button transform_scaler">Не оценивать покупку</span>
+              <script src="js/make_star_rating.js"></script>
+            </div>
+            <div class="textareas-container">
+              <span>Достоинства</span>
+              <textarea maxlength="500" class="review-textarea"></textarea>
+              <span>Недостатки</span>
+              <textarea maxlength="500" class="review-textarea"></textarea>
+              <span>Комментарий к отзыву</span>
+              <textarea maxlength="500" class="review-textarea"></textarea>
+            </div>
+            <button class="btn review_submit_button transform_scaler" value='{{id}}' type="submit">Оставить
+              отзыв</button>
+          </div>
+        </form>
       </div>
-      <div class="textareas-container">
-        <span>Достоинства</span>
-        <textarea maxlength="500" class = "review-textarea"></textarea>
-        <span>Недостатки</span>
-        <textarea maxlength="500" class = "review-textarea"></textarea>
-        <span>Комментарий к отзыву</span>
-        <textarea maxlength="500" class = "review-textarea"></textarea>
-      </div>
-      <button class = "btn review_submit_button transform_scaler" value = '{{id}}' type = "submit">Оставить отзыв</button>
     </div>
-  </form>
-</div>
+  </div>
 
-<footer id="footer">
-</footer>
-<script src="js/set_navbar.js"></script>
-<script src="js/set_favorite.js"></script>
-<script src="js/bootstrap.bundle.js"></script>
-<script src="js/set_footer.js"></script>
-<script src="js/set_navbar_history.js"></script>
-<script src="js/set_filter.js"></script>
-<script src="js/set_navbar_bottom.js"></script>
-<script src="js/send_review_data.js"></script>
+  <footer id="footer">
+  </footer>
+  <script src="js/set_navbar.js"></script>
+  <script src="js/set_favorite.js"></script>
+  <script src="js/bootstrap.bundle.js"></script>
+  <script src="js/set_footer.js"></script>
+  <script src="js/set_navbar_history.js"></script>
+  <script src="js/set_filter.js"></script>
+  <script src="js/set_navbar_bottom.js"></script>
+  <script src="js/send_review_data.js"></script>
 </body>
 
 </html>
