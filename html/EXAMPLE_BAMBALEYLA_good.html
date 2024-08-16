@@ -25,7 +25,6 @@
         <h2>
             {{name}}
         </h2>
-        <br>
         <span class = "code_good_span">{{id}}</span>  
     </div>
 
@@ -60,8 +59,7 @@
         <div class = "grid_container">
             <!--good-name-->
             <div class = "good_name">
-                <h2 style = "margin-top: -1.5rem;">{{name}}</h2>
-                <span>{{value}}</span>
+                <span>{{name}}</span>
             </div>
             <!---->
 
@@ -137,6 +135,12 @@
                 {% endif %}
             {% endfor %}
         </table>
+    </div>
+    <div class = "description_container">
+        <h4>Описание товара: </h4>
+        <article>
+            {{value}}
+        </article>
     </div>
     <div class = "description_container">
         <h4>Отзывы: </h4>
