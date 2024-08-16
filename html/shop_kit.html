@@ -19,51 +19,44 @@
     <div class = "profile-menu-widget" id = "profile-menu-widget">
         {% include "profile_ul.html" %}
     </div>
-
     <div class = "user-settings-container" style = "display: block;">
         <div class = "favorite_goods_container">
             <!--goods-->
-            {% for item in items %}
-                <!-- <a href = "/Goods?id={{item.id}}"> -->
-                    <div class = "favorite_good">
-                        <img src = {{item.img}} loading="lazy" alt = "{alt_good}"/>
-                        <div class = "favorite_good_text_container">
-                            <div class="card-container-price card-title" style = "height: 20%;">
-                                {% if value.sell != value.price %}
-                                    <p class="actual-price">{{item.sell | round}} ₽</p>
-                                    <p class="crossed-price">{{item.price}} ₽</p>
-                                {% else %}
-                                    <p class="actual-price">{{item.price}} ₽</p>
-                                {% endif %}
-                                <span>сюда рейтинг, б<span style = "color: gold;">★</span></span>
-                                <div style = "margin-left: auto;">
-                                    <input class = "button_toggle button_minus disabled_button_toggle" type="button" value="-">
-                                    <span class = "buttons_span">{{item.amount}}</span>
-                                    <input class = "button_toggle transform_scaler button_plus" type="button" value="+">
-                                </div>
+            {% for item in items %}                
+                <div class = "favorite_good">
+                    <img src = {{item.img}} loading="lazy" alt = "{alt_good}"/>
+                    <div class = "favorite_good_text_container">
+                        <div class="card-container-price card-title" style = "height: 20%;">
+                            {% if item.sell != item.price %}
+                                <p class="actual-price">{{item.sell | round}} ₽</p>
+                                <p class="crossed-price">{{item.price}} ₽</p>
+                            {% else %}
+                                <p class="actual-price">{{item.price}} ₽</p>
+                            {% endif %}
+                            <span>{{item.Rating}}<span style = "color: gold;">★</span></span>
+                            <div style = "margin-left: auto;">
+                                <input class = "button_toggle button_minus disabled_button_toggle" type="button" value="-">
+                                <span class = "buttons_span">{{item.amount}}</span>
+                                <input class = "button_toggle transform_scaler button_plus" type="button" value="+">
                             </div>
-                            <p style = "margin-top: 0.5rem;">
-                                {{item.value}}
-                            </p> 
-                            <form action="/Basket" method = "POST" >
-                                <button type = "submit" class = "favorite_button transform_scaler" value = {{item.id}} name = 'id'>Убрать из корзины </button>
-                            </form>
                         </div>
+                        <p style = "margin-top: 0.5rem;">
+                            <a href = "/Goods?id={{item.id}}">
+                                {{item.value}}
+                            </a>
+                        </p> 
+                        <form action="/Basket" method = "POST" >
+                            <button type = "submit" class = "favorite_button transform_scaler" value = {{item.id}} name = 'id'>Убрать из корзины </button>
+                        </form>
                     </div>
-                <!-- </a> -->
-            {% endfor %}
-            
+                </div>
+            {% endfor %}            
         </div>
         <div>
-            <form>
-                <button type = "submit" id = "text_area" class = "buy_button transform_scaler">Перейти к оплате заказа на сумму ${total_price} рублей
-                    (б, вставь ссылку на переход на страницу с оплатой(payment.html))
-                </button>
+            <form action="/Basket_pay" method = 'POST'>
+                <button type = "submit" id = "text_area" class = "buy_button transform_scaler">Перейти к оплате заказа на сумму ${total_price} рублей</button>
             </form>
         </div>
-        </div>
-
-        
     </div>
 </div>
 <p id = "total_price_show">--</p>

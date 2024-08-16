@@ -16,6 +16,7 @@ $button.onclick = function() {
             break;
         }
     }
+    data["email"] = document.querySelector("#email_input").value;
     if(is_okay == true){
         fetch('/вставь потом сюда ссылку, б', {
         method: 'POST',
@@ -24,5 +25,7 @@ $button.onclick = function() {
         })
         .then(res => res.json())
         .catch(error => console.error('Ошибка:', error));
+    }else{
+        alert("Пожалуйста, введите корректные данные");
     }
 }

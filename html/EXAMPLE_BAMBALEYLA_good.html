@@ -25,6 +25,7 @@
         <h2>
             {{name}}
         </h2>
+        <br>
         <span class = "code_good_span">{{id}}</span>  
     </div>
 
@@ -59,7 +60,8 @@
         <div class = "grid_container">
             <!--good-name-->
             <div class = "good_name">
-                <span>{{name}}</span>
+                <h2 style = "margin-top: -1.5rem;">{{name}}</h2>
+                <span>{{value}}</span>
             </div>
             <!---->
 
@@ -137,12 +139,6 @@
         </table>
     </div>
     <div class = "description_container">
-        <h4>Описание товара: </h4>
-        <article>
-            {{value}}
-        </article>
-    </div>
-    <div class = "description_container">
         <h4>Отзывы: </h4>
         {% for item in Reviews_user %}
             <div class = "comment">
@@ -166,12 +162,14 @@
                             {{item.dignities}}
                         </article>
                     {% endif %}
+                    <br>
                     {% if item.disadvantages %}
                         <span>Недостатки</span>
                         <article>
                             {{item.disadvantages}}
                         </article>
                     {% endif %}
+                    <br>
                     {% if item.comment %}
                         <span>Комментарий к отзыву</span>
                         <article>
@@ -188,13 +186,8 @@
         </span>
     </div>
 </main>
-
-
-
-
 <footer id = "footer">
 </footer>
-
 <script src="js/set_navbar.js"></script>
 <script src = "js/set_favorite.js"></script>
 <script src="js/bootstrap.bundle.js"></script>

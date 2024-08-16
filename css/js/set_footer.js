@@ -12,23 +12,22 @@ html += `<div class = "footer_container">
 <div>
     <h5>Покупателям</h5>
     <ol>
-        <li><a href = "#">Как оформить заказ</a></li>
-        <li><a href = "#">Способы оплаты</a></li>
-        <li><a href = "#">Доставка</a></li>
+        <li><span class = "a123" onclick="alert('На данный момент нашим магазином предусмотрена оплата только с использованием банковских карт.')">Способы оплаты</span></li>
+        <li><span class = "a123" onclick="alert('На данный момент нашим магазином не предусмотрена доставка. Приносим свои извинения.')">Доставка</span></li>
     </ol>
 </div>
 <div>
     <h5>Поддержка</h5>
     <ol>
-        <li><a href = "#">Помощь</a></li>
-        <li><a href = "#">Обратная связь</a></li>
+        <li><a href = "mailto:govnocoders@mail.ru">Помощь</a></li>
+        <li><a href = "mailto:govnocoders@mail.ru">Обратная связь</a></li>
     </ol>
 </div>
 <div class = "contacts_container">
     <h5>Контакты</h5>
-    <span>8-800-555-35-35 (круглосуточно)</span>
+    <span>8 962 836-50-56 (Иван) круглосуточно</span>
     <br>
-    <span><b>Нашли ошибку?</b> <a href = "#" color = "blue"
+    <span><b>Нашли ошибку?</b> <a href = "mailto:govnocoders@mail.ru" color = "blue"
         style = "border-bottom: 1px dotted blue; color: blue;">Сообщить об ошибке</a>
     </span>
 </div>
