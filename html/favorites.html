@@ -1,0 +1,74 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=300, initial-scale=1">
+    <title>Страница пользователя {username}</title>
+    <link rel="shortcut icon" href="img/nya_logo_small.svg" />
+    <link href= "bootstrap.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" >
+</head>
+
+<body>
+{% include "set_navbar.html" %}
+
+<div class = "user-title">
+    <h1>Избранное</h1>
+</div>
+<div class = "user-data-container">
+    <div class = "profile-menu-widget" id = "profile-menu-widget">
+        {% include "profile_ul.html" %}
+    </div>
+
+    <div class = "user-settings-container">
+        <div class = "favorite_goods_container">
+            <!--favorite goods-->
+            {% for items in item %}
+                <!-- <a href = "/Goods?id={{item.id}}"> -->
+                    <div class = "favorite_good">
+                        <img src = {{items.img}} loading="lazy" alt = "{alt_good}"/>
+                        <div class = "favorite_good_text_container">
+                            <div class="card-container-price card-title" style = "height: 20%;">
+                                {% if items.discount != 0 %}
+                                    <p class="actual-price">{{items.sell | round}} ₽</p>
+                                    <p class="crossed-price">{{items.price}} ₽</p>
+                                {% else %}
+                                    <p class="actual-price">{{items.price}} ₽</p>
+                                {% endif %}
+                                {% if items.Rating != 0 %}
+                                    <span>{{items.Rating | round}}<span style = "color: gold;">★</span></span>
+                                {% else %}
+                                    <span>Нет отзывов</span>
+                                {% endif %}    
+                                <form action="/Favorite" method = "POST" >
+                                    <button class="btn-close btn-close-white transform_scaler" aria-label="Close" id = {{items.id}} onclick = 'favorite(this)'></button>
+                                </form>
+                            </div>
+                            <p>
+                                <a href = "/Goods?id={{items.id}}">
+                                    {{items.value}}
+                                </a>
+                            </p> 
+                            <form action="/Favor_basket" method = "POST" >
+                                <button type = "submit" class = "favorite_button transform_scaler"  name = 'id' value = {{items.id}}> В корзину </button>
+                            </form>
+
+                        </div>
+                    </div>
+                <!-- </a> -->
+            {% endfor %}
+            <!-- ctrl+c - ctrl+v -->
+           
+            <!--хх-->
+        </div>
+    </div>
+</div>
+<footer id = "footer">
+</footer>
+<script src="js/set_navbar.js"></script>
+<script src = "js/set_favorite.js"></script>
+<script src="js/bootstrap.bundle.js"></script>
+<script src="js/set_footer.js"></script>
+</body>
+</html>

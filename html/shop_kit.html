@@ -1,0 +1,74 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=300, initial-scale=1">
+    <title>Страница пользователя {username}</title>
+    <link rel="shortcut icon" href="img/nya_logo_small.svg" />
+    <link href= "bootstrap.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" >
+</head>
+
+<body>
+{% include "set_navbar.html" %}
+<div class = "user-title">
+    <h1>Корзина</h1>
+</div>
+<div class = "user-data-container">
+    <div class = "profile-menu-widget" id = "profile-menu-widget">
+        {% include "profile_ul.html" %}
+    </div>
+    <div class = "user-settings-container" style = "display: block;">
+        <div class = "favorite_goods_container">
+            <!--goods-->
+            {% for item in items %}                
+                <div class = "favorite_good">
+                    <img src = {{item.img}} loading="lazy" alt = "{alt_good}"/>
+                    <div class = "favorite_good_text_container">
+                        <div class="card-container-price card-title" style = "height: 20%;">
+                            {% if item.discount != 0 %}
+                                <p class="actual-price">{{item.sell | round}} ₽</p>
+                                <p class="crossed-price">{{item.price}} ₽</p>
+                            {% else %}
+                                <p class="actual-price">{{item.price}} ₽</p>
+                            {% endif %}
+                            {% if item.Rating != 0 %}
+                                <span>{{item.Rating | round}}<span style = "color: gold;">★</span></span>
+                            {% else %}
+                                <span>Нет отзывов</span>
+                            {% endif %}    
+                            <div style = "margin-left: auto;">
+                                <input class = "button_toggle button_minus disabled_button_toggle" type="button" value="-">
+                                <span class = "buttons_span">{{item.amount}}</span>
+                                <input class = "button_toggle transform_scaler button_plus" type="button" value="+">
+                            </div>
+                        </div>
+                        <p style = "margin-top: 0.5rem;">
+                            <a href = "/Goods?id={{item.id}}">
+                                {{item.value}}
+                            </a>
+                        </p> 
+                        <form action="/Basket" method = "POST" >
+                            <button type = "submit" class = "favorite_button transform_scaler" value = {{item.id}} name = 'id'>Убрать из корзины </button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}            
+        </div>
+        <div>
+            <form action="/Basket_pay" method = 'POST'>
+                <button type = "submit" id = "text_area" class = "buy_button transform_scaler">Перейти к оплате заказа на сумму ${total_price} рублей</button>
+            </form>
+        </div>
+    </div>
+</div>
+<p id = "total_price_show">--</p>
+<footer id = "footer">
+</footer>
+<script src="js/set_navbar.js"></script>
+<script src="js/bootstrap.bundle.js"></script>
+<script src = "js/count_goods.js"></script>
+<script src="js/set_footer.js"></script>
+</body>
+</html>

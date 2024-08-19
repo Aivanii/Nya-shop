@@ -1,0 +1,205 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nya~ shop</title>
+  <link rel="shortcut icon" href="img/nya_logo_small.svg" />
+  <link href= "bootstrap.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet" >
+</head>
+{% include "set_navbar.html" %}
+<body>
+<main class = "good_info">
+    <!-- <div class = "horizontal_container">
+        <ol class = "category_ol">
+            <li>Каталог</li>
+            <li>Аниме</li>
+            <li>Хоримия</li>
+            <li>Футболки</li>
+            <li>Футболка Изуми</li>
+        </ol>
+    </div> -->
+    <div class = "flex_container"  style = "display: flex;">
+        <h2>
+            {{name}}
+        </h2>
+        <span class = "code_good_span">{{id}}</span>  
+    </div>
+
+    <div class = "good_info_container">
+        <!--imgs-->
+        <div style = "width: 30vw; max-width: 25rem; margin-left: auto; margin-right: auto;">
+            <div id="carouselAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for x in img %}
+                        {% if loop.index == 1 %}
+                            <div class="carousel-item active">
+                                <img src= {{x}} class="d-block good_imgs" alt="...">
+                            </div>
+                        {% else %}
+                            <div class="carousel-item">
+                                <img src={{x}} class="d-block good_imgs" alt="...">
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselAutoplaying" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Предыдущий</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselAutoplaying" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Следующий</span>
+                </button>
+            </div>
+        </div>
+        <!---->
+        <div class = "grid_container">
+            <!--good-name-->
+            <div class = "good_name">
+                <span>{{name}}</span>
+            </div>
+            <!---->
+
+            <!--rating-->
+            {% if Rating != 0 %}
+                <div class = "rating" data-rating = {{Rating | round}} id = "rating_obj" data-counts = {{Reviews}} >
+                </div>
+            {% else %}
+                <span>Нет отзывов</span>
+            {% endif %}    
+            <!---->
+
+            <!--price-->
+            <div class = "price_good_container">
+                {% if discount != 0 %}
+                    <p class="actual-price">{{sell | round}} ₽</p>
+                    <p class="crossed-price">{{price}} ₽</p>
+                {% else %}
+                    <p class="actual-price">{{price}} ₽</p>
+                {% endif %}
+            </div>
+            <!---->
+
+            <!--share-button-->
+            <div class = "share_button">
+                <a href = "#">
+                    <img src = "img/share-svgrepo-com.svg">
+                </a>
+            </div>
+            <!---->
+
+            <!--favorite-button-->
+            <button class="add-to-favorite favorite-button transform_scaler" onclick="favorite(this)" id = {{id}} {{log}}>
+                <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#181826" fill-rule="evenodd" d="M12 22c-.316-.02-.56-.147-.848-.278a23.5 23.5 0 0 1-4.781-2.942C3.777 16.705 1 13.449 1 9a6 6 0 0 1 6-6 6.18 6.18 0 0 1 5 2.568A6.18 6.18 0 0 1 17 3a6 6 0 0 1 6 6c0 4.448-2.78 7.705-5.375 9.78a23.6 23.6 0 0 1-4.78 2.942c-.543.249-.732.278-.845.278M7 5a4 4 0 0 0-4 4c0 3.552 2.218 6.296 4.621 8.22A21.5 21.5 0 0 0 12 19.91a21.6 21.6 0 0 0 4.377-2.69C18.78 15.294 21 12.551 21 9a4 4 0 0 0-4-4c-1.957 0-3.652 1.396-4.02 3.2a1 1 0 0 1-1.96 0C10.652 6.396 8.957 5 7 5" clip-rule="evenodd"></path>
+                    <path fill="white" fill-rule="evenodd" d="M12 22c-.285-.018-.512-.123-.764-.24l-.084-.038a23.5 23.5 0 0 1-4.781-2.942C3.777 16.705 1 13.449 1 9a6 6 0 0 1 6-6 6.18 6.18 0 0 1 5 2.568q.3-.418.666-.78A6.18 6.18 0 0 1 17 3a6 6 0 0 1 6 6c0 4.448-2.78 7.705-5.375 9.78a23.6 23.6 0 0 1-4.78 2.942c-.543.249-.732.278-.845.278m0-17.959A7.18 7.18 0 0 1 17 2a7 7 0 0 1 7 7c0 4.897-3.061 8.41-5.75 10.562a24.6 24.6 0 0 1-4.989 3.07c-.566.258-.92.368-1.261.368h-.032l-.033-.002c-.484-.032-.881-.218-1.12-.33l-.077-.036a24.5 24.5 0 0 1-4.991-3.07C3.056 17.408 0 13.895 0 9a7 7 0 0 1 7-7c1.918 0 3.701.776 5 2.041M3 9a4 4 0 0 1 4-4c1.957 0 3.652 1.396 4.02 3.2a1 1 0 0 0 1.96 0C13.348 6.396 15.043 5 17 5a4 4 0 0 1 4 4c0 3.552-2.22 6.295-4.625 8.22A21.6 21.6 0 0 1 12 19.91a21.5 21.5 0 0 1-4.377-2.69C5.217 15.295 3 12.551 3 9" clip-rule="evenodd"></path>
+                    {% if action %}
+                        <path class="red-heart-icon active" fill="#F8104B" fill-rule="evenodd" d="M12 22c-.316-.02-.56-.147-.848-.278a23.5 23.5 0 0 1-4.781-2.942C3.777 16.705 1 13.449 1 9a6 6 0 0 1 6-6 6.18 6.18 0 0 1 5 2.568A6.18 6.18 0 0 1 17 3a6 6 0 0 1 6 6c0 4.448-2.78 7.705-5.375 9.78a23.6 23.6 0 0 1-4.78 2.942c-.543.249-.732.278-.845.278" clip-rule="evenodd"></path>
+                    {% else %}
+                        <path class="red-heart-icon" fill="#F8104B" fill-rule="evenodd" d="M12 22c-.316-.02-.56-.147-.848-.278a23.5 23.5 0 0 1-4.781-2.942C3.777 16.705 1 13.449 1 9a6 6 0 0 1 6-6 6.18 6.18 0 0 1 5 2.568A6.18 6.18 0 0 1 17 3a6 6 0 0 1 6 6c0 4.448-2.78 7.705-5.375 9.78a23.6 23.6 0 0 1-4.78 2.942c-.543.249-.732.278-.845.278" clip-rule="evenodd"></path>
+                    {% endif %}
+                </svg>
+            </button>
+            <!---->
+
+            <!--to-shop-kit-->
+            <form class="to-shop-kit transform_scaler" >
+                <button type = "submit" {{log}} id = {{id}} onclick = "basket(this)" value = '{% if check %}Удалить из корзины{% else %}Добавить в корзину{% endif %}'>
+                    {% if check %}
+                        Удалить из корзины
+                    {% else %}
+                        Добавить в корзину 
+                    {% endif %}
+                </button>
+            </form>
+            <!---->
+        </div>
+        
+    </div>
+    <div class = "description_container">
+        <table class = "description_table">
+            <tr>
+                <th><h4>Характеристики {{name}}</h4></th>
+            </tr>
+
+            {% for x,y in characteristics %}
+                {% if y %}
+                    <tr>
+                        <td>{{x}}</td>
+                        <td>{{y}}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <th><h6>{{x}}</h6></th>
+                    </tr>
+                    
+                {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+    <div class = "description_container">
+        <h4>Описание товара: </h4>
+        <article>
+            {{value}}
+        </article>
+    </div>
+    <div class = "description_container">
+        <h4>Отзывы: </h4>
+        {% for item in Reviews_user %}
+            <div class = "comment">
+                <div class = "comment_container" style = "display: flex; justify-content: space-between;">
+                    <div style = "display: flex;">
+                        <img src = {{item.img}}>
+                        <h4 style = "align-self: center; padding-left: clamp(2px, 2vw, 8px);">{{item.user}}</h4>
+                    </div>
+                    <div style = "display: flex;">
+                        <span style = "align-self: center;">{{item.Data}}</span>
+                        
+                        <div style = "align-self: center;" class = "rating" data-rating = '{{item.rating}}'>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class = "comment_container">
+                    {% if item.dignities %}
+                        <span>Достоинства</span>
+                        <article>
+                            {{item.dignities}}
+                        </article>
+                    {% endif %}
+                    <br>
+                    {% if item.disadvantages %}
+                        <span>Недостатки</span>
+                        <article>
+                            {{item.disadvantages}}
+                        </article>
+                    {% endif %}
+                    <br>
+                    {% if item.comment %}
+                        <span>Комментарий к отзыву</span>
+                        <article>
+                            {{item.comment}}
+                        </article>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class = "description_container">
+        <span><b>Нашли ошибку?</b> <a href = "#" color = "blue"
+            style = "border-bottom: 1px dotted blue; color: blue;">Сообщить об ошибке</a>
+        </span>
+    </div>
+</main>
+<footer id = "footer">
+</footer>
+<script src="js/set_navbar.js"></script>
+<script src = "js/set_favorite.js"></script>
+<script src="js/bootstrap.bundle.js"></script>
+<script src="js/set_footer.js"></script>
+<script src="js/set_rating.js"></script>
+</body>
+</html>

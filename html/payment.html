@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nya~ shop: payment page</title>
+  <link rel="shortcut icon" href="img/nya_logo_small.svg" />
+  <link href="bootstrap.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+{% include "set_navbar.html" %}
+<div class="main-card-payment-container">
+  <form>
+    <h2>Оплата заказа</h2>
+    <span>Магазин: Nya~ shop<br>
+      <span>Оплата заказа №{{ number }}<br>
+        <hr class="payment_hr" />
+        <span>Сумма: <b>{{ sum | round }} ₽</b></span><br><br>
+        <div class="card-payment">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgPzaA-YLwwZG7FTRnF1hitV829fWUVBfNhA&s"
+            alt="Visa/Мир/MasterCard icons">
+          <div class="flex_container">
+            <div>
+              <label style="padding-bottom: 4px;">Номер карты</label>
+              <input id="card-number" placeholder="1234 5678 9012 3456" type="text" required maxlength="19">
+            </div>
+          </div>
+          <div class="flex_container">
+            <div>
+              <label>Дата истечения</label>
+              <input id="exp-date" placeholder="12/34" type="text" required maxlength="5">
+            </div>
+            <div>
+              <label>Код</label>
+              <input id="cvv" placeholder="123" type="text" required maxlength="3" style="width: 1.8rem;">
+            </div>
+          </div>
+        </div>
+        <br>
+        <label for="floatingInput" id="email_input">Электронная почта</label>
+        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" value={{mail}}>
+        <br>
+        <span class="btn review_submit_button transform_scaler" id="card-payment-submit-button">Отправить</span>
+  </form>
+  <script src="js/set_symbols_card_payment.js"></script>
+  <script src="js/send-card-payment-data.js"></script>
+</div>
+
+<footer id="footer">
+</footer>
+<script src="js/bootstrap.bundle.js"></script>
+<script src="js/set_footer.js"></script>
+
+</html>
