@@ -47,6 +47,7 @@ function time(past){
 function goods(row,favorite, basket, user){
   let ids;
   let bask;
+  // let rew = JSON.parse(row['Reviews_user'])
   if(user){
     ids = JSON.parse(favorite);
     favorite = ids.length;
@@ -75,6 +76,14 @@ function goods(row,favorite, basket, user){
   if(row['discount']){
     row['sell'] = row['price'] - (row['price'] / 100 * row['discount']);
   };
+  // if(rew.length){
+  //     row['Reviews'] = rew.length
+  //     let rating = 0;
+  //     for(let i = 0; i <= rew.length-1; i++){
+  //       rating += Number(rew[i]['rating'])
+  //     }    
+  // }
+  // row['Rating'] =  rating / rew.length
   row.Reviews_user = JSON.parse(row.Reviews_user)
   let items = JSON.parse(row.characteristics);
   row['characteristics'] = items;
@@ -83,21 +92,30 @@ function goods(row,favorite, basket, user){
 };
 function imgsellaction(row, favorite, basket, user){  
   let id;
+
   if(user){
     id = JSON.parse(favorite);
     basket = JSON.parse(basket).length;
     favorite = id.length;
   };
   for(let i = 0; i <= row.length-1; i++){
+    // let rew = JSON.parse(row[i]['Reviews_user'])
     let item = JSON.parse(row[i]['img']);
     row[i]['img'] = item[0];
     if(row[i]['discount']){
-
       row[i]['sell'] = row[i]['price'] - (row[i]['price'] / 100 * row[i]['discount']);
     };
     if(row[i]['amount']){
       rod[i]['amount'] = amount[i];
     };
+    // if(rew.length){
+    //   row[i]['Reviews'] = rew.length
+    //   let rating = 0;
+    //   for(let j = 0; j <= rew.length-1; j++){
+    //     rating += Number(rew[j]['rating'])
+    //   }
+    //   row[i]['Rating'] =  rating / rew.length
+    // }
     if(user){
       for(let j = 0; j <= id.length -1;j++){                
         if(row[i]['id'] == id[j]){
@@ -130,7 +148,7 @@ app.get('/', function(req,res){
   let text;
   db.serialize(function() {
     db.all('SELECT * FROM goods WHERE discount IS NOT NULL ORDER BY discount DESC LIMIT 12;', function(err, discount) {
-      db.all('SELECT * FROM goods WHERE discount IS NULL', function(err, items) {
+      db.all('SELECT * FROM goods', function(err, items) {
         if(req.session.username){
           db.get('SELECT age, id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,rod){
             age = time(rod.age);
@@ -144,6 +162,13 @@ app.get('/', function(req,res){
         }else{
           imgsellaction(discount, null, null, null);
           imgsellaction(items, null, null, null);
+          for(let i = 0; i <= items.length-1; i++){
+            for(let j = 0; j <= discount.length-1; j++){
+              if(items[i]['id'] == discount[j]['id']){
+                items.splice(i,1)
+              }
+            }
+          }
           res.render('index.html',{discount,items,age,log});                  
         };
       });
@@ -463,10 +488,10 @@ app.post('/Favor_basket', function(req,res){
 app.post('/Basa_update', function(req, res) {
   let now = req.body; 
   db.serialize(function() {
-    db.get('SELECT id FROM user WHERE username = ?', [req.session.username], function(err, row) {
+    db.get('SELECT id, mail FROM user WHERE username = ?', [req.session.username], function(err, row) {
       db.all('SELECT Reviews_user FROM goods', function(err,rod){
         for(let i = 0; i <= rod.length-1; i++){
-          let fix = JSON.parse(rod[i].Reviews_user);ч
+          let fix = JSON.parse(rod[i].Reviews_user);
           for(let j = 0; j <= fix.length-1; j++){
             if(fix[j]['img'] == 'img/anonym.jpg' || fix[j]['img'] == ('img/User/' + row.id + '/iconka.png')){
               fix[j]['user'] = now.nickname;
@@ -482,12 +507,24 @@ app.post('/Basa_update', function(req, res) {
             };
           }; 
         };
-      }); 
-      let save = db.prepare('UPDATE user SET username = ?, name = ?, surname = ?, phone = ?, mail = ?, age = ? WHERE id = ?');
-      save.run(now.nickname, now.name, now.surname, now.phone, now.email, now.age, row.id, function(err) {
-        save.finalize();
-        req.session.username = now.nickname; 
-        res.send('true');
+      });
+      db.all('SELECT username, mail FROM user', function(err, user){
+        let x = false;
+        for(let i = 0; i <= user.length-1; i++){
+          if((user[i]['username'] == now.nickname && user[i]['username'] != req.session.username) || (user[i]['mail'] == now.email && user[i]['mail'] != row.mail)){
+            x = true
+          }
+        }
+        if(!x){
+          let save = db.prepare('UPDATE user SET username = ?, name = ?, surname = ?, phone = ?, mail = ?, age = ? WHERE id = ?');
+          save.run(now.nickname, now.name, now.surname, now.phone, now.email, now.age, row.id, function(err) {
+            save.finalize();
+            req.session.username = now.nickname;
+            res.json({id : x});          
+          });
+        }else{
+          res.json({id : x});
+        }        
       });
     });
   });
@@ -610,22 +647,60 @@ app.post('/Filtirpromax',function(req,res){
   res.json({'id': 'хуй'})
 });
 app.get('/Reviews', function(req,res){
+
   if(req.session.username){
     db.serialize(function(){
       db.get('SELECT id_favorite, id_basket, id_orders FROM user WHERE username = ?', [req.session.username], function(err,row){
         let favorite = JSON.parse(row.id_favorite).length;
         let basket = JSON.parse(row.id_basket).length;
         let orders = JSON.parse(row.id_orders).length;
-        db.get('SELECT * FROM goods WHERE id = ?',[req.query.id], function(err,items){
-          goods(items, row.id_favorite, row.id_basket, req.session.username);
-          items['orders'] = orders
-          res.render('review_good.html',items);  
-        });
+        let x = false
+        for(let i = 0; i <= orders.length-1; i++){
+          if(orders[i] == req.query.id){
+            x = true;
+            break
+          }
+        }
+        if(x){
+          db.get('SELECT * FROM goods WHERE id = ?',[req.query.id], function(err,items){
+            goods(items, row.id_favorite, row.id_basket, req.session.username);
+            items['orders'] = orders
+            if(!items.Reviews_user.length){
+              items.Reviews_user.push({'rating': '0'})
+            }
+            res.render('review_good.html',items);  
+          });
+        }else{
+          res.redirect('/Basa')
+        }
       });
     });
   }else{
     res.redirect('/');
   };
+});
+app.post('/Update_comment', function(req,res){
+  if(req.body.value == 'del'){
+    db.serialize(function(){
+      db.get('SELECT id_orders FROM user WHERE username = ?', [req.session.username], function(err,row){
+        let orders = JSON.parse(row.id_orders)
+        console.log(req.body.id)
+        for(let i = 0; i <= orders.length-1; i++){
+          if(orders[i] == req.body.id){
+            orders.splice(i,1)
+            orders = JSON.stringify(orders);
+            let save = db.prepare('UPDATE user SET id_orders = ? WHERE username = ? ', [orders, req.session.username]);
+            save.run();
+            save.finalize();
+            break
+          }
+        }
+        res.send('true')
+      });
+    });
+  }else{
+    res.send('false')
+  }
 });
 app.post('/Reviews', function(req,res) {
   const currentDate = new Date();
@@ -635,13 +710,27 @@ app.post('/Reviews', function(req,res) {
   let ids = items.id;
   delete items.id;
   db.serialize(function(){
-    db.get('SELECT id FROM user WHERE username = ?', [req.session.username], function(err,row){
+    db.get('SELECT id, id_orders, id_reviews FROM user WHERE username = ?', [req.session.username], function(err,row){
+      let orders = JSON.parse(row.id_orders);
+      let reviews = JSON.parse(row.id_reviews);
+      for(let i = 0; i <= orders.length-1; i++){
+        if(orders[i] == ids){
+          orders.splice(i,1)
+          reviews.push(ids)
+          orders = JSON.stringify(orders);
+          reviews = JSON.stringify(reviews);
+          let save = db.prepare('UPDATE user SET id_orders = ?, id_reviews = ? WHERE username = ? ', [orders, reviews, req.session.username]);
+          save.run();
+          save.finalize();
+          break
+        }
+      }
       if(fs.existsSync('css/img/User/'+row.id + '/'+'iconka.png')){
         items['img'] = `img/User/`+row.id + `/iconka.png`;
       }else{
         items['img'] = `img/anonym.jpg`;
       }
-      db.get('SELECT Reviews_user FROM goods WHERE id = ?',[ids], function(err,item){
+      db.get('SELECT Reviews_user, Rating, Reviews FROM goods WHERE id = ?',[ids], function(err,item){
         let now = JSON.parse(item.Reviews_user);
         let x = true;  
         for(let i = 0; i <= now.length-1; i++){    
@@ -653,12 +742,19 @@ app.post('/Reviews', function(req,res) {
         if(x){
           now.unshift(items);
         }
-
-        
+        let reviews = item['Reviews'] + 1
+        let rating = 0;
+        if(now.length){
+          for(let i = 0; i <= now.length-1; i++){
+            rating += Number(now[i]['rating'])
+          }    
+        }
+        rating =  rating / now.length
         now = JSON.stringify(now);
-        let save = db.prepare('UPDATE goods SET Reviews_user = ? WHERE id = ? ', [now,ids]);
+        let save = db.prepare('UPDATE goods SET Reviews_user = ?, Reviews = ?, Rating = ? WHERE id = ? ', [now, reviews, rating, ids]);
         save.run();
         save.finalize();
+        let good = db.prepare('UPDATE user SET id_orders = ?, id_reviews = ? WHERE username = ? ', [ reviews, rating, req.session.username]);
       });
     });
   });
@@ -764,9 +860,7 @@ app.get('/Pay', function(req,res){
         db.all(text, function(err,item){
           let sum = 0;
           amounting(item, amount);
-          console.log(item)
           for(let i = 0; i <= item.length -1; i++){
-            console.log(item[i]['price'],item[i]['discount'])
             if(item[i]['discount']){
               sum += (item[i]['price'] - (item[i]['price'] / 100 * item[i]['discount'])) * item[i]['amount'];
             }else{
@@ -779,6 +873,111 @@ app.get('/Pay', function(req,res){
           
           res.render('payment.html',{username: req.session.username,basket,favorite,orders, mail, sum,number});
         });
+      });
+    });
+  }else{
+    res.redirect('/');
+  };
+});
+app.get('/Company', function(req,res){
+  if(req.session.username){
+    db.serialize(function(){
+      db.get('SELECT id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,row){
+        let favorite = JSON.parse(row.id_favorite).length;
+        let basket = JSON.parse(row.id_basket).length;
+        res.render('about_company.html',{basket,favorite});
+      });
+    });
+  }else{
+    res.render('about_company.html');
+  }
+});
+app.get('/Career', function(req,res){
+  if(req.session.username){
+    db.serialize(function(){
+      db.get('SELECT id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,row){
+        let favorite = JSON.parse(row.id_favorite).length;
+        let basket = JSON.parse(row.id_basket).length;
+        res.render('career.html',{basket,favorite});
+      });
+    });
+  }else{
+    res.render('career.html');
+  }
+});
+app.get('/Policy', function(req,res){
+  if(req.session.username){
+    db.serialize(function(){
+      db.get('SELECT id_favorite, id_basket FROM user WHERE username = ?', [req.session.username], function(err,row){
+        let favorite = JSON.parse(row.id_favorite).length;
+        let basket = JSON.parse(row.id_basket).length;
+        res.render('policy.html',{basket,favorite});
+      });
+    });
+  }else{
+    res.render('policy.html');
+  }
+});
+app.post('/Update_Reviews', function(req,res){
+  db.serialize(function(){
+    db.get('SELECT id_basket, id_orders FROM user WHERE username = ?',[req.session.username],function(err,row){
+      let id = JSON.parse(row.id_basket);
+      let basket = Object.keys(id);
+      let orders = JSON.parse(row.id_orders);
+      for(let i = 0; i <= basket.length-1; i++){
+        let x = true;
+        for(let j = 0; j <= orders.length-1; j++){
+          console.log(orders[j],Object.keys(id[i]))
+          if(orders[j] == Object.keys(id[i])){
+            x = false;
+          };
+        };
+        if(x){
+          let basket = Object.keys(id[i]);
+          orders.push(basket[0]);
+        };
+      };
+      id = JSON.stringify([])
+      orders = JSON.stringify(orders);
+      let save = db.prepare('UPDATE user SET id_orders = ?, id_basket = ? WHERE username = ?',[orders,id,req.session.username]);
+      save.run();
+      save.finalize();
+    });
+  });
+  res.send('ok')
+});
+app.get('/Comment', function(req,res){
+  if(req.session.username){
+    db.serialize(function(){
+      db.get('SELECT id_favorite, id_basket, id_orders, id_reviews FROM user WHERE username = ?', [req.session.username], function(err,row){
+        let favorite = JSON.parse(row.id_favorite).length;
+        let basket = JSON.parse(row.id_basket).length;
+        let orders = JSON.parse(row.id_orders).length;
+        let id = JSON.parse(row.id_reviews);
+        let text = 'SELECT * FROM goods WHERE id = ';
+        if(id.length){
+          for(let i = 0 ; i < id.length; i++){      
+            if(i == id.length -1){
+              if(text == undefined){
+                text = `'${id[i]}'`;
+              }else{
+                text += `'${id[i]}'`;
+              };              
+            }else{
+              if(text == undefined){
+                text = `'${id[i]}'` + ' OR id = ';
+              }else{
+                text += `'${id[i]}'` + ' OR id = ';
+              };
+            };
+          };
+          db.all(text, function(err,item){
+            imgsellaction(item, null, null, null);
+            res.render('comment_squid.html',{username: req.session.username,item,basket,favorite,orders});
+          });
+        }else{
+          res.render('comment_squid.html',{username: req.session.username,basket,favorite, orders});
+        };
       });
     });
   }else{

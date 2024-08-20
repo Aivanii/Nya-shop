@@ -64,13 +64,17 @@
             <!---->
 
             <!--rating-->
-            <div class = "rating" data-rating = {{Rating}} id = "rating_obj" data-counts = {{Reviews}}>
-            </div>
+            {% if Rating != 0 %}
+                <div class = "rating" data-rating = {{Rating | round}} id = "rating_obj" data-counts = {{Reviews}} >
+                </div>
+            {% else %}
+                <span>Нет отзывов</span>
+            {% endif %}    
             <!---->
 
             <!--price-->
             <div class = "price_good_container">
-                {% if sell != price %}
+                {% if discount != 0 %}
                     <p class="actual-price">{{sell | round}} ₽</p>
                     <p class="crossed-price">{{price}} ₽</p>
                 {% else %}

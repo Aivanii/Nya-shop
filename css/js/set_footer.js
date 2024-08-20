@@ -4,9 +4,9 @@ html += `<div class = "footer_container">
 <div>
     <h5>Компания</h5>
     <ol>
-        <li><a href = "#">О Компании</a></li>
-        <li><a href = "#">Вакансии</a></li>
-        <li><a href = "#">Политика конфиденциальности</a></li>
+        <li><a href = "/Company">О Компании</a></li>
+        <li><a href = "/Career">Вакансии</a></li>
+        <li><a href = "/Policy">Политика конфиденциальности</a></li>
     </ol>
 </div>
 <div>

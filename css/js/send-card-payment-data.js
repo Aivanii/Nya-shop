@@ -18,13 +18,14 @@ $button.onclick = function() {
     }
     data["email"] = document.querySelector("#email_input").value;
     if(is_okay == true){
-        fetch('/вставь потом сюда ссылку, б', {
+        fetch('/Update_Reviews', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
         })
         .then(res => res.json())
         .catch(error => console.error('Ошибка:', error));
+        window.location.href = '/Orders'
     }else{
         alert("Пожалуйста, введите корректные данные");
     }

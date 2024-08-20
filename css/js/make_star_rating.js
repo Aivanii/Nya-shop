@@ -19,8 +19,12 @@ for (let i = 0; i < spans_holder.childNodes.length; i++) {
     spans_holder.childNodes[i].onmouseover = function() { paint_stars(i+1); };
     spans_holder.childNodes[i].onmouseout = function() { zeroing_color(i+1); };
     spans_holder.childNodes[i].onclick = function() { star_on_click(i+1, ratings[i]); };
-}
 
+}
+if(label.getAttribute('data-rate') != 0){
+    star_on_click(label.getAttribute('data-rate'), ratings[label.getAttribute('data-rate')-1]);
+    paint_stars(label.getAttribute('data-rate'));
+}
 function star_on_click(length, text){
     actual_rating = length;
     label.innerText = text;
