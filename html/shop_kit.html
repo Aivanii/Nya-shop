@@ -57,9 +57,11 @@
             {% endfor %}            
         </div>
         <div>
-            <form action="/Basket_pay" method = 'POST'>
-                <button type = "submit" id = "text_area" class = "buy_button transform_scaler">Перейти к оплате заказа на сумму ${total_price} рублей</button>
-            </form>
+            {% if items %}
+                <form action="/Basket_pay" method = 'POST'>
+                    <button type = "submit" id = "text_area" class = "buy_button transform_scaler">Перейти к оплате заказа на сумму ${total_price} рублей</button>
+                </form>
+            {% endif %}
         </div>
     </div>
 </div>

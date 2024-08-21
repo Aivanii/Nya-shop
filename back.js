@@ -76,14 +76,6 @@ function goods(row,favorite, basket, user){
   if(row['discount']){
     row['sell'] = row['price'] - (row['price'] / 100 * row['discount']);
   };
-  // if(rew.length){
-  //     row['Reviews'] = rew.length
-  //     let rating = 0;
-  //     for(let i = 0; i <= rew.length-1; i++){
-  //       rating += Number(rew[i]['rating'])
-  //     }    
-  // }
-  // row['Rating'] =  rating / rew.length
   row.Reviews_user = JSON.parse(row.Reviews_user)
   let items = JSON.parse(row.characteristics);
   row['characteristics'] = items;
@@ -108,14 +100,6 @@ function imgsellaction(row, favorite, basket, user){
     if(row[i]['amount']){
       rod[i]['amount'] = amount[i];
     };
-    // if(rew.length){
-    //   row[i]['Reviews'] = rew.length
-    //   let rating = 0;
-    //   for(let j = 0; j <= rew.length-1; j++){
-    //     rating += Number(rew[j]['rating'])
-    //   }
-    //   row[i]['Rating'] =  rating / rew.length
-    // }
     if(user){
       for(let j = 0; j <= id.length -1;j++){                
         if(row[i]['id'] == id[j]){
@@ -198,43 +182,65 @@ app.get('/Basa', function(req,res){
     res.redirect('/');
   };
 });
-app.post('/Log', function(req,res,next){
+app.post('/Log', function(req, res, next) {
   db.serialize(function() {
-    db.get('SELECT username, mail, password, age FROM user WHERE mail = ?', [req.body.email], function(err,row){ 
-      if(row != undefined){
-        if(req.body.password == row.password){
+    db.get('SELECT username, mail, password, age FROM user WHERE mail = ?', [req.body.email], function(err, row) {
+      if (row !== undefined) {
+        if (req.body.password === row.password) {
           req.session.username = row.username;
-          age = row.age;
-          req.session.cena = null
-          res.redirect('/Basa')
-        }else{
+          req.session.age = row.age;
+          req.session.cena = null;
+          res.redirect('/Basa');
+        } else {
           res.send('false');
-        };
-      }else{
-        if(req.body.email != ''){
-          db.all('SELECT COUNT(*) FROM user', function(err,rod){
-            let y = rod[0];
-            y = y['COUNT(*)'];
-            y += 1;
+        }
+      } else {
+        if (req.body.email !== '') {
+          db.all('SELECT COUNT(*) AS count FROM user', function(err, rod) {
+            let count = rod[0].count;
+            count += 1;
             let ids = [];
-            const folderName = '../animeshop/css/img/User/' +y;
+            const folderName = '../animeshop/css/img/User/' + count;
             const folderPath = path.join(folderName);
             mkdir(folderPath, { recursive: true });
             ids = JSON.stringify(ids);
-            req.session.username = 'user' + y
-            let save = db.prepare('INSERT INTO user(id, username, mail, password, id_favorite, id_basket, id_orders) VALUES (?, ?, ?, ?, ?, ?,?)', [y, req.session.username, req.body.email, req.body.password, ids, ids, ids]);
-            save.run();
-            save.finalize();
-            req.session.cena = null
-            res.redirect('/Basa');
+
+            let username = 'user' + count;
+            db.get('SELECT username FROM user WHERE username = ?', [username], (err, user) => {
+              if (!user) {
+                let save = db.prepare('INSERT INTO user(id, username, mail, password, id_favorite, id_basket, id_orders) VALUES (?, ?, ?, ?, ?, ?,?)', [count, username, req.body.email, req.body.password, ids, ids, ids]);
+                save.run();
+                save.finalize();
+                req.session.username = username;
+                req.session.cena = null;
+                res.redirect('/Basa');
+              } else {
+                // Если пользователь с таким именем уже существует, генерируем новое имя
+                username = 'user' + (count + 2);
+                db.get('SELECT username FROM user WHERE username = ?', [username], (err, user) => {
+                  if (!user) {
+                    let save = db.prepare('INSERT INTO user(id, username, mail, password, id_favorite, id_basket, id_orders) VALUES (?, ?, ?, ?, ?, ?,?)', [count + 1, username, req.body.email, req.body.password, ids, ids, ids]);
+                    save.run();
+                    save.finalize();
+                    req.session.username = username;
+                    req.session.cena = null;
+                    res.redirect('/Basa');
+                  } else {
+                    // Если и это имя занято, отправляем ошибку
+                    res.send('false');
+                  }
+                });
+              }
+            });
           });
-        }else{
+        } else {
           res.send('false');
-        };
-      };
+        }
+      }
     });
   });
 });
+
 app.get('/Age', function(req,res){
   id = req.query.id;
   res.render('age_checking.html',{username: req.session.username});
@@ -647,18 +653,24 @@ app.post('/Filtirpromax',function(req,res){
   res.json({'id': 'хуй'})
 });
 app.get('/Reviews', function(req,res){
-
   if(req.session.username){
     db.serialize(function(){
-      db.get('SELECT id_favorite, id_basket, id_orders FROM user WHERE username = ?', [req.session.username], function(err,row){
+      db.get('SELECT id_favorite, id_basket, id_orders, id_reviews FROM user WHERE username = ?', [req.session.username], function(err,row){
         let favorite = JSON.parse(row.id_favorite).length;
         let basket = JSON.parse(row.id_basket).length;
-        let orders = JSON.parse(row.id_orders).length;
+        let id = JSON.parse(row.id_orders);
+        let ids = JSON.parse(row.id_reviews);
+        let orders = id.length;
         let x = false
-        for(let i = 0; i <= orders.length-1; i++){
-          if(orders[i] == req.query.id){
+        console.log(orders)
+        for(let i = 0; i <= orders-1; i++){
+          if(id[i] == req.query.id){
             x = true;
-            break
+          }
+        }
+        for(let i = 0; i <= ids.length-1; i++){
+          if(ids[i] == req.query.id){
+            x = true;
           }
         }
         if(x){
@@ -671,7 +683,7 @@ app.get('/Reviews', function(req,res){
             res.render('review_good.html',items);  
           });
         }else{
-          res.redirect('/Basa')
+           res.redirect('/Basa');
         }
       });
     });
@@ -983,6 +995,13 @@ app.get('/Comment', function(req,res){
   }else{
     res.redirect('/');
   };
+});
+app.get('/Thanks', function(req,res){
+  if(req.session.username){
+    res.render('Thanks.html',);
+  }else{
+    res.redirect('/');
+  }
 });
 app.use(function(req, res){
   res.status(404);
