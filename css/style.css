@@ -197,6 +197,7 @@ body {
 }
 
 .navbar {
+  border: 2px solid #4e4959;
   background-color: #181826;
   transition: background-color 0.4s;
   z-index: 499;
@@ -227,10 +228,12 @@ body {
 
 .goods-card {
   max-width: 14rem;
-  font-family: "GTEestiPro";
-  margin: 0.75rem;
-  margin-left: auto;
-  margin-right: auto;
+    font-family: "GTEestiPro";
+    border: 2px solid #4e4959;
+    margin: 0.75rem;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 0.65rem 0.65rem 1rem 1rem;
 }
 
 .card-container-price {
@@ -326,6 +329,7 @@ body {
 }
 
 .window-discounts-week-container {
+  border: 2px solid #4e4959;
   border-radius: 1rem;
   background: linear-gradient(231deg, #262641, #231a2b);
   padding: 0.5rem;
@@ -475,12 +479,17 @@ p {
   box-shadow: 0 1px 2px rgba(0, 0, 0, .16);
   box-sizing: border-box;
   float: left;
-  padding-top: 12px;
+  display: flex;
   vertical-align: top;
   width: 280px;
+  border: 2px solid #4e4959;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
 }
 
 .user-settings-container {
+  border: 2px solid #4e4959;
   background: #181826;
   position: relative;
   padding: 28px 20px;
@@ -510,11 +519,17 @@ p {
   padding-bottom: 1rem;
 }
 
-.profile_ulб ul,
+.profile_ul ul,
 ol,
 ul {
   list-style-type: none;
   padding: 0;
+}
+.profile_ul li{
+  background: linear-gradient(135deg, #262641, #231a2b);
+  margin-bottom: 4px;
+  border-radius: 1rem;
+  border: 2px solid #4e4959;
 }
 
 .profile_ul li a {
@@ -528,6 +543,7 @@ ul {
 
 .settings-user-img {
   object-fit: cover;
+  border: 2px solid #4e4959;
   position: relative;
   width: 12rem;
   border-radius: 255px;
@@ -549,6 +565,7 @@ ul {
 }
 
 .favorite_good {
+  border: 2px solid #4e4959;
   margin: 1rem;
   padding: 0.5rem;
   border-radius: 1rem;
@@ -558,6 +575,7 @@ ul {
 }
 
 .favorite_good img {
+  border: 2px solid #4e4959;
   width: 9vw;
   border-radius: 1rem;
 }
@@ -595,10 +613,10 @@ ul {
 }
 
 .favorite_button {
+  border: 2px solid #4e4959;
   background: #262641;
   padding: 0.5rem;
   border-radius: 1rem;
-  border: none;
   font-size: 1.25rem;
   width: 100%;
   text-decoration: none;
@@ -635,6 +653,7 @@ ul {
 
 .button_toggle {
   width: 1.25rem;
+  border: 2px solid #4e4959;
   height: 2rem;
   background: #262641;
   border: none;
@@ -688,7 +707,6 @@ ul {
 }
 
 .buy_button {
-  border: none;
   border-radius: 1rem;
   padding: 0.5rem;
   background: #274126;
@@ -697,6 +715,7 @@ ul {
   margin-right: auto;
   max-width: 800px;
   width: 100%;
+  border: 2px solid #4e4959;
   transition: color background .4s;
 }
 
@@ -716,7 +735,7 @@ ul {
 }
 
 .good_info_container {
-
+  border: 2px solid #4e4959;
   display: flex;
   background: linear-gradient(231deg, #262641, #231a2b);
   width: 100%;
@@ -726,9 +745,7 @@ ul {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  padding-bottom: 0;
 }
-
 .horizontal_container {
   width: 100%;
   margin-top: 1rem;
@@ -822,6 +839,7 @@ ul {
 }
 
 .grid_container .rating {
+  border: 2px solid #4e4959;
   font-size: clamp(8px, 2.5vw, 1rem);
   grid-row-start: 2;
   grid-column-start: 2;
@@ -833,6 +851,7 @@ ul {
 }
 
 .grid_container .price_good_container {
+  border: 2px solid #4e4959;
   margin-right: auto;
   max-height: 4.5rem;
   grid-row-start: 3;
@@ -845,6 +864,7 @@ ul {
 }
 
 .grid_container .favorite-button {
+  border: 2px solid #4e4959;
   max-height: 4.5rem;
   width: clamp(12px, 6vw, 4.5rem);
   height: clamp(12px, 6vw, 4.5rem);
@@ -892,8 +912,8 @@ ul {
 }
 
 .grid_container .to-shop-kit button {
+  border: 2px solid #4e4959;
   background: #274126;
-  border: none;
   border-radius: 1rem;
   padding: 0.5rem;
   font-size: clamp(8px, 3vw, 16px);
@@ -933,6 +953,7 @@ ul {
 }
 
 .description_container {
+  border: 2px solid #4e4959;
   margin-top: 0.5rem;
   background: linear-gradient(231deg, #262641, #231a2b);
   width: 100%;
@@ -1043,6 +1064,7 @@ ul {
 }
 
 .comment {
+  border: 2px solid #4e4959;
   border-radius: 1rem;
   background: linear-gradient(0deg, #262641, #231a2b);
   padding: clamp(2px, 2vw, 8px);
@@ -1052,6 +1074,7 @@ ul {
 
 footer {
   width: 100%;
+  border: 2px solid #4e4959;
   background: linear-gradient(360deg, #150f20, #1a1320);
   margin-top: 1rem;
   padding: clamp(8px, 3vw, 16px);
@@ -1176,13 +1199,16 @@ footer {
   cursor: pointer;
   transition: color .4s;
 }
-
+.btn{
+  border: 2px solid #4e4959;
+}
 .a123:hover {
   color: white;
 }
 
 .filter-container {
   width: 50%;
+  border: 2px solid #4e4959;
   height: 100%;
   position: fixed;
   top: 0;
@@ -1300,6 +1326,7 @@ footer {
   padding-left: 1rem;
   padding-right: 1rem;
   resize: none;
+  border: 2px solid #4e4959;
   height: 8rem;
   overflow: hidden;
 }
@@ -1329,6 +1356,7 @@ footer {
 }
 
 .review-image {
+  border: 2px solid #4e4959;
   border-radius: 1rem;
   width: 10vw;
   max-width: 10rem;
@@ -1444,6 +1472,7 @@ input[id="card-number"] {
 .review_submit_button {
   color: #cecece;
   float: right;
+  border: 2px solid #4e4959;
 }
 
 option {
@@ -1465,6 +1494,7 @@ option:hover {
 }
 
 .catalog-submit-button {
+  border: 2px solid #4e4959;
   color: #cecece;
   background: linear-gradient(135deg, #262641, #231a2b);
   margin-left: auto;
