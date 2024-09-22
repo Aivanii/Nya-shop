@@ -49,7 +49,11 @@
                 <p class="actual-price">{{item.sell | round}} ₽</p>
                 <p class="crossed-price">{{item.price}} ₽</p>
                 <p class="discount-price">-{{item.discount}}% </p>
-                <span>{{item.Rating}}<span style = "color: gold;">★</span></span>
+                {% if item.Rating != 0 %}
+                <span>{{item.Rating | round}}<span style="color: gold;">★</span></span>
+                {% else %}
+                <span>Нет отзывов</span>
+                {% endif %}
               </div>
               <p class="good-title">
                 {{item.value}}
@@ -77,7 +81,11 @@
                 <p class="actual-price">{{item.sell | round}} ₽</p>
                 <p class="crossed-price">{{item.price}} ₽</p>
                 <p class="discount-price">-{{item.discount}}% </p>
-                <span>{{item.Rating}}<span style = "color: gold;">★</span></span>
+                {% if item.Rating != 0 %}
+                <span>{{item.Rating | round}}<span style="color: gold;">★</span></span>
+                {% else %}
+                <span>Нет отзывов</span>
+                {% endif %}
               </div>
               <p class="good-title">
                 {{item.value}}
@@ -94,71 +102,91 @@
     <div class="window-discounts-week-container">
       <div class="discounts-week-container container-lg container-cards" id="discounts-week-container">
         {% for item in items %}
-          {% if age >= 18 or item.age_limit == 'FALSE' %}
-          <div class="card goods-card transform_scaler">
-            <button class="add-to-favorite" onclick="favorite(this)" id={{item.id}} {{log}}>
-              <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill="#181826" fill-rule="evenodd"
-                  d="M12 22c-.316-.02-.56-.147-.848-.278a23.5 23.5 0 0 1-4.781-2.942C3.777 16.705 1 13.449 1 9a6 6 0 0 1 6-6 6.18 6.18 0 0 1 5 2.568A6.18 6.18 0 0 1 17 3a6 6 0 0 1 6 6c0 4.448-2.78 7.705-5.375 9.78a23.6 23.6 0 0 1-4.78 2.942c-.543.249-.732.278-.845.278M7 5a4 4 0 0 0-4 4c0 3.552 2.218 6.296 4.621 8.22A21.5 21.5 0 0 0 12 19.91a21.6 21.6 0 0 0 4.377-2.69C18.78 15.294 21 12.551 21 9a4 4 0 0 0-4-4c-1.957 0-3.652 1.396-4.02 3.2a1 1 0 0 1-1.96 0C10.652 6.396 8.957 5 7 5"
-                  clip-rule="evenodd"></path>
-                <path fill="white" fill-rule="evenodd"
-                  d="M12 22c-.285-.018-.512-.123-.764-.24l-.084-.038a23.5 23.5 0 0 1-4.781-2.942C3.777 16.705 1 13.449 1 9a6 6 0 0 1 6-6 6.18 6.18 0 0 1 5 2.568q.3-.418.666-.78A6.18 6.18 0 0 1 17 3a6 6 0 0 1 6 6c0 4.448-2.78 7.705-5.375 9.78a23.6 23.6 0 0 1-4.78 2.942c-.543.249-.732.278-.845.278m0-17.959A7.18 7.18 0 0 1 17 2a7 7 0 0 1 7 7c0 4.897-3.061 8.41-5.75 10.562a24.6 24.6 0 0 1-4.989 3.07c-.566.258-.92.368-1.261.368h-.032l-.033-.002c-.484-.032-.881-.218-1.12-.33l-.077-.036a24.5 24.5 0 0 1-4.991-3.07C3.056 17.408 0 13.895 0 9a7 7 0 0 1 7-7c1.918 0 3.701.776 5 2.041M3 9a4 4 0 0 1 4-4c1.957 0 3.652 1.396 4.02 3.2a1 1 0 0 0 1.96 0C13.348 6.396 15.043 5 17 5a4 4 0 0 1 4 4c0 3.552-2.22 6.295-4.625 8.22A21.6 21.6 0 0 1 12 19.91a21.5 21.5 0 0 1-4.377-2.69C5.217 15.295 3 12.551 3 9"
-                  clip-rule="evenodd"></path>
-                {% if item.action %}
-                <path class="red-heart-icon active" fill="#F8104B" fill-rule="evenodd"
-                  d="M12 22c-.316-.02-.56-.147-.848-.278a23.5 23.5 0 0 1-4.781-2.942C3.777 16.705 1 13.449 1 9a6 6 0 0 1 6-6 6.18 6.18 0 0 1 5 2.568A6.18 6.18 0 0 1 17 3a6 6 0 0 1 6 6c0 4.448-2.78 7.705-5.375 9.78a23.6 23.6 0 0 1-4.78 2.942c-.543.249-.732.278-.845.278"
-                  clip-rule="evenodd"></path>
-                {% else %}
-                <path class="red-heart-icon" fill="#F8104B" fill-rule="evenodd"
-                  d="M12 22c-.316-.02-.56-.147-.848-.278a23.5 23.5 0 0 1-4.781-2.942C3.777 16.705 1 13.449 1 9a6 6 0 0 1 6-6 6.18 6.18 0 0 1 5 2.568A6.18 6.18 0 0 1 17 3a6 6 0 0 1 6 6c0 4.448-2.78 7.705-5.375 9.78a23.6 23.6 0 0 1-4.78 2.942c-.543.249-.732.278-.845.278"
-                  clip-rule="evenodd"></path>
-                {% endif %}
-              </svg>
-            </button>
-            <a href="/Goods?id={{item.id}}">
-              <img src={{item.img}} class="card-img-top">
-            </a>
-            <a href="/Goods?id={{item.id}}" style="text-decoration: none;"></a>
+        {% if age >= 18 or item.age_limit == 'FALSE' %}
+        <div class="card goods-card transform_scaler">
+          <button class="add-to-favorite" onclick="favorite(this)" id={{item.id}} {{log}}>
+            <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill="#181826" fill-rule="evenodd"
+                d="M12 22c-.316-.02-.56-.147-.848-.278a23.5 23.5 0 0 1-4.781-2.942C3.777 16.705 1 13.449 1 9a6 6 0 0 1 6-6 6.18 6.18 0 0 1 5 2.568A6.18 6.18 0 0 1 17 3a6 6 0 0 1 6 6c0 4.448-2.78 7.705-5.375 9.78a23.6 23.6 0 0 1-4.78 2.942c-.543.249-.732.278-.845.278M7 5a4 4 0 0 0-4 4c0 3.552 2.218 6.296 4.621 8.22A21.5 21.5 0 0 0 12 19.91a21.6 21.6 0 0 0 4.377-2.69C18.78 15.294 21 12.551 21 9a4 4 0 0 0-4-4c-1.957 0-3.652 1.396-4.02 3.2a1 1 0 0 1-1.96 0C10.652 6.396 8.957 5 7 5"
+                clip-rule="evenodd"></path>
+              <path fill="white" fill-rule="evenodd"
+                d="M12 22c-.285-.018-.512-.123-.764-.24l-.084-.038a23.5 23.5 0 0 1-4.781-2.942C3.777 16.705 1 13.449 1 9a6 6 0 0 1 6-6 6.18 6.18 0 0 1 5 2.568q.3-.418.666-.78A6.18 6.18 0 0 1 17 3a6 6 0 0 1 6 6c0 4.448-2.78 7.705-5.375 9.78a23.6 23.6 0 0 1-4.78 2.942c-.543.249-.732.278-.845.278m0-17.959A7.18 7.18 0 0 1 17 2a7 7 0 0 1 7 7c0 4.897-3.061 8.41-5.75 10.562a24.6 24.6 0 0 1-4.989 3.07c-.566.258-.92.368-1.261.368h-.032l-.033-.002c-.484-.032-.881-.218-1.12-.33l-.077-.036a24.5 24.5 0 0 1-4.991-3.07C3.056 17.408 0 13.895 0 9a7 7 0 0 1 7-7c1.918 0 3.701.776 5 2.041M3 9a4 4 0 0 1 4-4c1.957 0 3.652 1.396 4.02 3.2a1 1 0 0 0 1.96 0C13.348 6.396 15.043 5 17 5a4 4 0 0 1 4 4c0 3.552-2.22 6.295-4.625 8.22A21.6 21.6 0 0 1 12 19.91a21.5 21.5 0 0 1-4.377-2.69C5.217 15.295 3 12.551 3 9"
+                clip-rule="evenodd"></path>
+              {% if item.action %}
+              <path class="red-heart-icon active" fill="#F8104B" fill-rule="evenodd"
+                d="M12 22c-.316-.02-.56-.147-.848-.278a23.5 23.5 0 0 1-4.781-2.942C3.777 16.705 1 13.449 1 9a6 6 0 0 1 6-6 6.18 6.18 0 0 1 5 2.568A6.18 6.18 0 0 1 17 3a6 6 0 0 1 6 6c0 4.448-2.78 7.705-5.375 9.78a23.6 23.6 0 0 1-4.78 2.942c-.543.249-.732.278-.845.278"
+                clip-rule="evenodd"></path>
+              {% else %}
+              <path class="red-heart-icon" fill="#F8104B" fill-rule="evenodd"
+                d="M12 22c-.316-.02-.56-.147-.848-.278a23.5 23.5 0 0 1-4.781-2.942C3.777 16.705 1 13.449 1 9a6 6 0 0 1 6-6 6.18 6.18 0 0 1 5 2.568A6.18 6.18 0 0 1 17 3a6 6 0 0 1 6 6c0 4.448-2.78 7.705-5.375 9.78a23.6 23.6 0 0 1-4.78 2.942c-.543.249-.732.278-.845.278"
+                clip-rule="evenodd"></path>
+              {% endif %}
+            </svg>
+          </button>
+          <a href="/Goods?id={{item.id}}">
+            <img src={{item.img}} class="card-img-top">
+          </a>
+          <a href="/Goods?id={{item.id}}" style="text-decoration: none;"></a>
 
-            <a style="text-decoration: none;" href="/Goods?id={{item.id}}">
-              <div class="card-body">
-                <div class="card-container-price card-title">
-                  <p class="actual-price">{{item.price}} ₽</p>
-                  <span>{{item.Rating}}<span style = "color: gold;">★</span></span>
-                </div>
-                <p class="good-title">
-                  {{item.value}}
-                </p>
+          <a style="text-decoration: none;" href="/Goods?id={{item.id}}">
+            <div class="card-body">
+              <div class="card-container-price card-title">
+                {% if item.discount != 0 %}
+                <p class="actual-price">{{item.sell | round}} ₽</p>
+                <p class="crossed-price">{{item.price}} ₽</p>
+                <p class="discount-price">-{{item.discount}}% </p>
+                {% else %}
+                <p class="actual-price">{{item.price}} ₽</p>
+                {% endif %}
+                {% if item.Rating != 0 %}
+                <span>{{item.Rating | round}}<span style="color: gold;">★</span></span>
+                {% else %}
+                <span>Нет отзывов</span>
+                {% endif %}
               </div>
-            </a>
-          </div>
-          {% else %}
-          <div class="card goods-card transform_scaler">
-            <a href="/Age?id={{item.id}}">
-              <img src="img/goods/blur.jpg" class="card-img-top" alt=${model[i][3].value}>
-              <div class="adult_container">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">
-                  <path fill="#1d1d1d"
-                    d="M3.707 2.293a1 1 0 1 0-1.414 1.414L3.805 5.22c-1.065.748-1.956 1.847-2.7 3.334a1 1 0 1 0 1.79.894c.69-1.38 1.454-2.22 2.26-2.724l.096-.058.94.941a3 3 0 1 0 4.202 4.202l1.9 1.9a1 1 0 0 0 1.414-1.415zm3.942 6.77 1.288 1.288a1 1 0 1 1-1.288-1.288m.596-5.06 3.008 3.008c.656.517 1.28 1.29 1.852 2.436a1 1 0 0 0 1.79-.894c-.81-1.62-1.796-2.78-2.99-3.526-1.126-.704-2.362-.992-3.66-1.024">
-                  </path>
-                </svg>
-                <p class="adult_text">Товар для взрослых!</p>
+              <p class="good-title">
+                {{item.value}}
+              </p>
+            </div>
+          </a>
+        </div>
+        {% else %}
+        <div class="card goods-card transform_scaler">
+          <a href="/Age?id={{item.id}}">
+            <img src="img/goods/blur.jpg" class="card-img-top" alt=${model[i][3].value}>
+            <div class="adult_container">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">
+                <path fill="#1d1d1d"
+                  d="M3.707 2.293a1 1 0 1 0-1.414 1.414L3.805 5.22c-1.065.748-1.956 1.847-2.7 3.334a1 1 0 1 0 1.79.894c.69-1.38 1.454-2.22 2.26-2.724l.096-.058.94.941a3 3 0 1 0 4.202 4.202l1.9 1.9a1 1 0 0 0 1.414-1.415zm3.942 6.77 1.288 1.288a1 1 0 1 1-1.288-1.288m.596-5.06 3.008 3.008c.656.517 1.28 1.29 1.852 2.436a1 1 0 0 0 1.79-.894c-.81-1.62-1.796-2.78-2.99-3.526-1.126-.704-2.362-.992-3.66-1.024">
+                </path>
+              </svg>
+              <p class="adult_text">Товар для взрослых!</p>
+            </div>
+          </a>
+          <a href="/Age?id={{item.id}}" style="text-decoration: none;"></a>
+          <a style="text-decoration: none;" href="/Age?id={{item.id}}">
+            <div class="card-body">
+              <div class="card-container-price card-title">
+                {% if item.discount != 0 %}
+                <p class="actual-price">{{item.sell | round}} ₽</p>
+                <p class="crossed-price">{{item.price}} ₽</p>
+                <p class="discount-price">-{{item.discount}}% </p>
+                {% else %}
+                <p class="actual-price">{{item.price}} ₽</p>
+                {% endif %}
+                {% if item.Rating != 0 %}
+                <span>{{item.Rating | round}}<span style="color: gold;">★</span></span>
+                {% else %}
+                <span>Нет отзывов</span>
+                {% endif %}
               </div>
-            </a>
-            <a href="/Age?id={{item.id}}" style="text-decoration: none;"></a>
-            <a style="text-decoration: none;" href="/Age?id={{item.id}}">
-              <div class="card-body">
-                <div class="card-container-price card-title">
-                  <p class="actual-price">{{item.price}} ₽</p>
-                  <span>{{item.Rating}}<span style = "color: gold;">★</span></span>
-                </div>
-                <p class="good-title">
-                  {{item.value}}
-                </p>
-              </div>
-            </a>
-          </div>
-          {% endif %}
+              <p class="good-title">
+                {{item.value}}
+              </p>
+            </div>
+          </a>
+        </div>
+        {% endif %}
         {% endfor %}
       </div>
     </div>
@@ -166,78 +194,9 @@
 
   <footer id="footer">
   </footer>
+  
 
-  
-  <div class = "navbar_bottom">
-    <!--home-->
-    <div>
-      <a href = "/" class = "nav-link">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20.1668 20.1665H1.8335" stroke="white" stroke-linecap="round"/>
-          <path d="M1.8335 10.0833L5.55788 7.10384M20.1668 10.0833L12.7181 4.12434C11.7137 3.32086 10.2866 3.32086 9.28224 4.12434L8.56548 4.69776" stroke="white" stroke-linecap="round"/>
-          <path d="M14.2085 5.04167V3.20833C14.2085 2.9552 14.4137 2.75 14.6668 2.75H16.9585C17.2116 2.75 17.4168 2.9552 17.4168 3.20833V7.79167" stroke="white" stroke-linecap="round"/>
-          <path d="M3.6665 20.1666V8.70825" stroke="white" stroke-linecap="round"/>
-          <path d="M18.3335 8.70825V12.3749M18.3335 20.1666V16.0416" stroke="white" stroke-linecap="round"/>
-          <path d="M13.75 20.1668V15.5835C13.75 14.2871 13.75 13.6389 13.3473 13.2362C12.9445 12.8335 12.2964 12.8335 11 12.8335C9.70365 12.8335 9.05546 12.8335 8.65273 13.2362M8.25 20.1668V15.5835" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M12.8332 8.70833C12.8332 9.72088 12.0124 10.5417 10.9998 10.5417C9.98729 10.5417 9.1665 9.72088 9.1665 8.70833C9.1665 7.69581 9.98729 6.875 10.9998 6.875C12.0124 6.875 12.8332 7.69581 12.8332 8.70833Z" stroke="white"/>
-          </svg>
-          
-      </a>
-    </div>
-    <!--filter-->
-    <div>
-      <span class = "nav-link" id = "filter_main_button">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M2.75 6.41667C2.75 5.91041 3.16041 5.5 3.66667 5.5H18.3333C18.8396 5.5 19.25 5.91041 19.25 6.41667C19.25 6.92292 18.8396 7.33333 18.3333 7.33333H3.66667C3.16041 7.33333 2.75 6.92292 2.75 6.41667ZM5.5 11C5.5 10.4937 5.91041 10.0833 6.41667 10.0833H15.5833C16.0896 10.0833 16.5 10.4937 16.5 11C16.5 11.5063 16.0896 11.9167 15.5833 11.9167H6.41667C5.91041 11.9167 5.5 11.5063 5.5 11ZM8.25 15.5833C8.25 15.0771 8.66041 14.6667 9.16667 14.6667H12.8333C13.3396 14.6667 13.75 15.0771 13.75 15.5833C13.75 16.0896 13.3396 16.5 12.8333 16.5H9.16667C8.66041 16.5 8.25 16.0896 8.25 15.5833Z" fill="#CECECE"/>
-          </svg>
-        </span>
-    </div>
-    <!--favorite-->
-    <div>
-      {% if username %}
-        <a href = "/Favorite" class = "nav-link">
-      {% else %}
-        <button type="button" class="user-profile-login" data-bs-toggle="modal" data-bs-target="#logining_window"/>
-      {% endif %}    
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.25 6.36912C0.25 3.07041 2.65767 0.25 5.79925 0.25C7.49913 0.25 8.99404 1.08608 10 2.36847C11.0059 1.08613 12.5006 0.25 14.1996 0.25C17.3423 0.25 19.75 3.07167 19.75 6.36912C19.75 7.69532 19.2489 8.97129 18.5251 10.1284C17.7997 11.2883 16.8229 12.3733 15.8015 13.3326C13.7592 15.2508 11.4589 16.7397 10.3901 17.3906C10.1504 17.5365 9.84927 17.5365 9.60965 17.3904C8.54109 16.7391 6.24079 15.2501 4.19851 13.3322C3.17709 12.3729 2.20033 11.288 1.47488 10.1283C0.751138 8.97123 0.25 7.69533 0.25 6.36912ZM5.79925 1.75C3.63983 1.75 1.75 3.73625 1.75 6.36912C1.75 7.31789 2.11117 8.31698 2.74658 9.33278C3.38027 10.3458 4.25947 11.3316 5.22537 12.2387C6.94066 13.8496 8.86662 15.1546 10.0001 15.8678C11.1335 15.1552 13.0594 13.8502 14.7746 12.2392C15.7405 11.3321 16.6197 10.3462 17.2534 9.33299C17.8888 8.31707 18.25 7.3179 18.25 6.36912C18.25 3.73751 16.3602 1.75 14.1996 1.75C12.7203 1.75 11.3843 2.66549 10.6719 4.10155C10.5452 4.35679 10.2849 4.51824 10 4.51824C9.71508 4.51824 9.45476 4.35679 9.32813 4.10155C8.61575 2.66559 7.2798 1.75 5.79925 1.75Z" fill="#cecece"></path>
-          </svg>
-          {% if favorite %} 
-            <span class = "count_circle">{{favorite}}</span>
-          {% endif %}
-  
-  
-    </div>
-    <!--shop-kit-->
-    <div>
-      {% if username %}
-        <a href = "/Basket" class = "nav-link">
-      {% else %}
-        <button type="button" class="user-profile-login" data-bs-toggle="modal" data-bs-target="#logining_window"/>
-      {% endif %}    
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M17.875 8.70829L17.2238 6.32006C16.9727 5.39917 16.8471 4.93873 16.5896 4.59196C16.3332 4.24663 15.9846 3.98044 15.5841 3.82385C15.1817 3.66663 14.7045 3.66663 13.75 3.66663M4.125 8.70829L4.7762 6.32006C5.02729 5.39917 5.15284 4.93873 5.41036 4.59196C5.66682 4.24663 6.01531 3.98044 6.41595 3.82385C6.81824 3.66663 7.29549 3.66663 8.25 3.66663" stroke="#CECECE"/>
-          <path d="M8.25 3.66667C8.25 3.16041 8.66041 2.75 9.16667 2.75H12.8333C13.3396 2.75 13.75 3.16041 13.75 3.66667C13.75 4.17292 13.3396 4.58333 12.8333 4.58333H9.16667C8.66041 4.58333 8.25 4.17292 8.25 3.66667Z" stroke="#CECECE"/>
-          <path d="M7.33325 11.9166V15.5833" stroke="#CECECE" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M14.6667 11.9166V15.5833" stroke="#CECECE" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M11 11.9166V15.5833" stroke="#CECECE" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M3.54206 15.0839C4.04226 17.0847 4.29236 18.0851 5.03833 18.6675C5.7843 19.25 6.81548 19.25 8.87785 19.25H13.1226C15.185 19.25 16.2162 19.25 16.9622 18.6675C17.7081 18.0851 17.9582 17.0847 18.4584 15.0839C19.2448 11.9381 19.6381 10.3652 18.8124 9.30765C17.9866 8.25 16.3653 8.25 13.1226 8.25H8.87785C5.63522 8.25 4.01391 8.25 3.18814 9.30765C2.70342 9.92842 2.63873 10.7268 2.82704 11.9167" stroke="#CECECE" stroke-linecap="round"/>
-        </svg>
-        {% if basket %} 
-          <span class = "count_circle">{{basket}}</span>
-        {% endif %}
-    </div>
-    <!--avatar-->
-    <div>
-      {% if username %}
-        <a href = "/Basa" class = "nav-link">
-      {% else %}
-        <button type="button" class="user-profile-login" data-bs-toggle="modal" data-bs-target="#logining_window"/>
-      {% endif %}    
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.125 1.76923C5.51024 1.76923 1.76923 5.51024 1.76923 10.125C1.76923 12.1529 2.49164 14.0121 3.69315 15.4592C5.1592 13.9599 7.12901 12.7237 10.125 12.7237C13.1196 12.7237 15.0895 13.9501 16.5577 15.4581C17.7587 14.0112 18.4808 12.1524 18.4808 10.125C18.4808 5.51024 14.7398 1.76923 10.125 1.76923ZM15.4857 16.5347C14.2262 15.2338 12.6195 14.2429 10.125 14.2429C7.63336 14.2429 6.026 15.24 4.76528 16.5356C6.21605 17.7498 8.08517 18.4808 10.125 18.4808C12.1653 18.4808 14.0348 17.7495 15.4857 16.5347ZM0.25 10.125C0.25 4.67119 4.67119 0.25 10.125 0.25C15.5788 0.25 20 4.67119 20 10.125C20 15.5788 15.5788 20 10.125 20C4.67119 20 0.25 15.5788 0.25 10.125ZM10.125 5.60724C8.68978 5.60724 7.52631 6.77071 7.52631 8.20593C7.52631 9.64114 8.68978 10.8046 10.125 10.8046C11.5602 10.8046 12.7237 9.64114 12.7237 8.20593C12.7237 6.77071 11.5602 5.60724 10.125 5.60724ZM6.00708 8.20593C6.00708 5.93166 7.85073 4.08801 10.125 4.08801C12.3993 4.08801 14.2429 5.93166 14.2429 8.20593C14.2429 10.4802 12.3993 12.3238 10.125 12.3238C7.85073 12.3238 6.00708 10.4802 6.00708 8.20593Z" fill="#cecece"></path>
-        </svg>
-      </a>
-    </div>
-  </div>
+  {% include "navbar_bottom.html" %}
 
 
   <script src="js/set_navbar.js"></script>
@@ -247,8 +206,9 @@
   <script src="js/set_navbar_history.js"></script>
   <script src="js/set_filter.js"></script>
 
-  
-  
-<br>
+
+
+  <br>
 </body>
+
 </html>

@@ -9,11 +9,10 @@
     <link href="bootstrap.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
 </head>
-
 <body>
     {% include "set_navbar.html" %}
     <div class="user-title">
-        <h1>Заказы</h1>
+        <h1>Отзывы</h1>
     </div>
     <div class="user-data-container">
         <div class="profile-menu-widget">
@@ -46,7 +45,7 @@
                         </p>
                         <form action="/Orders?id={{items.id}}" method="POST">
                             <button type="submit" class="favorite_button transform_scaler" value='{{items.id}}'
-                                name='id'>Написать Отзыв</button>
+                                name='id'>Изменить отзыв</button>
                         </form>
                     </div>
                 </div>
@@ -63,5 +62,4 @@
 {% include "navbar_bottom.html" %}
 <script src="js/set_filter.js"></script>
 </body>
-
 </html>

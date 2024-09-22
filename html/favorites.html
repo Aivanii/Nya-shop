@@ -30,18 +30,22 @@
                         <img src = {{items.img}} loading="lazy" alt = "{alt_good}"/>
                         <div class = "favorite_good_text_container">
                             <div class="card-container-price card-title" style = "height: 20%;">
-                                {% if items.sell != items.price %}
+                                {% if items.discount != 0 %}
                                     <p class="actual-price">{{items.sell | round}} ₽</p>
                                     <p class="crossed-price">{{items.price}} ₽</p>
                                 {% else %}
                                     <p class="actual-price">{{items.price}} ₽</p>
                                 {% endif %}
-                                <span>{{items.Rating}}<span style = "color: gold;">★</span></span>
-                                <form style = "margin-left: auto;" action="/Favorite" method = "POST" >
+                                {% if items.Rating != 0 %}
+                                    <span>{{items.Rating | round}}<span style = "color: gold;">★</span></span>
+                                {% else %}
+                                    <span>Нет отзывов</span>
+                                {% endif %}    
+                                <form action="/Favorite" method = "POST" >
                                     <button class="btn-close btn-close-white transform_scaler" aria-label="Close" id = {{items.id}} onclick = 'favorite(this)'></button>
                                 </form>
                             </div>
-                            <p style="margin-top: 0.5rem;">
+                            <p>
                                 <a href = "/Goods?id={{items.id}}">
                                     {{items.value}}
                                 </a>
@@ -66,5 +70,7 @@
 <script src = "js/set_favorite.js"></script>
 <script src="js/bootstrap.bundle.js"></script>
 <script src="js/set_footer.js"></script>
+{% include "navbar_bottom.html" %}
+<script src="js/set_filter.js"></script>
 </body>
 </html>

@@ -1,0 +1,82 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nya~ shop: Вакансии</title>
+    <link rel="shortcut icon" href="img/nya_logo_small.svg" />
+    <link href="bootstrap.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+    {% include "set_navbar.html" %}
+    <main>
+        <div class="user-title">
+            <h1>Вакансии</h1>
+        </div>
+        <div class="user-data-container">
+            <div class="profile-menu-widget">
+                <ul class="profile_ul">
+                    <li>
+                        <a href="/Company" class="nav-link">
+                            О компании
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Career" class="nav-link">
+                            Вакансии
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Policy" class="nav-link">
+                            Политика конфиденциальности
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="user-settings-container" style="min-height: auto; display: block;">
+                <h2>Сотрудники Drunk Wizard Studio являются профессионалами своего дела</h2>
+                <p>У наших сотрудников следующие бонусы:</p>
+                <ul style="    list-style-type: circle;
+    padding-left: 1.5rem;">
+                    <li>Постоянные отпуска и отгулы</li>
+
+                    <li>Регулярные зарплаты и премии</li>
+
+                    <li>Исключительно дружелюбный коллектив</li>
+
+                    <li>Удалённая работа</li>
+
+                    <li>Большое разнообразие проектов</li>
+
+                    <li>Возможность обучения новым технологиям</li>
+
+                    <li>Чёткая иерархия должностей</li>
+
+                    <li>Отзывчивое и приятное начальство</li>
+
+                    <li style="    list-style: none;    margin-left: -1.5rem;">И многое другое</li>
+
+                </ul>
+                <br>
+                <h3>Актуальные вакансии: </h3>
+                <form class="career-container">
+                    <p>Пока нет актуальных вакансий в вашем регионе</p>
+                </form>
+                <br>
+                <h3>Мы будем рады работе с вами!</h3>
+            </div>
+        </div>
+    </main>
+    <footer id="footer">
+    </footer>
+    <script src="js/set_navbar.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/set_footer.js"></script>
+    {% include "navbar_bottom.html" %}
+<script src="js/set_filter.js"></script>
+</body>
+
+</html>

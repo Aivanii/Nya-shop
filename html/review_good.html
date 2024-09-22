@@ -42,19 +42,20 @@
             <div class="flex_container center-container" style="justify-content: center">
               <div id="spans-holder">
               </div>
-              <span class="review_text" style="margin-left: 0.5rem;" id="label-span" data-rate="0">Оцените
+              <span class="review_text" style="margin-left: 0.5rem;" id="label-span" data-rate="{{Reviews_user[0].rating}}">Оцените
                 покупку</span>
               <span>|</span>
-              <span class="review_text review_button transform_scaler">Не оценивать покупку</span>
+              <span class="review_text review_button transform_scaler" onclick = 'del_com(this)' id = '{{id}}'>{% if Reviews_user[0].rating != 0 %}Изменить отзыв позже{% else %}Не оценивать покупку{%endif%}</span>
               <script src="js/make_star_rating.js"></script>
+              <script src="js/del_comment.js"></script>
             </div>
             <div class="textareas-container">
               <span>Достоинства</span>
-              <textarea maxlength="500" class="review-textarea"></textarea>
+              <textarea maxlength="500" class="review-textarea">{{Reviews_user[0].dignities}}</textarea>
               <span>Недостатки</span>
-              <textarea maxlength="500" class="review-textarea"></textarea>
+              <textarea maxlength="500" class="review-textarea">{{Reviews_user[0].dignities}}</textarea>
               <span>Комментарий к отзыву</span>
-              <textarea maxlength="500" class="review-textarea"></textarea>
+              <textarea maxlength="500" class="review-textarea">{{Reviews_user[0].comment}}</textarea>
             </div>
             <button class="btn review_submit_button transform_scaler" value='{{id}}' type="submit">Оставить
               отзыв</button>
@@ -71,9 +72,10 @@
   <script src="js/bootstrap.bundle.js"></script>
   <script src="js/set_footer.js"></script>
   <script src="js/set_navbar_history.js"></script>
-  <script src="js/set_filter.js"></script>
   <script src="js/set_navbar_bottom.js"></script>
   <script src="js/send_review_data.js"></script>
+  {% include "navbar_bottom.html" %}
+<script src="js/set_filter.js"></script>
 </body>
 
 </html>

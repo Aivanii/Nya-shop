@@ -27,13 +27,17 @@
                     <img src = {{item.img}} loading="lazy" alt = "{alt_good}"/>
                     <div class = "favorite_good_text_container">
                         <div class="card-container-price card-title" style = "height: 20%;">
-                            {% if item.sell != item.price %}
+                            {% if item.discount != 0 %}
                                 <p class="actual-price">{{item.sell | round}} ₽</p>
                                 <p class="crossed-price">{{item.price}} ₽</p>
                             {% else %}
                                 <p class="actual-price">{{item.price}} ₽</p>
                             {% endif %}
-                            <span>{{item.Rating}}<span style = "color: gold;">★</span></span>
+                            {% if item.Rating != 0 %}
+                                <span>{{item.Rating | round}}<span style = "color: gold;">★</span></span>
+                            {% else %}
+                                <span>Нет отзывов</span>
+                            {% endif %}    
                             <div style = "margin-left: auto;">
                                 <input class = "button_toggle button_minus disabled_button_toggle" type="button" value="-">
                                 <span class = "buttons_span">{{item.amount}}</span>
@@ -53,9 +57,11 @@
             {% endfor %}            
         </div>
         <div>
-            <form action="/Basket_pay" method = 'POST'>
-                <button type = "submit" id = "text_area" class = "buy_button transform_scaler">Перейти к оплате заказа на сумму ${total_price} рублей</button>
-            </form>
+            {% if items %}
+                <form action="/Basket_pay" method = 'POST'>
+                    <button type = "submit" id = "text_area" class = "buy_button transform_scaler">Перейти к оплате заказа на сумму ${total_price} рублей</button>
+                </form>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -66,5 +72,7 @@
 <script src="js/bootstrap.bundle.js"></script>
 <script src = "js/count_goods.js"></script>
 <script src="js/set_footer.js"></script>
+{% include "navbar_bottom.html" %}
+<script src="js/set_filter.js"></script>
 </body>
 </html>
