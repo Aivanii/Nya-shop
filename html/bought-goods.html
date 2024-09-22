@@ -6,52 +6,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Страница пользователя</title>
     <link rel="shortcut icon" href="img/nya_logo_small.svg" />
-    <link href= "bootstrap.css" rel="stylesheet">
-    <link href="style.css" rel="stylesheet" >
+    <link href="bootstrap.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
 </head>
-    
+
 <body>
-{% include "set_navbar.html" %}
-<div class = "user-title">
-    <h1>Заказы</h1>
-</div>
-<div class = "user-data-container">
-    <div class = "profile-menu-widget">
-        {% include "profile_ul.html" %}
+    {% include "set_navbar.html" %}
+    <div class="user-title">
+        <h1>Заказы</h1>
     </div>
-    очень скоро здесь будут заказы
-
-<!--шаблон для товаров-->
-    {% for items in item %}
-        <div class = "favorite_good">
-            <img src = "{{items.img}}"
-            loading="lazy" alt = "{alt_good}"/>
-            <div class = "favorite_good_text_container">
-                <div class="card-container-price card-title" style = "height: 20%;">
-                    {% if item.discount %}
-                        <p class="actual-price">{{items.sell | round}} ₽</p>
-                        <p class="crossed-price">{{items.price}} ₽</p>
-                        <p class="discount-price">-{{items.discount}}% </p> 
-                    {% else %}
-                        <p class="actual-price">{{items.price}} ₽</p>
-                    {% endif %}
-                </div>
-                <p style = "margin-top: 0.5rem;">
-                    {{items.name}}
-                </p> 
-                <form action="/Orders?id={{items.id}}" method = "POST" >
-                    <button type = "submit" class = "favorite_button transform_scaler" value = '{{items.id}}' name = 'id'>Написать Отзыв</button>
-                </form>
-            </div>
+    <div class="user-data-container">
+        <div class="profile-menu-widget">
+            {% include "profile_ul.html" %}
         </div>
-    {% endfor %}
-<!--х-->
-
-</div>
-<footer id = "footer">
+        <div class = "user-settings-container" style = "display: block;">
+            <div class = "favorite_goods_container">
+                <!--шаблон для товаров-->
+                {% for items in item %}
+                <div class="favorite_good">
+                    <img src="{{items.img}}" loading="lazy" alt="{alt_good}" />
+                    <div class="favorite_good_text_container">
+                        <div class="card-container-price card-title" style="height: 20%;">
+                            {% if item.discount != 0 %}
+                            <p class="actual-price">{{items.sell | round}} ₽</p>
+                            <p class="crossed-price">{{items.price}} ₽</p>
+                            {% else %}
+                            <p class="actual-price">{{items.price}} ₽</p>
+                            {% endif %}
+                            {% if items.Rating != 0 %}
+                                <span>{{items.Rating | round}}<span style = "color: gold;">★</span></span>
+                            {% else %}
+                                 <span>Нет отзывов</span>
+                            {% endif %}    
+                        </div>
+                        <p style="margin-top: 0.5rem;">
+                            <a href = "/Goods?id={{items.id}}">
+                                {{items.value}}
+                            </a>
+                        </p>
+                        <form action="/Orders?id={{items.id}}" method="POST">
+                            <button type="submit" class="favorite_button transform_scaler" value='{{items.id}}'
+                                name='id'>Написать Отзыв</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+                <!--х-->
+            </div>
+        </div>      
+    </div>
+<footer id="footer">
 </footer>
 <script src="js/set_navbar.js"></script>
 <script src="js/bootstrap.bundle.js"></script>
 <script src="js/set_footer.js"></script>
+{% include "navbar_bottom.html" %}
+<script src="js/set_filter.js"></script>
 </body>
+
 </html>

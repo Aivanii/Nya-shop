@@ -64,13 +64,17 @@
             <!---->
 
             <!--rating-->
-            <div class = "rating" data-rating = {{Rating}} id = "rating_obj" data-counts = {{Reviews}}>
-            </div>
+            {% if Rating != 0 %}
+                <div class = "rating" data-rating = {{Rating | round}} id = "rating_obj" data-counts = {{Reviews}} >
+                </div>
+            {% else %}
+                <span>Нет отзывов</span>
+            {% endif %}    
             <!---->
 
             <!--price-->
             <div class = "price_good_container">
-                {% if sell != price %}
+                {% if discount != 0 %}
                     <p class="actual-price">{{sell | round}} ₽</p>
                     <p class="crossed-price">{{price}} ₽</p>
                 {% else %}
@@ -82,7 +86,7 @@
             <!--share-button-->
             <div class = "share_button">
                 <a href = "#">
-                    <img src = "img/share-svgrepo-com.svg">
+                    <img src = "img/share-svgrepo-com.svg" style = "border: 2px solid #4e4959;">
                 </a>
             </div>
             <!---->
@@ -166,12 +170,14 @@
                             {{item.dignities}}
                         </article>
                     {% endif %}
+                    <br>
                     {% if item.disadvantages %}
                         <span>Недостатки</span>
                         <article>
                             {{item.disadvantages}}
                         </article>
                     {% endif %}
+                    <br>
                     {% if item.comment %}
                         <span>Комментарий к отзыву</span>
                         <article>
@@ -188,17 +194,14 @@
         </span>
     </div>
 </main>
-
-
-
-
 <footer id = "footer">
 </footer>
-
 <script src="js/set_navbar.js"></script>
 <script src = "js/set_favorite.js"></script>
 <script src="js/bootstrap.bundle.js"></script>
 <script src="js/set_footer.js"></script>
 <script src="js/set_rating.js"></script>
+{% include "navbar_bottom.html" %}
+<script src="js/set_filter.js"></script>
 </body>
 </html>
